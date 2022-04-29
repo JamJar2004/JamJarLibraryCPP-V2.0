@@ -6,6 +6,9 @@
 template<std::signed_integral T>
 class SignedInteger;
 
+template<std::floating_point T>
+class Float;
+
 template<std::unsigned_integral T>
 class UnsignedInteger
 {
@@ -15,6 +18,7 @@ public:
 	static const UnsignedInteger<T> Minimum;
 	static const UnsignedInteger<T> Maximum;
 
+	UnsignedInteger()                                : m_value(0)             {}
 	UnsignedInteger(const UnsignedInteger<T>& other) : m_value(other.m_value) {}
 
 	template<std::unsigned_integral T2>
@@ -30,6 +34,21 @@ public:
 	explicit UnsignedInteger(T2 value) : m_value((T)value) {}
 
 	T ToRawValue() const { return m_value; }
+
+	template<std::unsigned_integral T2>
+	operator UnsignedInteger<T2>() const requires SmallerOrEqualSize<T, T2> { return UnsignedInteger<T2>((T2)m_value); }
+
+	template<std::signed_integral T2>
+	operator SignedInteger<T2>() const requires SmallerSize<T, T2> { return SignedInteger<T2>((T2)m_value); }
+
+	template<std::floating_point T2>
+	operator Float<T2>() const { return Float<T2>((T2)m_value); }
+
+	template<std::unsigned_integral T2>
+	explicit operator UnsignedInteger<T2>() const requires GreaterSize<T, T2> { return UnsignedInteger<T2>((T2)m_value); }
+
+	template<std::signed_integral T2>
+	explicit operator SignedInteger<T2>() const requires GreaterOrEqualSize<T, T2> { return SignedInteger<T2>((T2)m_value); }
 
 	friend UnsignedInteger<T> operator+(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value + right.m_value; }
 	friend UnsignedInteger<T> operator-(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value - right.m_value; }
@@ -87,6 +106,7 @@ public:
 	static const SignedInteger<T> Minimum;
 	static const SignedInteger<T> Maximum;
 
+	SignedInteger()                              : m_value(0)             {}
 	SignedInteger(const SignedInteger<T>& other) : m_value(other.m_value) {}
 
 	template<std::signed_integral T2>
@@ -169,6 +189,7 @@ public:
 	static const Float<T> NegativeInfinity;
 	static const Float<T> NaN;
 
+	Float()                      : m_value(0)             {}
 	Float(const Float<T>& other) : m_value(other.m_value) {}
 
 	template<std::floating_point T2>
