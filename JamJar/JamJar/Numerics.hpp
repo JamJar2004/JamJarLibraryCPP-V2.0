@@ -126,6 +126,18 @@ public:
 
 	T ToRawValue() const { return m_value; }
 	
+	template<std::signed_integral T2>
+	operator SignedInteger<T2>() const requires SmallerOrEqualSize<T, T2> { return SignedInteger<T2>((T2)m_value); }
+
+	template<std::floating_point T2>
+	operator Float<T2>() const { return Float<T2>((T2)m_value); }
+
+	template<std::signed_integral T2>
+	explicit operator SignedInteger<T2>() const requires GreaterSize<T, T2> { return SignedInteger<T2>((T2)m_value); }
+
+	template<std::unsigned_integral T2>
+	explicit operator UnsignedInteger<T2>() const { return UnsignedInteger<T2>((T2)m_value); }
+
 	friend SignedInteger<T> operator+(SignedInteger<T> left, SignedInteger<T> right) { return left.m_value + right.m_value; }
 	friend SignedInteger<T> operator-(SignedInteger<T> left, SignedInteger<T> right) { return left.m_value - right.m_value; }
 	friend SignedInteger<T> operator*(SignedInteger<T> left, SignedInteger<T> right) { return left.m_value * right.m_value; }

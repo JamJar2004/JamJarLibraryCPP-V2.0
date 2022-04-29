@@ -10,10 +10,11 @@ T Add(T left, T right)
 
 int main()
 {
-	UInt32 a;
-	Size b = a;
+	SInt64 a;
+	SInt16 b = SInt16(a);
+	UInt32 c = UInt32(b);
 
-	Float64 c = a;
+	Float32 f = c;
 
 	return 0;
 }
