@@ -1,5 +1,7 @@
 #pragma once
 
+class String;
+
 class Boolean
 {
 private:
@@ -9,5 +11,5 @@ public:
 
 	operator bool() const { return m_value; }
 
-	//String ToString() { return m_value ? "True" : "False"; }
+	String ToString() const;
 };
