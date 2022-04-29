@@ -107,6 +107,8 @@ concept Incrementable = PreIncrementable<T> && PostIncrementable<T>;
 template<typename T>
 concept Decrementable = PreDecrementable<T> && PostDecrementable<T>;
 
+template<typename T>
+concept Pointer = std::is_pointer_v<T>;
 
 template<typename T>
 concept Number = Addable<T> && Subtractable<T> && Multiplicable<T> && Divisible<T> && Modable<T> && Incrementable<T> && Decrementable<T> && Comparable<T> && LeftShiftable<T> && RightShiftable<T> && requires
