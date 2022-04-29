@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="JamJar\Core.hpp" />
+    <ClInclude Include="JamJar\Numerics.hpp" />
+    <ClInclude Include="JamJar\String.hpp" />
+    <ClInclude Include="JamJar\Boolean.hpp" />
+    <ClInclude Include="JamJar\Concepts.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="JamJar\String.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Data">
+      <UniqueIdentifier>{e35ed94a-a8d5-4455-a13e-da30ae96ae71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Collections">
+      <UniqueIdentifier>{ce8de960-d5b3-48eb-838b-d7fed13c7212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{793e5674-6348-4a2e-8b69-3bdf25edbb8a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,334 @@
+﻿  Memory.cpp
+  The contents of <concepts> are available only with C++20 concepts support.
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(9,9): error C2061: syntax error: identifier 'SameAs'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(9,23): error C2039: 'is_same_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(12,9): error C2061: syntax error: identifier 'Inherits'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(12,25): error C2039: 'is_base_of_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(15,9): error C2061: syntax error: identifier 'Implemented'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(15,29): error C2039: 'is_abstract_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(19,9): error C2061: syntax error: identifier 'DefaultConstructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(19,37): error C2039: 'is_default_constructible_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(22,9): error C2061: syntax error: identifier 'CopyConstructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(22,34): error C2039: 'is_copy_constructible_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(25,9): error C2061: syntax error: identifier 'CopyAssignable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(25,31): error C2039: 'is_copy_assignable_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(28,9): error C2061: syntax error: identifier 'Destructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(28,29): error C2039: 'is_destructible_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(31,9): error C2061: syntax error: identifier 'Equatable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(32,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(32,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(38,9): error C2061: syntax error: identifier 'Comparable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(39,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(39,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,9): error C2061: syntax error: identifier 'Addable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,9): error C2061: syntax error: identifier 'Subtractable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,9): error C2061: syntax error: identifier 'Multiplicable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,9): error C2061: syntax error: identifier 'Divisible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,9): error C2061: syntax error: identifier 'Modable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,9): error C2061: syntax error: identifier 'Incrementable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,9): error C2061: syntax error: identifier 'Decrementable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(68,9): error C2061: syntax error: identifier 'Numeric'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(71,9): error C2061: syntax error: identifier 'Integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(71,39): error C2039: 'is_integral_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(74,9): error C2061: syntax error: identifier 'UnsignedIntegral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(74,49): error C2039: 'is_signed_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(77,9): error C2061: syntax error: identifier 'SignedIntegral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(77,46): error C2039: 'is_signed_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(80,9): error C2061: syntax error: identifier 'FloatingPoint'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(80,44): error C2039: 'is_floating_point_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(81,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(81,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(43,15): error C2039: 'floating_point': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(43,30): error C2061: syntax error: identifier 'floating_point'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(44,12): error C2913: explicit specialization; 'Float' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(46,15): error C2039: 'integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(46,24): error C2061: syntax error: identifier 'integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(66,2): error C2913: explicit specialization; 'Integer' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(68,15): error C2039: 'unsigned_integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(68,33): error C2061: syntax error: identifier 'unsigned_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(69,22): error C2913: explicit specialization; 'UnsignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(71,15): error C2039: 'signed_integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(71,31): error C2061: syntax error: identifier 'signed_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(84,2): error C2913: explicit specialization; 'SignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(86,15): error C2039: 'unsigned_integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(86,33): error C2061: syntax error: identifier 'unsigned_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(96,2): error C2913: explicit specialization; 'UnsignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,15): error C2039: 'floating_point': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,30): error C2061: syntax error: identifier 'floating_point'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(109,2): error C2913: explicit specialization; 'Float' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(111,32): error C2065: 'uint8_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(112,32): error C2065: 'uint16_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(113,32): error C2065: 'uint32_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(114,32): error C2065: 'uint64_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(116,30): error C2065: 'int8_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(117,30): error C2065: 'int16_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(118,30): error C2065: 'int32_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(119,30): error C2065: 'int64_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(38,37): error C2059: syntax error: ':'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(54,7): error C2079: 'BaseDataBlock::m_refCount' uses undefined class 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(56,18): error C2059: syntax error: '++'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(56,30): error C2238: unexpected token(s) preceding ';'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(58,2): error C2628: 'BaseDataBlock' followed by 'void' is illegal (did you forget a ';'?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(60,5): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(61,6): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(62,11): error C2355: 'this': can only be referenced inside non-static member functions or non-static data member initializers
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,21): error C2027: use of undefined type 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(87): message : see declaration of 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,7): error C2027: use of undefined type 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(87): message : see declaration of 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,30): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(66,1): error C2059: syntax error: '}'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(66,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,11): error C2061: syntax error: identifier 'Inherits'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(122): message : see reference to class template instantiation 'SharedRef<T>' being compiled
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,25): error C2988: unrecognizable template declaration/definition
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,25): error C2059: syntax error: '>'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,28): error C2065: 'T2': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,18): error C2923: 'SharedRef': 'T2' is not a valid template type argument for parameter 'T'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95): message : see declaration of 'T2'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,1): error C2334: unexpected token(s) preceding ':'; skipping apparent function body
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(122,1): fatal error C1903: unable to recover from previous error(s); stopping compilation
+  Dynamic.cpp
+  The contents of <concepts> are available only with C++20 concepts support.
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(9,9): error C2061: syntax error: identifier 'SameAs'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(9,23): error C2039: 'is_same_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(12,9): error C2061: syntax error: identifier 'Inherits'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(12,25): error C2039: 'is_base_of_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(15,9): error C2061: syntax error: identifier 'Implemented'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(15,29): error C2039: 'is_abstract_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(19,9): error C2061: syntax error: identifier 'DefaultConstructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(19,37): error C2039: 'is_default_constructible_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(22,9): error C2061: syntax error: identifier 'CopyConstructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(22,34): error C2039: 'is_copy_constructible_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(25,9): error C2061: syntax error: identifier 'CopyAssignable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(25,31): error C2039: 'is_copy_assignable_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(28,9): error C2061: syntax error: identifier 'Destructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(28,29): error C2039: 'is_destructible_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(31,9): error C2061: syntax error: identifier 'Equatable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(32,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(32,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(38,9): error C2061: syntax error: identifier 'Comparable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(39,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(39,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,9): error C2061: syntax error: identifier 'Addable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,9): error C2061: syntax error: identifier 'Subtractable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,9): error C2061: syntax error: identifier 'Multiplicable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,9): error C2061: syntax error: identifier 'Divisible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,9): error C2061: syntax error: identifier 'Modable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,9): error C2061: syntax error: identifier 'Incrementable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,9): error C2061: syntax error: identifier 'Decrementable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(68,9): error C2061: syntax error: identifier 'Numeric'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(71,9): error C2061: syntax error: identifier 'Integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(71,39): error C2039: 'is_integral_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(74,9): error C2061: syntax error: identifier 'UnsignedIntegral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(74,49): error C2039: 'is_signed_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(77,9): error C2061: syntax error: identifier 'SignedIntegral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(77,46): error C2039: 'is_signed_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(80,9): error C2061: syntax error: identifier 'FloatingPoint'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(80,44): error C2039: 'is_floating_point_v': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(81,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(81,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(43,15): error C2039: 'floating_point': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(43,30): error C2061: syntax error: identifier 'floating_point'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(44,12): error C2913: explicit specialization; 'Float' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(46,15): error C2039: 'integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(46,24): error C2061: syntax error: identifier 'integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(66,2): error C2913: explicit specialization; 'Integer' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(68,15): error C2039: 'unsigned_integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(68,33): error C2061: syntax error: identifier 'unsigned_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(69,22): error C2913: explicit specialization; 'UnsignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(71,15): error C2039: 'signed_integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(71,31): error C2061: syntax error: identifier 'signed_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(84,2): error C2913: explicit specialization; 'SignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(86,15): error C2039: 'unsigned_integral': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(86,33): error C2061: syntax error: identifier 'unsigned_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(96,2): error C2913: explicit specialization; 'UnsignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,15): error C2039: 'floating_point': is not a member of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\predefined C++ types (compiler internal)(340): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,30): error C2061: syntax error: identifier 'floating_point'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(109,2): error C2913: explicit specialization; 'Float' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(111,32): error C2065: 'uint8_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(112,32): error C2065: 'uint16_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(113,32): error C2065: 'uint32_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(114,32): error C2065: 'uint64_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(116,30): error C2065: 'int8_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(117,30): error C2065: 'int16_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(118,30): error C2065: 'int32_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(119,30): error C2065: 'int64_t': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(38,37): error C2059: syntax error: ':'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(54,7): error C2079: 'BaseDataBlock::m_refCount' uses undefined class 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(56,18): error C2059: syntax error: '++'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(56,30): error C2238: unexpected token(s) preceding ';'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(58,2): error C2628: 'BaseDataBlock' followed by 'void' is illegal (did you forget a ';'?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(60,5): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(61,6): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(62,11): error C2355: 'this': can only be referenced inside non-static member functions or non-static data member initializers
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,21): error C2027: use of undefined type 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(87): message : see declaration of 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,7): error C2027: use of undefined type 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(87): message : see declaration of 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,30): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(66,1): error C2059: syntax error: '}'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(66,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,11): error C2061: syntax error: identifier 'Inherits'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(122): message : see reference to class template instantiation 'SharedRef<T>' being compiled
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,25): error C2988: unrecognizable template declaration/definition
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,25): error C2059: syntax error: '>'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,28): error C2065: 'T2': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,18): error C2923: 'SharedRef': 'T2' is not a valid template type argument for parameter 'T'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95): message : see declaration of 'T2'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,1): error C2334: unexpected token(s) preceding ':'; skipping apparent function body
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(122,1): fatal error C1903: unable to recover from previous error(s); stopping compilation
+  String.cpp
+  The contents of <concepts> are available only with C++20 concepts support.
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(9,9): error C2061: syntax error: identifier 'SameAs'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(12,9): error C2061: syntax error: identifier 'Inherits'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(15,9): error C2061: syntax error: identifier 'Implemented'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(19,9): error C2061: syntax error: identifier 'DefaultConstructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(22,9): error C2061: syntax error: identifier 'CopyConstructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(25,9): error C2061: syntax error: identifier 'CopyAssignable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(28,9): error C2061: syntax error: identifier 'Destructible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(31,9): error C2061: syntax error: identifier 'Equatable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(32,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(32,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(38,9): error C2061: syntax error: identifier 'Comparable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(39,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(39,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,9): error C2061: syntax error: identifier 'Addable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(47,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,9): error C2061: syntax error: identifier 'Subtractable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(50,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,9): error C2061: syntax error: identifier 'Multiplicable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(53,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,9): error C2061: syntax error: identifier 'Divisible'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(56,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,9): error C2061: syntax error: identifier 'Modable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(59,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,9): error C2061: syntax error: identifier 'Incrementable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(62,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,9): error C2061: syntax error: identifier 'Decrementable'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,41): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(65,41): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(68,9): error C2061: syntax error: identifier 'Numeric'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(71,9): error C2061: syntax error: identifier 'Integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(74,9): error C2061: syntax error: identifier 'UnsignedIntegral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(77,9): error C2061: syntax error: identifier 'SignedIntegral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(80,9): error C2061: syntax error: identifier 'FloatingPoint'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(81,1): error C2143: syntax error: missing ';' before '{'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Concepts.hpp(81,1): error C2447: '{': missing function header (old-style formal list?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(43,15): error C2039: 'floating_point': is not a member of 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\string(24): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(43,30): error C2061: syntax error: identifier 'floating_point'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(44,12): error C2913: explicit specialization; 'Float' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(46,15): error C2039: 'integral': is not a member of 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\string(24): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(46,24): error C2061: syntax error: identifier 'integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(66,2): error C2913: explicit specialization; 'Integer' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(68,15): error C2039: 'unsigned_integral': is not a member of 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\string(24): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(68,33): error C2061: syntax error: identifier 'unsigned_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(69,22): error C2913: explicit specialization; 'UnsignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(71,15): error C2039: 'signed_integral': is not a member of 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\string(24): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(71,31): error C2061: syntax error: identifier 'signed_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(84,2): error C2913: explicit specialization; 'SignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(86,15): error C2039: 'unsigned_integral': is not a member of 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\string(24): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(86,33): error C2061: syntax error: identifier 'unsigned_integral'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(96,2): error C2913: explicit specialization; 'UnsignedInteger' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,15): error C2039: 'floating_point': is not a member of 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\string(24): message : see declaration of 'std'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,30): error C2061: syntax error: identifier 'floating_point'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(109,2): error C2913: explicit specialization; 'Float' is not a specialization of a class template
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(38,37): error C2059: syntax error: ':'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(54,7): error C2079: 'BaseDataBlock::m_refCount' uses undefined class 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(56,18): error C2059: syntax error: '++'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(56,30): error C2238: unexpected token(s) preceding ';'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(58,2): error C2628: 'BaseDataBlock' followed by 'void' is illegal (did you forget a ';'?)
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(60,5): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(61,6): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(62,11): error C2355: 'this': can only be referenced inside non-static member functions or non-static data member initializers
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,21): error C2027: use of undefined type 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(87): message : see declaration of 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,7): error C2027: use of undefined type 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(87): message : see declaration of 'UnsignedInteger'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(65,30): error C2065: 'm_refCount': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(66,1): error C2059: syntax error: '}'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(66,1): error C2143: syntax error: missing ';' before '}'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,11): error C2061: syntax error: identifier 'Inherits'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(122): message : see reference to class template instantiation 'SharedRef<T>' being compiled
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,25): error C2988: unrecognizable template declaration/definition
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(94,25): error C2059: syntax error: '>'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,28): error C2065: 'T2': undeclared identifier
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,18): error C2923: 'SharedRef': 'T2' is not a valid template type argument for parameter 'T'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95): message : see declaration of 'T2'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(95,1): error C2334: unexpected token(s) preceding ':'; skipping apparent function body
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Data\Memory\Refs.hpp(122,1): fatal error C1903: unable to recover from previous error(s); stopping compilation
+  Generating Code...
