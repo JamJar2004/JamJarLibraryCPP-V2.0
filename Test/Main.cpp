@@ -14,7 +14,10 @@ int main()
 	SInt16 b = SInt16(a);
 	UInt32 c = UInt32(b);
 
-	Float32 f = c;
+	Float64 f = c;
+	Float32 i = Float32(f);
+
+	c = UInt32(i);
 
 	return 0;
 }

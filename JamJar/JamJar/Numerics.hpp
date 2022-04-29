@@ -215,6 +215,18 @@ public:
 
 	T ToRawValue() const { return m_value; }
 
+	template<std::floating_point T2>
+	operator Float<T2>() const requires SmallerOrEqualSize<T, T2> { return Float<T2>((T2)m_value); }
+
+	template<std::floating_point T2>
+	explicit operator Float<T2>() const requires GreaterSize<T, T2> { return Float<T2>((T2)m_value); }
+
+	template<std::unsigned_integral T2>
+	explicit operator UnsignedInteger<T2>() const { return UnsignedInteger<T2>((T2)m_value); }
+
+	template<std::signed_integral T2>
+	explicit operator SignedInteger<T2>() const { return SignedInteger<T2>((T2)m_value); }
+
 	Boolean IsInfinity()         const { return isinf(m_value);                }
 	Boolean IsPositiveInfinity() const { return isinf(m_value) && m_value > 0; }
 	Boolean IsNegativeInfinity() const { return isinf(m_value) && m_value < 0; }
