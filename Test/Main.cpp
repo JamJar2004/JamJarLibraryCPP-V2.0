@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-template<SignedIntegral T>
+template<FloatingPoint T>
 T Add(T left, T right)
 {
 	return T::Maximum;
@@ -10,8 +10,9 @@ T Add(T left, T right)
 
 int main()
 {
-	UInt8  i = 0;
-	SInt32 j = i;
+	Float32 i = Float32::Maximum;
+
+	std::cout << std::is_integral_v<double> << std::endl;
 
 	return 0;
 }

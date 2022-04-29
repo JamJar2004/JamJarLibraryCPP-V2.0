@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Concepts.hpp"
+#include <limits>
 
 template<std::signed_integral T>
 class SignedInteger;
@@ -14,8 +15,13 @@ public:
 	static const UnsignedInteger<T> Minimum;
 	static const UnsignedInteger<T> Maximum;
 
-	UnsignedInteger(T value = 0)                     : m_value(value)         {}
+	//UnsignedInteger(T value = 0)                     : m_value(value)         {}
 	UnsignedInteger(const UnsignedInteger<T>& other) : m_value(other.m_value) {}
+
+	template<std::unsigned_integral T2>
+	UnsignedInteger(T2 value = 0) : m_value(value) {}
+
+	T ToRawValue() const { return m_value; }
 
 	template<GreaterOrEqualSize<T> T2>
 	operator UnsignedInteger<T2>() const { return UnsignedInteger<T2>((T2)m_value); }
@@ -23,9 +29,8 @@ public:
 	template<SmallerOrEqualSize<T> T2>
 	explicit operator UnsignedInteger<T2>() const { return UnsignedInteger<T2>((T2)m_value); }
 
-	template<GreaterOrEqualSize<T> T2>
+	template<GreaterSize<T> T2>
 	operator SignedInteger<T2>() const { return SignedInteger<T2>((T2)m_value); }
-
 
 	friend UnsignedInteger<T> operator+(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value + right.m_value; }
 	friend UnsignedInteger<T> operator-(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value - right.m_value; }
@@ -51,7 +56,28 @@ public:
 
 	UnsignedInteger<T>& operator++() { ++m_value; return *this; }
 	UnsignedInteger<T>& operator--() { --m_value; return *this; }
+
+	UnsignedInteger<T> operator++(int) 
+	{ 
+		UnsignedInteger<T> result = *this;
+		++(*this);
+		return result;
+	}
+
+	UnsignedInteger<T> operator--(int)
+	{ 
+		UnsignedInteger<T> result = *this;
+		--(*this);
+		return result;
+	}
 };
+
+template<std::unsigned_integral T>
+const UnsignedInteger<T> UnsignedInteger<T>::Minimum(0);
+
+template<std::unsigned_integral T>
+const UnsignedInteger<T> UnsignedInteger<T>::Maximum((1ULL << (sizeof(T) * 8ULL)) - 1ULL);
+
 
 template<std::signed_integral T>
 class SignedInteger
@@ -62,8 +88,13 @@ public:
 	static const SignedInteger<T> Minimum;
 	static const SignedInteger<T> Maximum;
 
-	SignedInteger(T value = 0)                   : m_value(value)         {}
+	//SignedInteger(T value = 0)                   : m_value(value)         {}
 	SignedInteger(const SignedInteger<T>& other) : m_value(other.m_value) {}
+
+	template<std::signed_integral T2>
+	SignedInteger(T2 value = 0) : m_value(value) {}
+
+	T ToRawValue() const { return m_value; }
 
 	template<GreaterOrEqualSize<T> T2>
 	operator SignedInteger<T2>() const { return SignedInteger<T2>((T2)m_value); }
@@ -101,7 +132,115 @@ public:
 
 	SignedInteger<T>& operator++() { ++m_value; return *this; }
 	SignedInteger<T>& operator--() { --m_value; return *this; }
+
+	SignedInteger<T> operator++(int)
+	{
+		SignedInteger<T> result = *this;
+		++(*this);
+		return result;
+	}
+
+	SignedInteger<T> operator--(int)
+	{
+		SignedInteger<T> result = *this;
+		--(*this);
+		return result;
+	}
 };
+
+template<std::signed_integral T>
+const SignedInteger<T> SignedInteger<T>::Minimum(1LL << (sizeof(T) * 8ULL - 1LL));
+
+template<std::signed_integral T>
+const SignedInteger<T> SignedInteger<T>::Maximum((1LL << (sizeof(T) * 8ULL - 1LL)) - 1LL);
+
+template<std::floating_point T>
+class Float
+{
+private:
+	T m_value;
+public:
+	static const Float<T> Minimum;
+	static const Float<T> Maximum;
+
+	static const Float<T> Epsilon;
+	static const Float<T> PositiveInfinity;
+	static const Float<T> NegativeInfinity;
+	static const Float<T> NaN;
+
+	Float(const Float<T>& other) : m_value(other.m_value) {}
+	
+	template<SmallerOrEqualSize<T> T2>
+	Float(T2 value = 0) : m_value(value) {}
+
+	T ToRawValue() const { return m_value; }
+
+	Boolean IsInfinity()         const { return isinf(m_value);                }
+	Boolean IsPositiveInfinity() const { return isinf(m_value) && m_value > 0; }
+	Boolean IsNegativeInfinity() const { return isinf(m_value) && m_value < 0; }
+	Boolean IsNaN()              const { return isnan(m_value);                }
+
+	friend Float<T> operator+(Float<T> left, Float<T> right) { return left.m_value + right.m_value; }
+	friend Float<T> operator-(Float<T> left, Float<T> right) { return left.m_value - right.m_value; }
+	friend Float<T> operator*(Float<T> left, Float<T> right) { return left.m_value * right.m_value; }
+	friend Float<T> operator/(Float<T> left, Float<T> right) { return left.m_value / right.m_value; }
+	friend Float<T> operator%(Float<T> left, Float<T> right) { return left.m_value % right.m_value; }
+
+	friend Boolean operator< (Float<T> left, Float<T> right) { return left.m_value <  right.m_value; }
+	friend Boolean operator> (Float<T> left, Float<T> right) { return left.m_value >  right.m_value; }
+	friend Boolean operator<=(Float<T> left, Float<T> right) { return left.m_value <= right.m_value; }
+	friend Boolean operator>=(Float<T> left, Float<T> right) { return left.m_value >= right.m_value; }
+	friend Boolean operator==(Float<T> left, Float<T> right) { return left.m_value == right.m_value; }
+	friend Boolean operator!=(Float<T> left, Float<T> right) { return left.m_value != right.m_value; }
+
+	Float<T> operator+() const { return SignedInteger<T>(+m_value); }
+	Float<T> operator-() const { return SignedInteger<T>(-m_value); }
+
+	Float<T>& operator++() { ++m_value; return *this; }
+	Float<T>& operator--() { --m_value; return *this; }
+
+	Float<T> operator++(int)
+	{
+		Float<T> result = *this;
+		++(*this);
+		return result;
+	}
+
+	Float<T> operator--(int)
+	{
+		Float<T> result = *this;
+		--(*this);
+		return result;
+	}
+};
+
+template<>
+const Float<float> Float<float>::Minimum(-FLT_MAX);
+
+template<>
+const Float<float> Float<float>::Maximum(+FLT_MAX);
+
+template<>
+const Float<float> Float<float>::Epsilon(+FLT_MIN);
+
+template<>
+const Float<double> Float<double>::Minimum(-DBL_MAX);
+
+template<>
+const Float<double> Float<double>::Maximum(+DBL_MAX);
+
+template<>
+const Float<double> Float<double>::Epsilon(+DBL_MIN);
+
+
+template<std::floating_point T>
+const Float<T> Float<T>::NaN(std::numeric_limits<T>::signaling_NaN());
+
+template<std::floating_point T>
+const Float<T> Float<T>::PositiveInfinity(+std::numeric_limits<T>::infinity());
+
+template<std::floating_point T>
+const Float<T> Float<T>::NegativeInfinity(-std::numeric_limits<T>::infinity());
 
 
 using UInt8  = UnsignedInteger<uint8_t>;
@@ -116,7 +255,8 @@ using SInt16 = SignedInteger<int16_t>;
 using SInt32 = SignedInteger<int32_t>;
 using SInt64 = SignedInteger<int64_t>;
 
-
+using Float32 = Float<float>;
+using Float64 = Float<double>;
 
 //class UInt8
 //{

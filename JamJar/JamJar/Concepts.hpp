@@ -93,9 +93,19 @@ concept Signed = requires(T obj)
 };
 
 template<typename T>
-concept Incrementable = requires(T obj) { { ++obj } -> SameAs<T&>; };
+concept PreIncrementable = requires(T obj) { { ++obj } -> SameAs<T&>; };
 template<typename T>
-concept Decrementable = requires(T obj) { { --obj } -> SameAs<T&>; };
+concept PreDecrementable = requires(T obj) { { --obj } -> SameAs<T&>; };
+
+template<typename T>
+concept PostIncrementable = requires(T obj) { { obj++ } -> SameAs<T>; };
+template<typename T>
+concept PostDecrementable = requires(T obj) { { obj++ } -> SameAs<T>; };
+
+template<typename T>
+concept Incrementable = PreIncrementable<T> && PostIncrementable<T>;
+template<typename T>
+concept Decrementable = PreDecrementable<T> && PostDecrementable<T>;
 
 
 template<typename T>

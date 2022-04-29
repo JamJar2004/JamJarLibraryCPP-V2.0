@@ -6,6 +6,7 @@
     <ClInclude Include="JamJar\String.hpp" />
     <ClInclude Include="JamJar\Boolean.hpp" />
     <ClInclude Include="JamJar\Concepts.hpp" />
+    <ClInclude Include="JamJar\Console.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />

@@ -1,2 +1,5 @@
 ﻿  Main.cpp
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(145,54): warning C4309: 'argument': truncation of constant value
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(84): message : while compiling class template static data member 'const SignedInteger<int16_t> SignedInteger<int16_t>::Minimum'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Test\Main.cpp(16): message : see reference to class template instantiation 'SignedInteger<int16_t>' being compiled
   Test.vcxproj -> C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Debug\Test.exe
