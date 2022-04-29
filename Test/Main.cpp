@@ -10,9 +10,13 @@ T Add(T left, T right)
 
 int main()
 {
-	Float32 i = Float32::Maximum;
+	UInt64 a = 0ULL;
 
-	std::cout << std::is_integral_v<double> << std::endl;
+	SInt64 b = 0U;
+
+	UInt32 c = 0U;
+
+	Float32 f = 0ULL;
 
 	return 0;
 }

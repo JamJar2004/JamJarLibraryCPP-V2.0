@@ -1,3 +1,15 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(514,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (JamJarCPP.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   Main.cpp
-  Test.vcxproj -> C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\x64\Debug\Test.exe
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,59): error C2988: unrecognizable template declaration/definition
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(147): message : see reference to class template instantiation 'SignedInteger<T>' being compiled
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,59): error C2059: syntax error: 'const'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(98,1): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(101,68): error C2988: unrecognizable template declaration/definition
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(101,68): error C2059: syntax error: 'const'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\JamJar\JamJar\Numerics.hpp(101,1): error C2334: unexpected token(s) preceding '{'; skipping apparent function body
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Test\Main.cpp(13,23): error C2440: '<function-style-cast>': cannot convert from 'double' to 'UInt64'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Test\Main.cpp(13,23): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Test\Main.cpp(13): error C2512: 'UnsignedInteger<uint64_t>::UnsignedInteger': no appropriate default constructor available
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Test\Main.cpp(17,25): error C2440: '<function-style-cast>': cannot convert from 'double' to 'Float32'
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Test\Main.cpp(17,25): message : No constructor could take the source type, or constructor overload resolution was ambiguous
+C:\Users\Family Cutajar\Documents\James\My Visual Studio Projects\JamJarCPP\Test\Main.cpp(17): error C2512: 'Float<float>::Float': no appropriate default constructor available

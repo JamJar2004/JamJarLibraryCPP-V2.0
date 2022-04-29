@@ -15,22 +15,21 @@ public:
 	static const UnsignedInteger<T> Minimum;
 	static const UnsignedInteger<T> Maximum;
 
-	//UnsignedInteger(T value = 0)                     : m_value(value)         {}
 	UnsignedInteger(const UnsignedInteger<T>& other) : m_value(other.m_value) {}
 
 	template<std::unsigned_integral T2>
-	UnsignedInteger(T2 value = 0) : m_value(value) {}
+	UnsignedInteger(T2 value) requires GreaterOrEqualSize<T, T2> : m_value((T)value) {}
+	
+	template<std::unsigned_integral T2>
+	explicit UnsignedInteger(T2 value) requires SmallerSize<T, T2> : m_value((T)value) {}
+
+	template<std::signed_integral T2>
+	explicit UnsignedInteger(T2 value) : m_value((T)value) {}
+
+	template<std::floating_point T2>
+	explicit UnsignedInteger(T2 value) : m_value((T)value) {}
 
 	T ToRawValue() const { return m_value; }
-
-	template<GreaterOrEqualSize<T> T2>
-	operator UnsignedInteger<T2>() const { return UnsignedInteger<T2>((T2)m_value); }
-
-	template<SmallerOrEqualSize<T> T2>
-	explicit operator UnsignedInteger<T2>() const { return UnsignedInteger<T2>((T2)m_value); }
-
-	template<GreaterSize<T> T2>
-	operator SignedInteger<T2>() const { return SignedInteger<T2>((T2)m_value); }
 
 	friend UnsignedInteger<T> operator+(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value + right.m_value; }
 	friend UnsignedInteger<T> operator-(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value - right.m_value; }
@@ -88,22 +87,24 @@ public:
 	static const SignedInteger<T> Minimum;
 	static const SignedInteger<T> Maximum;
 
-	//SignedInteger(T value = 0)                   : m_value(value)         {}
 	SignedInteger(const SignedInteger<T>& other) : m_value(other.m_value) {}
 
 	template<std::signed_integral T2>
-	SignedInteger(T2 value = 0) : m_value(value) {}
-
-	T ToRawValue() const { return m_value; }
-
-	template<GreaterOrEqualSize<T> T2>
-	operator SignedInteger<T2>() const { return SignedInteger<T2>((T2)m_value); }
-
-	template<SmallerOrEqualSize<T> T2>
-	explicit operator SignedInteger<T2>() const { return SignedInteger<T2>((T2)m_value); }
+	SignedInteger(T2 value) requires GreaterOrEqualSize<T, T2> : m_value((T)value) {}
 
 	template<std::unsigned_integral T2>
-	explicit operator UnsignedInteger<T2>() const { return UnsignedInteger<T2>((T2)m_value); }
+	SignedInteger(T2 value) requires GreaterSize<T, T2> : m_value((T)value) {}
+
+	template<std::signed_integral T2>
+	explicit SignedInteger(T2 value) requires SmallerSize<T, T2> : m_value((T)value) {}
+
+	template<std::unsigned_integral T2>
+	explicit SignedInteger(T2 value) requires SmallerOrEqualSize<T, T2> : m_value((T)value) {}
+
+	template<std::floating_point T2>
+	explicit SignedInteger(T2 value) : m_value((T)value) {}
+
+	T ToRawValue() const { return m_value; }
 	
 	friend SignedInteger<T> operator+(SignedInteger<T> left, SignedInteger<T> right) { return left.m_value + right.m_value; }
 	friend SignedInteger<T> operator-(SignedInteger<T> left, SignedInteger<T> right) { return left.m_value - right.m_value; }
@@ -169,9 +170,15 @@ public:
 	static const Float<T> NaN;
 
 	Float(const Float<T>& other) : m_value(other.m_value) {}
-	
-	template<SmallerOrEqualSize<T> T2>
-	Float(T2 value = 0) : m_value(value) {}
+
+	template<std::floating_point T2>
+	Float(T2 value) requires GreaterOrEqualSize<T, T2> : m_value(value) {}
+
+	template<std::integral T2>
+	Float(T2 value) : m_value(value) {}
+
+	template<std::floating_point T2>
+	explicit Float(T2 value) requires SmallerSize<T, T2> : m_value(value) {}
 
 	T ToRawValue() const { return m_value; }
 
