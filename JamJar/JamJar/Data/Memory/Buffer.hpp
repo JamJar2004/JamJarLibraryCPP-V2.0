@@ -7,6 +7,7 @@ class Buffer
 {
 private:
 	T*   m_address;
+	Size m_capacity;
 	Size m_count;
 public:
 	Buffer(Size capacity) : m_address(malloc(sizeof(T) * capacity.ToRawValue())) {}
@@ -59,10 +60,11 @@ public:
 
 	void Reallocate(Size newCapacity)
 	{
-		T* newAddress = malloc(sizeof(T) * newCapacity.ToRawValue());
-		memcpy(newAddress, m_address, Math::Min(m_count, newCapacity));
-		
+		if(newCapacity < m_capacity)
+			return;
 
-		return newAddress;
+		T* newAddress = malloc(sizeof(T) * newCapacity.ToRawValue());
+		memcpy(newAddress, m_address, m_count);
+		m_address = newAddress;
 	}
 };

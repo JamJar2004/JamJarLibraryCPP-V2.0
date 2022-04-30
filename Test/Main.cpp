@@ -7,10 +7,7 @@
 
 int main()
 {
-	SInt64 i = 0;
-	SInt64 j = 0;
 
-	std::cout << (j + i).ToRawValue();
 
 	return 0;
 }
