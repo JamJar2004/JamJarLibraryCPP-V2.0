@@ -7,9 +7,20 @@
     <ClInclude Include="JamJar\Boolean.hpp" />
     <ClInclude Include="JamJar\Concepts.hpp" />
     <ClInclude Include="JamJar\Console.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\IIterator.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Memory\Refs.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Exception.hpp" />
+    <ClInclude Include="JamJar\Data\Memory\Buffer.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
+    <ClCompile Include="JamJar\Exception.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
@@ -20,6 +31,9 @@
     </Filter>
     <Filter Include="Math">
       <UniqueIdentifier>{793e5674-6348-4a2e-8b69-3bdf25edbb8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Memory">
+      <UniqueIdentifier>{d14d6f93-dd5a-4c62-ab21-f3a5f481d213}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

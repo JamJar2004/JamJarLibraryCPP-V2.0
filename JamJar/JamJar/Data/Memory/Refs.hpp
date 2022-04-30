@@ -2,6 +2,8 @@
 
 #include "../../Numerics.hpp"
 
+#include "../../Exception.hpp"
+
 class BaseAllocation
 {
 private:
@@ -93,10 +95,48 @@ public:
 			m_allocation->RemRef();
 	}
 
+	operator Boolean() const { return m_allocation; }
+
 	NullableRef<T>& operator=(const NullableRef<T>& other)
 	{
-		m_allocation->RemRef();
+		if(m_allocation)
+			m_allocation->RemRef();
+
 		m_allocation = other.m_allocation;
-		m_allocation->AddRef();
+		
+		if(m_allocation)
+			m_allocation->AddRef();
+	}
+
+	T& operator*() requires !SameAs<T, void> 
+	{ 
+		if(!m_allocation)
+			NullReferenceException().Throw();
+
+		return ((Allocation<T>*)m_allocation)->GetValue(); 
+	}
+
+	const T& operator*() const requires !SameAs<T, void> 
+	{ 
+		if(!m_allocation)
+			NullReferenceException().Throw();
+
+		return ((Allocation<T>*)m_allocation)->GetValue();
+	}
+
+	T* operator->()
+	{
+		if(!m_allocation)
+			NullReferenceException().Throw();
+
+		return ((Allocation<T>*)m_allocation)->GetValue();
+	}
+
+	const T* operator->() const
+	{ 
+		if(!m_allocation)
+			NullReferenceException().Throw();
+
+		return ((Allocation<T>*)m_allocation)->GetValue(); 
 	}
 };

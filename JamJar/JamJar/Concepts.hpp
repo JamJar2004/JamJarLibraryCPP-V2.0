@@ -20,6 +20,9 @@ template<typename T, typename... Args>
 concept ConstructibleFrom = std::is_constructible_v<T, Args...>;
 
 template<typename T>
+concept Destructible = std::is_destructible_v<T>;
+
+template<typename T>
 concept CopyAssignable = std::is_copy_assignable_v<T>;
 
 template<typename To, typename From>

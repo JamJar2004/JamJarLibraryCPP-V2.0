@@ -70,6 +70,19 @@ public:
 	friend Boolean operator==(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value == right.m_value; }
 	friend Boolean operator!=(UnsignedInteger<T> left, UnsignedInteger<T> right) { return left.m_value != right.m_value; }
 
+	UnsignedInteger<T>& operator+=(UnsignedInteger<T> other) { m_value += other.m_value; return *this; }
+	UnsignedInteger<T>& operator-=(UnsignedInteger<T> other) { m_value -= other.m_value; return *this; }
+	UnsignedInteger<T>& operator*=(UnsignedInteger<T> other) { m_value *= other.m_value; return *this; }
+	UnsignedInteger<T>& operator/=(UnsignedInteger<T> other) { m_value /= other.m_value; return *this; }
+	UnsignedInteger<T>& operator%=(UnsignedInteger<T> other) { m_value %= other.m_value; return *this; }
+
+	UnsignedInteger<T>& operator&=(UnsignedInteger<T> other) { m_value &= other.m_value; return *this; }
+	UnsignedInteger<T>& operator|=(UnsignedInteger<T> other) { m_value |= other.m_value; return *this; }
+	UnsignedInteger<T>& operator^=(UnsignedInteger<T> other) { m_value ^= other.m_value; return *this; }
+
+	UnsignedInteger<T>& operator<<=(UnsignedInteger<T> other) { m_value <<= other.m_value; return *this; }
+	UnsignedInteger<T>& operator>>=(UnsignedInteger<T> other) { m_value >>= other.m_value; return *this; }
+
 	UnsignedInteger<T> operator~() const { return UnsignedInteger<T>(~m_value); }
 
 	UnsignedInteger<T>& operator++() { ++m_value; return *this; }
@@ -88,6 +101,9 @@ public:
 		--(*this);
 		return result;
 	}
+
+	UnsignedInteger<T> ToRadians() const requires GreaterSize<T, unsigned char> { return UnsignedInteger<T>((*this) * (Float32::PI / 180)); }
+	UnsignedInteger<T> ToDegrees() const requires GreaterSize<T, unsigned char> { return UnsignedInteger<T>((*this) * (180 / Float32::PI)); }
 };
 
 template<std::unsigned_integral T>
@@ -158,6 +174,21 @@ public:
 	friend Boolean operator==(SignedInteger<T> left, SignedInteger<T> right) { return left.m_value == right.m_value; }
 	friend Boolean operator!=(SignedInteger<T> left, SignedInteger<T> right) { return left.m_value != right.m_value; }
 
+
+	SignedInteger<T>& operator+=(SignedInteger<T> other) { m_value += other.m_value; return *this; }
+	SignedInteger<T>& operator-=(SignedInteger<T> other) { m_value -= other.m_value; return *this; }
+	SignedInteger<T>& operator*=(SignedInteger<T> other) { m_value *= other.m_value; return *this; }
+	SignedInteger<T>& operator/=(SignedInteger<T> other) { m_value /= other.m_value; return *this; }
+	SignedInteger<T>& operator%=(SignedInteger<T> other) { m_value %= other.m_value; return *this; }
+
+	SignedInteger<T>& operator&=(SignedInteger<T> other) { m_value &= other.m_value; return *this; }
+	SignedInteger<T>& operator|=(SignedInteger<T> other) { m_value |= other.m_value; return *this; }
+	SignedInteger<T>& operator^=(SignedInteger<T> other) { m_value ^= other.m_value; return *this; }
+
+	SignedInteger<T>& operator<<=(SignedInteger<T> other) { m_value <<= other.m_value; return *this; }
+	SignedInteger<T>& operator>>=(SignedInteger<T> other) { m_value >>= other.m_value; return *this; }
+
+
 	SignedInteger<T> operator+() const { return SignedInteger<T>(+m_value); }
 	SignedInteger<T> operator-() const { return SignedInteger<T>(-m_value); }
 
@@ -179,6 +210,17 @@ public:
 		--(*this);
 		return result;
 	}
+
+	SignedInteger<T> Abs() const
+	{
+		if(m_value < 0)
+			return SignedInteger<T>(-m_value);
+
+		return m_value;
+	}
+
+	SignedInteger<T> ToRadians() const requires GreaterSize<T, char> { return SignedInteger<T>((*this) * (Float32::PI / 180)); }
+	SignedInteger<T> ToDegrees() const requires GreaterSize<T, char> { return SignedInteger<T>((*this) * (180 / Float32::PI)); }
 };
 
 template<std::signed_integral T>
@@ -200,6 +242,8 @@ public:
 	static const Float<T> PositiveInfinity;
 	static const Float<T> NegativeInfinity;
 	static const Float<T> NaN;
+
+	static const Float<T> PI;
 
 	Float()                      : m_value(0)             {}
 	Float(const Float<T>& other) : m_value(other.m_value) {}
@@ -236,7 +280,8 @@ public:
 	friend Float<T> operator-(Float<T> left, Float<T> right) { return left.m_value - right.m_value; }
 	friend Float<T> operator*(Float<T> left, Float<T> right) { return left.m_value * right.m_value; }
 	friend Float<T> operator/(Float<T> left, Float<T> right) { return left.m_value / right.m_value; }
-	friend Float<T> operator%(Float<T> left, Float<T> right) { return left.m_value % right.m_value; }
+
+	friend Float<T> operator%(Float<T> left, Float<T> right);
 
 	friend Boolean operator< (Float<T> left, Float<T> right) { return left.m_value <  right.m_value; }
 	friend Boolean operator> (Float<T> left, Float<T> right) { return left.m_value >  right.m_value; }
@@ -244,6 +289,12 @@ public:
 	friend Boolean operator>=(Float<T> left, Float<T> right) { return left.m_value >= right.m_value; }
 	friend Boolean operator==(Float<T> left, Float<T> right) { return left.m_value == right.m_value; }
 	friend Boolean operator!=(Float<T> left, Float<T> right) { return left.m_value != right.m_value; }
+
+	Float<T>& operator+=(Float<T> other) { m_value += other.m_value; return *this; }
+	Float<T>& operator-=(Float<T> other) { m_value -= other.m_value; return *this; }
+	Float<T>& operator*=(Float<T> other) { m_value *= other.m_value; return *this; }
+	Float<T>& operator/=(Float<T> other) { m_value /= other.m_value; return *this; }
+	Float<T>& operator%=(Float<T> other) { m_value %= other.m_value; return *this; }
 
 	Float<T> operator+() const { return SignedInteger<T>(+m_value); }
 	Float<T> operator-() const { return SignedInteger<T>(-m_value); }
@@ -264,6 +315,20 @@ public:
 		--(*this);
 		return result;
 	}
+
+	Float<T> Abs() const
+	{
+		if(m_value < 0)
+			return SignedInteger<T>(-m_value);
+
+		return m_value;
+	}
+
+	Float<T> Sqrt() const;
+	Float<T> Pow(Float<T> power) const;
+
+	Float<T> ToRadians() const { return m_value * (PI / 180); }
+	Float<T> ToDegrees() const { return m_value * (180 / PI); }
 };
 
 template<>
@@ -294,6 +359,8 @@ const Float<T> Float<T>::PositiveInfinity(+std::numeric_limits<T>::infinity());
 template<std::floating_point T>
 const Float<T> Float<T>::NegativeInfinity(-std::numeric_limits<T>::infinity());
 
+template<std::floating_point T>
+const Float<T> Float<T>::PI((T)3.1415926535897932384626433832795);
 
 using UInt8  = UnsignedInteger<uint8_t>;
 using UInt16 = UnsignedInteger<uint16_t>;
@@ -309,6 +376,21 @@ using SInt64 = SignedInteger<int64_t>;
 
 using Float32 = Float<float>;
 using Float64 = Float<double>;
+
+template<>
+Float<float> Float<float>::Sqrt() const { return Float<float>(sqrtf(m_value)); }
+
+template<>
+Float<double> Float<double>::Sqrt() const { return Float<double>(sqrt(m_value)); }
+
+template<>
+Float<float> Float<float>::Pow(Float<float> power) const { return Float<float>(powf(m_value, power.m_value)); }
+
+template<>
+Float<double> Float<double>::Pow(Float<double> power) const { return Float<double>(pow(m_value, power.m_value)); }
+
+Float<float>  operator%(Float<float>  left, Float<float>  right) { return fmodf(left.m_value, right.m_value); }
+Float<double> operator%(Float<double> left, Float<double> right) { return fmod (left.m_value, right.m_value); }
 
 //class UInt8
 //{
