@@ -87,15 +87,25 @@ private:
 public:
 	NullableRef() : m_allocation(nullptr) {}
 
+	NullableRef(std::nullptr_t) : NullableRef() {}
+
 	NullableRef(const SharedRef<T>& other) : m_allocation(other.m_allocation) { m_allocation->AddRef(); }
 
-	~NullableRef() 
+	~NullableRef()
 	{
 		if(m_allocation)
 			m_allocation->RemRef();
 	}
 
 	operator Boolean() const { return m_allocation; }
+
+	explicit operator SharedRef<T>() const 
+	{
+		if(!m_allocation)
+			NullReferenceException().Throw();
+
+		return SharedRef<T>(m_allocation); 
+	}
 
 	NullableRef<T>& operator=(const NullableRef<T>& other)
 	{
@@ -140,3 +150,4 @@ public:
 		return ((Allocation<T>*)m_allocation)->GetValue(); 
 	}
 };
+

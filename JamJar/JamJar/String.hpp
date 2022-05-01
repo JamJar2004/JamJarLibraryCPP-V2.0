@@ -19,6 +19,13 @@ public:
 	String ToString() const;
 };
 
+
+template<typename T>
+concept Printable = requires(T obj)
+{
+	{ obj.ToString() } -> SameAs<String>;
+};
+
 class String
 {
 private:
@@ -70,9 +77,3 @@ public:
 String Boolean::ToString() const { return m_value ? "True" : "False"; }
 
 String Character::ToString() const { return &m_value; }
-
-template<typename T>
-concept Printable = requires(T obj)
-{
-	{ obj.ToString() } -> SameAs<String>;
-};

@@ -18,6 +18,8 @@ public:
 	static const UnsignedInteger<T> Minimum;
 	static const UnsignedInteger<T> Maximum;
 
+	static const UnsignedInteger<T> Zero;
+	
 	UnsignedInteger()                                : m_value(0)             {}
 	UnsignedInteger(const UnsignedInteger<T>& other) : m_value(other.m_value) {}
 
@@ -102,8 +104,13 @@ public:
 		return result;
 	}
 
-	UnsignedInteger<T> ToRadians() const requires GreaterSize<T, unsigned char> { return UnsignedInteger<T>((*this) * (Float32::PI / 180)); }
-	UnsignedInteger<T> ToDegrees() const requires GreaterSize<T, unsigned char> { return UnsignedInteger<T>((*this) * (180 / Float32::PI)); }
+	UnsignedInteger<T> ToRadians() const requires GreaterSize<T, unsigned char>; //{ return UnsignedInteger<T>((*this) * (Float32::PI / 180)); }
+	UnsignedInteger<T> ToDegrees() const requires GreaterSize<T, unsigned char>; //{ return UnsignedInteger<T>((*this) * (180 / Float32::PI)); }
+
+	UnsignedInteger<T> Sqrt() const { return UnsignedInteger<T>(sqrtf(m_value)); }
+
+	template<std::floating_point T2>
+	UnsignedInteger<T> Pow(Float<T2> power) const { return UnsignedInteger<T>(powf(m_value, power.ToRawValue())); }
 };
 
 template<std::unsigned_integral T>
@@ -112,6 +119,8 @@ const UnsignedInteger<T> UnsignedInteger<T>::Minimum(0);
 template<std::unsigned_integral T>
 const UnsignedInteger<T> UnsignedInteger<T>::Maximum((1ULL << (sizeof(T) * 8ULL)) - 1ULL);
 
+template<std::unsigned_integral T>
+const UnsignedInteger<T> UnsignedInteger<T>::Zero(0);
 
 template<std::signed_integral T>
 class SignedInteger
@@ -121,6 +130,8 @@ private:
 public:
 	static const SignedInteger<T> Minimum;
 	static const SignedInteger<T> Maximum;
+
+	static const SignedInteger<T> Zero;
 
 	SignedInteger()                              : m_value(0)             {}
 	SignedInteger(const SignedInteger<T>& other) : m_value(other.m_value) {}
@@ -219,8 +230,13 @@ public:
 		return m_value;
 	}
 
-	SignedInteger<T> ToRadians() const requires GreaterSize<T, char> { return SignedInteger<T>((*this) * (Float32::PI / 180)); }
-	SignedInteger<T> ToDegrees() const requires GreaterSize<T, char> { return SignedInteger<T>((*this) * (180 / Float32::PI)); }
+	SignedInteger<T> ToRadians() const requires GreaterSize<T, char>; //{ return SignedInteger<T>((*this) * (Float32::PI / 180)); }
+	SignedInteger<T> ToDegrees() const requires GreaterSize<T, char>; //{ return SignedInteger<T>((*this) * (180 / Float32::PI)); }
+
+	SignedInteger<T> Sqrt() const { return SignedInteger<T>(sqrtf(m_value)); }
+
+	template<std::floating_point T2>
+	SignedInteger<T> Pow(Float<T2> power) const { return SignedInteger<T>(powf(m_value, power.ToRawValue())); }
 };
 
 template<std::signed_integral T>
@@ -228,6 +244,9 @@ const SignedInteger<T> SignedInteger<T>::Minimum(1LL << (sizeof(T) * 8ULL - 1LL)
 
 template<std::signed_integral T>
 const SignedInteger<T> SignedInteger<T>::Maximum((1LL << (sizeof(T) * 8ULL - 1LL)) - 1LL);
+
+template<std::signed_integral T>
+const SignedInteger<T> SignedInteger<T>::Zero(0);
 
 template<std::floating_point T>
 class Float
@@ -237,6 +256,8 @@ private:
 public:
 	static const Float<T> Minimum;
 	static const Float<T> Maximum;
+
+	static const Float<T> Zero;
 
 	static const Float<T> Epsilon;
 	static const Float<T> PositiveInfinity;
@@ -330,23 +351,23 @@ public:
 	Float<T> ToRadians() const { return m_value * (PI / 180); }
 	Float<T> ToDegrees() const { return m_value * (180 / PI); }
 	
-	Float<T> Sin(Float<T> angleRadians);
-	Float<T> Cos(Float<T> angleRadians);
-	Float<T> Tan(Float<T> angleRadians);
+	Float<T> Sin();
+	Float<T> Cos();
+	Float<T> Tan();
 
-	Float<T> SinH(Float<T> angleRadians);
-	Float<T> CosH(Float<T> angleRadians);
-	Float<T> TanH(Float<T> angleRadians);
+	Float<T> SinH();
+	Float<T> CosH();
+	Float<T> TanH();
 
-	Float<T> ASin(Float<T> angleRadians);
-	Float<T> ACos(Float<T> angleRadians);
-	Float<T> ATan(Float<T> angleRadians);
+	Float<T> ASin();
+	Float<T> ACos();
+	Float<T> ATan();
 
-	Float<T> ASinH(Float<T> angleRadians);
-	Float<T> ACosH(Float<T> angleRadians);
-	Float<T> ATanH(Float<T> angleRadians);
+	Float<T> ASinH();
+	Float<T> ACosH();
+	Float<T> ATanH();
 
-	Float<T> ATan2(Float<T> y, Float<T> x);
+	Float<T> ATan2(Float<T> x);
 };
 
 template<>
@@ -354,6 +375,9 @@ const Float<float> Float<float>::Minimum(-FLT_MAX);
 
 template<>
 const Float<float> Float<float>::Maximum(+FLT_MAX);
+
+template<>
+const Float<float> Float<float>::Zero(0.0f);
 
 template<>
 const Float<float> Float<float>::Epsilon(+FLT_MIN);
@@ -366,6 +390,9 @@ const Float<double> Float<double>::Maximum(+DBL_MAX);
 
 template<>
 const Float<double> Float<double>::Epsilon(+DBL_MIN);
+
+template<>
+const Float<double> Float<double>::Zero(0.0);
 
 
 template<std::floating_point T>
@@ -395,6 +422,18 @@ using SInt64 = SignedInteger<int64_t>;
 using Float32 = Float<float>;
 using Float64 = Float<double>;
 
+template<std::unsigned_integral T>
+UnsignedInteger<T> UnsignedInteger<T>::ToRadians() const requires GreaterSize<T, unsigned char> { return UnsignedInteger<T>((*this) * (Float32::PI / 180)); }
+
+template<std::unsigned_integral T>
+UnsignedInteger<T> UnsignedInteger<T>::ToDegrees() const requires GreaterSize<T, unsigned char> { return UnsignedInteger<T>((*this) * (180 / Float32::PI)); }
+
+template<std::signed_integral T>
+SignedInteger<T> SignedInteger<T>::ToRadians() const requires GreaterSize<T, char> { return SignedInteger<T>((*this) * (Float32::PI / 180)); }
+
+template<std::signed_integral T>
+SignedInteger<T> SignedInteger<T>::ToDegrees() const requires GreaterSize<T, char> { return SignedInteger<T>((*this) * (180 / Float32::PI)); }
+
 
 template<>
 Float<float> Float<float>::Sqrt() const { return Float<float>(sqrtf(m_value)); }
@@ -403,35 +442,35 @@ template<>
 Float<float> Float<float>::Pow(Float<float> power) const { return Float<float>(powf(m_value, power.m_value)); }
 
 template<>
-Float<float> Float<float>::Sin(Float<float> angleRadians) { return Float<float>(sinf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::Sin() { return Float<float>(sinf(m_value)); }
 template<>
-Float<float> Float<float>::Cos(Float<float> angleRadians) { return Float<float>(cosf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::Cos() { return Float<float>(cosf(m_value)); }
 template<>
-Float<float> Float<float>::Tan(Float<float> angleRadians) { return Float<float>(tanf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::Tan() { return Float<float>(tanf(m_value)); }
 
 template<>
-Float<float> Float<float>::SinH(Float<float> angleRadians) { return Float<float>(sinhf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::SinH() { return Float<float>(sinhf(m_value)); }
 template<>
-Float<float> Float<float>::CosH(Float<float> angleRadians) { return Float<float>(coshf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::CosH() { return Float<float>(coshf(m_value)); }
 template<>
-Float<float> Float<float>::TanH(Float<float> angleRadians) { return Float<float>(tanhf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::TanH() { return Float<float>(tanhf(m_value)); }
 
 template<>
-Float<float> Float<float>::ASin(Float<float> angleRadians) { return Float<float>(asinf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::ASin() { return Float<float>(asinf(m_value)); }
 template<>
-Float<float> Float<float>::ACos(Float<float> angleRadians) { return Float<float>(acosf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::ACos() { return Float<float>(acosf(m_value)); }
 template<>
-Float<float> Float<float>::ATan(Float<float> angleRadians) { return Float<float>(atanf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::ATan() { return Float<float>(atanf(m_value)); }
 
 template<>
-Float<float> Float<float>::ASinH(Float<float> angleRadians) { return Float<float>(asinhf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::ASinH() { return Float<float>(asinhf(m_value)); }
 template<>
-Float<float> Float<float>::ACosH(Float<float> angleRadians) { return Float<float>(acoshf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::ACosH() { return Float<float>(acoshf(m_value)); }
 template<>
-Float<float> Float<float>::ATanH(Float<float> angleRadians) { return Float<float>(atanhf(angleRadians.ToRawValue())); }
+Float<float> Float<float>::ATanH() { return Float<float>(atanhf(m_value)); }
 
 template<>
-Float<float> Float<float>::ATan2(Float<float> y, Float<float> x) { return Float<float>(atan2f(y.ToRawValue(), x.ToRawValue())); }
+Float<float> Float<float>::ATan2(Float<float> x) { return Float<float>(atan2f(m_value, x.ToRawValue())); }
 
 template<>
 Float<double> Float<double>::Sqrt() const { return Float<double>(sqrt(m_value)); }
@@ -440,36 +479,35 @@ template<>
 Float<double> Float<double>::Pow(Float<double> power) const { return Float<double>(pow(m_value, power.m_value)); }
 
 template<>
-Float<double> Float<double>::Sin(Float<double> angleRadians) { return Float<double>(sin(angleRadians.ToRawValue())); }
+Float<double> Float<double>::Sin() { return Float<double>(sin(m_value)); }
 template<>
-Float<double> Float<double>::Cos(Float<double> angleRadians) { return Float<double>(cos(angleRadians.ToRawValue())); }
+Float<double> Float<double>::Cos() { return Float<double>(cos(m_value)); }
 template<>
-Float<double> Float<double>::Tan(Float<double> angleRadians) { return Float<double>(tan(angleRadians.ToRawValue())); }
+Float<double> Float<double>::Tan() { return Float<double>(tan(m_value)); }
 
 template<>
-Float<double> Float<double>::SinH(Float<double> angleRadians) { return Float<double>(sinh(angleRadians.ToRawValue())); }
+Float<double> Float<double>::SinH() { return Float<double>(sinh(m_value)); }
 template<>
-Float<double> Float<double>::CosH(Float<double> angleRadians) { return Float<double>(cosh(angleRadians.ToRawValue())); }
+Float<double> Float<double>::CosH() { return Float<double>(cosh(m_value)); }
 template<>
-Float<double> Float<double>::TanH(Float<double> angleRadians) { return Float<double>(tanh(angleRadians.ToRawValue())); }
+Float<double> Float<double>::TanH() { return Float<double>(tanh(m_value)); }
 
 template<>
-Float<double> Float<double>::ASin(Float<double> angleRadians) { return Float<double>(asin(angleRadians.ToRawValue())); }
+Float<double> Float<double>::ASin() { return Float<double>(asin(m_value)); }
 template<>
-Float<double> Float<double>::ACos(Float<double> angleRadians) { return Float<double>(acos(angleRadians.ToRawValue())); }
+Float<double> Float<double>::ACos() { return Float<double>(acos(m_value)); }
 template<>
-Float<double> Float<double>::ATan(Float<double> angleRadians) { return Float<double>(atan(angleRadians.ToRawValue())); }
+Float<double> Float<double>::ATan() { return Float<double>(atan(m_value)); }
 
 template<>
-Float<double> Float<double>::ASinH(Float<double> angleRadians) { return Float<double>(asinh(angleRadians.ToRawValue())); }
+Float<double> Float<double>::ASinH() { return Float<double>(asinh(m_value)); }
 template<>
-Float<double> Float<double>::ACosH(Float<double> angleRadians) { return Float<double>(acosh(angleRadians.ToRawValue())); }
+Float<double> Float<double>::ACosH() { return Float<double>(acosh(m_value)); }
 template<>
-Float<double> Float<double>::ATanH(Float<double> angleRadians) { return Float<double>(atanh(angleRadians.ToRawValue())); }
+Float<double> Float<double>::ATanH() { return Float<double>(atanh(m_value)); }
 
 template<>
-Float<double> Float<double>::ATan2(Float<double> y, Float<double> x) { return Float<double>(atan2(y.ToRawValue(), x.ToRawValue())); }
-
+Float<double> Float<double>::ATan2(Float<double> x) { return Float<double>(atan2(m_value, x.ToRawValue())); }
 
 Float<float>  operator%(Float<float>  left, Float<float>  right) { return fmodf(left.m_value, right.m_value); }
 Float<double> operator%(Float<double> left, Float<double> right) { return fmod (left.m_value, right.m_value); }

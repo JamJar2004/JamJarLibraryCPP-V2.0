@@ -114,29 +114,71 @@ template<typename T>
 concept Pointer = std::is_pointer_v<T>;
 
 template<typename T>
-concept Number = Addable<T> && Subtractable<T> && Multiplicable<T> && Divisible<T> && Modable<T> && Incrementable<T> && Decrementable<T> && Comparable<T> && LeftShiftable<T> && RightShiftable<T> && requires
+concept Number = Addable<T> && Subtractable<T> && Multiplicable<T> && Divisible<T> && Modable<T> && Incrementable<T> && Decrementable<T> && Comparable<T> && 
+requires
 {
 	{ T::Minimum };
 	{ T::Maximum };
+
+	{ T::Zero };
+} && 
+requires(T obj)
+{
+	{ obj.Sqrt() } -> SameAs<T>;
+
+	{ obj.ToRadians() } -> SameAs<T>;
+	{ obj.ToDegrees() } -> SameAs<T>;
+};
+
+template<typename T>
+concept SignedNumber = Number<T> && Signed<T> && requires(T obj)
+{
+	{ obj.Abs() } -> SameAs<T>;
 };
 
 template<typename T>
 concept Integral = Number<T> && BitwiseAnd<T> && BitwiseOr<T> && BitwiseXor<T> && BitwiseNot<T> && LeftShiftable<T> && RightShiftable<T>;
 
 template<typename T>
-concept UnsignedIntegral = Integral<T> && !Signed<T>;
+concept UnsignedIntegral = Integral<T> && !SignedNumber<T>;
 
 template<typename T>
-concept SignedIntegral = Integral<T> && Signed<T>;
+concept SignedIntegral = Integral<T> && SignedNumber<T>;
 
 template<typename T>
-concept FloatingPoint = Number<T> && Signed<T> && requires(T obj)
+concept FloatingPoint = SignedNumber<T> && requires
+{
+	{ T::Epsilon		  };
+	{ T::PositiveInfinity };
+	{ T::NegativeInfinity };
+	{ T::NaN			  };
+
+	{ T::PI				  };
+} &&
+requires(T obj)
 {
 	{ obj.IsInfinity()         } -> ConvertibleTo<Boolean>;
 	{ obj.IsPositiveInfinity() } -> ConvertibleTo<Boolean>;
 	{ obj.IsNegativeInfinity() } -> ConvertibleTo<Boolean>;
 	{ obj.IsNaN()              } -> ConvertibleTo<Boolean>;
-};
 
-template<typename T>
-concept IntegralConvertibleTo = Integral<T>;
+	{ obj.Sin() } -> SameAs<T>;
+	{ obj.Cos() } -> SameAs<T>;
+	{ obj.Tan() } -> SameAs<T>;
+
+	{ obj.ASin() } -> SameAs<T>;
+	{ obj.ACos() } -> SameAs<T>;
+	{ obj.ATan() } -> SameAs<T>;
+
+	{ obj.SinH() } -> SameAs<T>;
+	{ obj.CosH() } -> SameAs<T>;
+	{ obj.TanH() } -> SameAs<T>;
+
+	{ obj.ASinH() } -> SameAs<T>;
+	{ obj.ACosH() } -> SameAs<T>;
+	{ obj.ATanH() } -> SameAs<T>;
+} &&
+requires(T obj, T arg)
+{
+	{ obj.ATan2(arg) } -> SameAs<T>;
+};
