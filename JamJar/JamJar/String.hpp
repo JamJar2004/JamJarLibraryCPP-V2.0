@@ -63,6 +63,8 @@ public:
 	String TrimEnd()   const;
 	String Trim()      const;
 
+	friend String operator+(const String& right, const String& left);
+
 	template<Printable T>
 	friend String operator+(const String& left, const T& right);
 	template<Printable T>

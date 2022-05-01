@@ -2,7 +2,6 @@
 
 #include "../Data/Collections/Array.hpp"
 
-
 template<Number T, size_t D>
 class Vector
 {

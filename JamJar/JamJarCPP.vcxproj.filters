@@ -26,10 +26,13 @@
     <ClInclude Include="JamJar\Data\Collections\Array.hpp">
       <Filter>Data\Collections</Filter>
     </ClInclude>
+    <ClInclude Include="JamJar\Delegate.hpp" />
+    <ClInclude Include="JamJar\Dynamic.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
+    <ClCompile Include="JamJar\Dynamic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
