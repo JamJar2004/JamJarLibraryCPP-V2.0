@@ -1,13 +1,7 @@
-#include <JamJar/Numerics.hpp>
+#include <JamJar/Core.hpp>
 
-#include <JamJar/Data/Memory/Refs.hpp>
-
-#include <iostream>
-
-
-int main()
+ExitStatus Start()
 {
-	
-
-	return 0;
+	Console::PrintLine("Hello World!");
+	return ExitStatus::OK;
 }

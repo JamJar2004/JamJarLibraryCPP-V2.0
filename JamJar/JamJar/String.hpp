@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Numerics.hpp"
+#include "Data/Memory/Span.hpp"
 
 class String;
 
 class Character
 {
 private:
-	const wchar_t m_value;
+	wchar_t m_value;
 public:
 	Character(wchar_t value = '\0') : m_value(value) {}
 
@@ -29,22 +30,57 @@ concept Printable = requires(T obj)
 class String
 {
 private:
-	//const Span<Character> m_chars;
+	const Span<Character> m_chars;
+
+	static SharedRef<HeapArray<Character>> FromCString(const char* cString)
+	{
+		SharedRef<HeapArray<Character>> result = New<HeapArray<Character>>(strlen(cString));
+		for(Size i = 0U; i < result->Count(); i++)
+			(*result)[i] = cString[i.ToRawValue()];
+
+		return result;
+	}
+
+	static SharedRef<HeapArray<Character>> FromWCString(const wchar_t* wcString)
+	{
+		SharedRef<HeapArray<Character>> result = New<HeapArray<Character>>(wcslen(wcString));
+		for(Size i = 0U; i < result->Count(); i++)
+			(*result)[i] = wcString[i.ToRawValue()];
+
+		return result;
+	}
+
+	static SharedRef<HeapArray<Character>> FromChar(Character character, Size length)
+	{
+		SharedRef<HeapArray<Character>> result = New<HeapArray<Character>>(length);
+		result->Fill(character);
+		return result;
+	}
+	
+	static SharedRef<HeapArray<Character>> FromCollection(const ICollection<Character>& items)
+	{
+		SharedRef<HeapArray<Character>> result = New<HeapArray<Character>>(items.Count());
+		Size i = 0U;
+		for(Character c : items)
+			(*result)[i++] = c;
+
+		return result;
+	}
 public:
 	String(const char*     cString);
 	String(const wchar_t* wcString);
 
 	String(Character character, Size length);
 	
-	//String(const ICollection<Character>& chars);
+	String(const ICollection<Character>& chars);
 
-	//String(const IArray<String> chars);
+	String(const Span<Character>& chars);
 
 	String(const String& other);
 
 	Size Length() const;
 
-	//SharedRef<IArray<Character>> ToCharacterArray() const;
+	SharedRef<IArray<Character>> ToCharacterArray() const;
 
 	SInt64     IndexOf(const String& string, Size offset = 0U) const;
 	SInt64 LastIndexOf(const String& string, Size offset = 0U) const;
@@ -52,7 +88,7 @@ public:
 	String SubString(Size index)              const;
 	String SubString(Size index, Size length) const;
 
-	//SharedRef<IArray<String>> Split(const String& splitter) const;
+	SharedRef<IArray<String>> Split(const String& splitter) const;
 
 	Boolean Contains(const String& string) const;
 
@@ -63,12 +99,12 @@ public:
 	String TrimEnd()   const;
 	String Trim()      const;
 
-	friend String operator+(const String& right, const String& left);
+	friend String operator+(const String& left, const String& right);
 
 	template<Printable T>
 	friend String operator+(const String& left, const T& right);
 	template<Printable T>
-	friend String operator+(const T& right, const String& left);
+	friend String operator+(const T& left, const String& right);
 
 	friend Boolean operator==(const String& left, const String& right);
 	friend Boolean operator!=(const String& left, const String& right);
@@ -79,3 +115,9 @@ public:
 String Boolean::ToString() const { return m_value ? "True" : "False"; }
 
 String Character::ToString() const { return &m_value; }
+
+template<Printable T>
+inline String operator+(const String& left, const T& right) { return left + right.ToString(); }
+
+template<Printable T>
+inline String operator+(const T& left, const String& right) { return left.ToString() + right; }

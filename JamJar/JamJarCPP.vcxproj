@@ -24,19 +24,20 @@
     <ClInclude Include="JamJar\Console.hpp" />
     <ClInclude Include="JamJar\Core.hpp" />
     <ClInclude Include="JamJar\Data\Collections\Array.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\ICollection.hpp" />
     <ClInclude Include="JamJar\Data\Collections\IIterator.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\IMap.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Buffer.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Refs.hpp" />
-    <ClInclude Include="JamJar\Data\Reflection.hpp" />
+    <ClInclude Include="JamJar\Data\Memory\Span.hpp" />
     <ClInclude Include="JamJar\Delegate.hpp" />
-    <ClInclude Include="JamJar\Dynamic.hpp" />
     <ClInclude Include="JamJar\Exception.hpp" />
     <ClInclude Include="JamJar\Math\Vector.hpp" />
     <ClInclude Include="JamJar\Numerics.hpp" />
     <ClInclude Include="JamJar\String.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="JamJar\Dynamic.cpp" />
+    <ClCompile Include="JamJar\Core.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
     <ClCompile Include="JamJar\String.cpp" />
   </ItemGroup>

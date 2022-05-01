@@ -10,4 +10,8 @@ public:
 
 	template<Printable T>
 	static void PrintLine(const T& value);
+
+	static void Print(const String& value);
+
+	static void PrintLine(const String& value);
 };

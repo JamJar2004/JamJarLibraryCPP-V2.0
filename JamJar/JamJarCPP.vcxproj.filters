@@ -20,19 +20,24 @@
     <ClInclude Include="JamJar\Math\Vector.hpp">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="JamJar\Data\Reflection.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
     <ClInclude Include="JamJar\Data\Collections\Array.hpp">
       <Filter>Data\Collections</Filter>
     </ClInclude>
     <ClInclude Include="JamJar\Delegate.hpp" />
-    <ClInclude Include="JamJar\Dynamic.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\ICollection.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\IMap.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Memory\Span.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
-    <ClCompile Include="JamJar\Dynamic.cpp" />
+    <ClCompile Include="JamJar\Core.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
