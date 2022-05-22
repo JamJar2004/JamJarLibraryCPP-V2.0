@@ -11,6 +11,12 @@ template<typename Derived, typename Base>
 concept Inherits = std::is_base_of_v<Base, Derived>;
 
 template<typename T>
+concept Abstract = std::is_abstract_v<T>;
+
+template<typename T>
+concept Defined = !std::is_abstract_v<T>;
+
+template<typename T>
 concept DefaultConstructible = std::is_default_constructible_v<T>;
 
 template<typename T>
@@ -110,6 +116,12 @@ concept Incrementable = PreIncrementable<T> && PostIncrementable<T>;
 template<typename T>
 concept Decrementable = PreDecrementable<T> && PostDecrementable<T>;
 
+template<typename T, typename I>
+concept ConstIndexable = requires(T obj, I index) { { obj[index] } -> SameAs<const T&>; };
+
+template<typename T, typename I>
+concept Indexable = ConstIndexable<T, I> && requires(T obj, I index) { { obj[index] } -> SameAs<T&>; };
+
 template<typename T>
 concept Pointer = std::is_pointer_v<T>;
 
@@ -161,6 +173,11 @@ requires(T obj)
 	{ obj.IsPositiveInfinity() } -> ConvertibleTo<Boolean>;
 	{ obj.IsNegativeInfinity() } -> ConvertibleTo<Boolean>;
 	{ obj.IsNaN()              } -> ConvertibleTo<Boolean>;
+
+	{ obj.Floor()    } -> SameAs<T>;
+	{ obj.Ceiling()  } -> SameAs<T>;
+	{ obj.Truncate() } -> SameAs<T>;
+	{ obj.Round()    } -> SameAs<T>;
 
 	{ obj.Sin() } -> SameAs<T>;
 	{ obj.Cos() } -> SameAs<T>;

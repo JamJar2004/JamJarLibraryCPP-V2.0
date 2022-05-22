@@ -2,38 +2,29 @@
 
 #include "../../Numerics.hpp"
 
-#include "../../Exception.hpp"
-
-class BaseAllocation
+template<typename T>
+class Allocation
 {
 private:
 	Size m_refCount;
+	T    m_value;
+
+	void    AddRef() { ++m_refCount;                          }
+	Boolean RemRef() { --m_refCount; return m_refCount == 0U; }
 public:
-	BaseAllocation() : m_refCount(1U) {}
-
-	void AddRef() { ++m_refCount; }
-
-	void RemRef() 
-	{
-		--m_refCount;
-		if(m_refCount == 0U)
-			delete this;
-	}
-};
-
-template<typename T>
-class Allocation : public BaseAllocation
-{
-private:
-	T m_value;
-public:
-	Allocation(const T& value) : m_value(value) {}
+	Allocation(const T& value) requires CopyConstructible<T> : m_refCount(0U), m_value(value) {}
 
 	template<typename... Args>
-	Allocation(Args&&... args) requires ConstructibleFrom<T, Args...> : m_value(args...) {}
+	Allocation(Args&&... args) requires ConstructibleFrom<T, Args...> : m_refCount(0U), m_value(args...) {}
 
 	      T& GetValue()       { return m_value; }
 	const T& GetValue() const { return m_value; }
+
+	      T* AsPointer()       { return &m_value; }
+	const T* AsPointer() const { return &m_value; }
+
+	friend class SharedRef<T>;
+	friend class NullableRef<T>;
 };
 
 template<typename T>
@@ -43,111 +34,148 @@ template<typename T>
 class SharedRef
 {
 private:
-	BaseAllocation* m_allocation;
+	Allocation<T>* m_allocation;
 
-	SharedRef(BaseAllocation* allocation) : m_allocation(allocation) { m_allocation->AddRef(); }
-public:
-	template<typename... Args>
-	SharedRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_allocation(new Allocation<T>(args...)) {}
-
-	SharedRef(const SharedRef<T>& other) : SharedRef(other.m_allocation) {}
-
-	template<Inherits<T> T2>
-	SharedRef(const SharedRef<T2>& other) : SharedRef(other.m_allocation) {}
-
-	~SharedRef() { m_allocation->RemRef(); }
-
-	template<Inherits<T> T2>
-	explicit operator SharedRef<T2>() const { return SharedRef<T2>(m_allocation); }
-
-	SharedRef<T>& operator=(const SharedRef<T>& other)
+	void AddRef() { m_allocation->AddRef(); }
+	
+	void RemRef()
 	{
-		m_allocation->RemRef();
-		m_allocation = other.m_allocation;
-		m_allocation->AddRef();
+		if(m_allocation->RemRef())
+			delete m_allocation;
 	}
 
-          T& operator*()       requires !SameAs<T, void> { return ((Allocation<T>*)m_allocation)->GetValue(); }
-	const T& operator*() const requires !SameAs<T, void> { return ((Allocation<T>*)m_allocation)->GetValue(); }
+	SharedRef(Allocation<T>* allocation) : m_allocation(allocation) { AddRef(); }
+public:
+	SharedRef(const T& value) requires CopyConstructible<T> : SharedRef(new Allocation<T>()) {}
 
-	      T* operator->()       { return ((Allocation<T>*)m_allocation)->GetValue(); }
-	const T* operator->() const { return ((Allocation<T>*)m_allocation)->GetValue(); }
+	template<typename... Args>
+	SharedRef(Args&&... args) requires ConstructibleFrom<T, Args...> : SharedRef(new Allocation<T>(args...)) {}
+
+	template<Inherits<T> T2>
+	SharedRef(const SharedRef<T2>& other) : SharedRef((Allocation<T>*)other.m_allocation) {}
+
+	~SharedRef() { RemRef(); }
+
+	template<Inherits<T> T2>
+	explicit operator SharedRef<T2>() const { return SharedRef<T2>((Allocation<T2>*)m_allocation); }
+
+	SharedRef<T>& operator=(const SharedRef<T>& other) 
+	{
+		RemRef();
+		m_allocation = other.m_allocation;
+		AddRef();
+	}
+
+		  T& operator*()       { return m_allocation->GetValue(); }
+	const T& operator*() const { return m_allocation->GetValue(); }
+
+	      T* operator->()       { return m_allocation->AsPointer(); }
+	const T* operator->() const { return m_allocation->AsPointer(); }
+
+	template<typename T2>
+	friend Boolean operator==(const SharedRef<T>& left, const SharedRef<T2>& right) { return left.m_allocation == right.m_allocation; }
+
+	template<typename T2>
+	friend Boolean operator!=(const SharedRef<T>& left, const SharedRef<T2>& right) { return left.m_allocation != right.m_allocation; }
 
 	friend class NullableRef<T>;
 };
 
 template<typename T, typename... Args>
-SharedRef<T> New(Args&&... args) requires ConstructibleFrom<T, Args...> { return SharedRef<T>(args...); }
+SharedRef<T> New(Args&&... args) requires ConstructibleFrom<T> { return SharedRef<T>(args...); }
 
 template<typename T>
 class NullableRef
 {
 private:
-	BaseAllocation* m_allocation;
-public:
-	NullableRef() : m_allocation(nullptr) {}
+	Allocation<T>* m_allocation;
 
-	NullableRef(std::nullptr_t) : NullableRef() {}
+	void AddRef()
+	{ 
+		if(m_allocation)
+			m_allocation->AddRef(); 
+	}
+
+	void RemRef()
+	{
+		if(m_allocation)
+			if(m_allocation->RemRef())
+				delete m_allocation;
+	}
+public:
+	NullableRef(std::nullptr_t) : m_allocation(nullptr) {}
+
+	NullableRef(const T& value) requires CopyConstructible<T> : m_allocation(new Allocation<T>()) { m_allocation->AddRef(); }
+
+	template<typename... Args>
+	NullableRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_allocation(new Allocation<T>(args...)) { m_allocation->AddRef(); }
 
 	NullableRef(const SharedRef<T>& other) : m_allocation(other.m_allocation) { m_allocation->AddRef(); }
 
-	~NullableRef()
-	{
-		if(m_allocation)
-			m_allocation->RemRef();
-	}
+	NullableRef(const NullableRef<T>& other) : m_allocation(other.m_allocation) { AddRef(); }
 
-	operator Boolean() const { return m_allocation; }
+	~NullableRef() { m_allocation->RemRef(); }
 
-	explicit operator SharedRef<T>() const 
-	{
+	explicit operator SharedRef<T>() const;
+	/*{
 		if(!m_allocation)
 			NullReferenceException().Throw();
 
 		return SharedRef<T>(m_allocation); 
+	}*/
+
+	NullableRef<T>& operator=(const SharedRef<T>& other)
+	{
+		RemRef();
+		m_allocation = other.m_allocation;
+		m_allocation->AddRef();
 	}
 
 	NullableRef<T>& operator=(const NullableRef<T>& other)
 	{
-		if(m_allocation)
-			m_allocation->RemRef();
-
+		RemRef();
 		m_allocation = other.m_allocation;
-		
-		if(m_allocation)
-			m_allocation->AddRef();
+		AddRef();
 	}
 
-	T& operator*() requires !SameAs<T, void> 
-	{ 
-		if(!m_allocation)
-			NullReferenceException().Throw();
+	Boolean IsNull() { return !m_allocation; }
 
-		return ((Allocation<T>*)m_allocation)->GetValue(); 
-	}
+	T& operator*();
+	//{
+	//	if(!m_allocation)
+	//		NullReferenceException().Throw();
 
-	const T& operator*() const requires !SameAs<T, void> 
-	{ 
-		if(!m_allocation)
-			NullReferenceException().Throw();
+	//	return m_allocation->GetValue();
+	//}
 
-		return ((Allocation<T>*)m_allocation)->GetValue();
-	}
+	const T& operator*() const;
+	//{
+	//	if(!m_allocation)
+	//		NullReferenceException().Throw();
 
-	T* operator->()
-	{
-		if(!m_allocation)
-			NullReferenceException().Throw();
+	//	return m_allocation->GetValue();
+	//}
 
-		return ((Allocation<T>*)m_allocation)->GetValue();
-	}
+	T* operator->();
+	//{
+	//	if(!m_allocation)
+	//		NullReferenceException().Throw();
 
-	const T* operator->() const
-	{ 
-		if(!m_allocation)
-			NullReferenceException().Throw();
+	//	return m_allocation->AsPointer();
+	//}
 
-		return ((Allocation<T>*)m_allocation)->GetValue(); 
-	}
+	const T* operator->() const;
+	//{ 
+	//	if(!m_allocation)
+	//		NullReferenceException().Throw();
+
+	//	return m_allocation->AsPointer();
+	//}
+
+	template<typename T2>
+	friend Boolean operator==(const NullableRef<T>& left, const NullableRef<T2>& right) { return left.m_allocation == right.m_allocation; }
+
+	template<typename T2>
+	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T2>& right) { return left.m_allocation != right.m_allocation; }
 };
 

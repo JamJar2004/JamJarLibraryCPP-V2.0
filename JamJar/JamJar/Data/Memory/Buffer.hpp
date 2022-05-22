@@ -1,70 +1,61 @@
 #pragma once
 
-#include "../../Numerics.hpp"
+#include "Refs.hpp"
 
 template<typename T>
-class Buffer
+class ArrayRef;
+
+template<typename T>
+class BufferRef
 {
 private:
-	T*   m_address;
-	Size m_capacity;
-	Size m_count;
+	T*       m_buffer;
+	Size     m_count;
+	Size*    m_refCount;
+	Boolean* m_isInitialized;
+
+	void AddRef() { ++(*m_refCount); }
+
+	Boolean RemRef() 
+	{
+		--(*m_refCount); 
+		return *m_refCount == 0U;
+	}
+
+	void Delete()
+	{
+		free(m_buffer);
+		delete m_refCount;
+		delete m_isInitialized;
+	}
 public:
-	Buffer(Size capacity) : m_address(malloc(sizeof(T) * capacity.ToRawValue())) {}
+	BufferRef(Size count) : m_buffer((T*)malloc(sizeof(T) * count.ToRawValue())), m_count(count), m_refCount(new Size(1U)), m_isInitialized(new Boolean(false)) {}
 
-	~Buffer() 
+	Size Count() const { return m_count; }
+
+	BufferRef(const BufferRef<T>& other) : m_buffer(other.m_buffer), m_count(other.m_count), m_refCount(other.m_refCount), m_isInitialized(other.m_isInitialized)
 	{
-		Clear();
-		free(m_address);
+		AddRef();
 	}
 
-	      T& operator[](Size index)       { return m_address[index.ToRawValue()]; }
-	const T& operator[](Size index) const { return m_address[index.ToRawValue()]; }
-
-	template<typename... Args>
-	void Push(Args&&... args) requires ConstructibleFrom<T, Args...> 
+	~BufferRef()
 	{
-		new(m_address + m_count.ToRawValue()) T(args...);
-		++m_count;
+		if(RemRef())
+			Delete();
 	}
 
-	void Push(const T& value) requires CopyConstructible<T>
+	BufferRef<T>& operator=(const BufferRef<T>& other) 
 	{
-		new(m_address + m_count.ToRawValue()) T(value);
-		++m_count;
+		if(RemRef())
+			Delete();
+
+		m_buffer        = other.m_buffer;
+		m_count         = other.m_count;
+		m_refCount      = other.m_refCount;
+		m_isInitialized = other.m_isInitialized;
+
+		AddRef();
 	}
 
-	void PushRange(const T& value, Size count) requires CopyConstructible<T>
-	{
-		for(Size i = m_count; i < m_count + count; i++)
-			new(m_address + i.ToRawValue()) T(value);
-
-		m_count += count;
-	}
-
-	void Pop(Size count = 1U)
-	{
-		for(Size i = 0; i < count; i++)
-			m_address[m_count.ToRawValue() - i.ToRawValue() - 1U].~T();
-
-		m_count -= count;
-	}
-
-	void Clear()
-	{
-		for(Size i = 0; i < m_count; i++)
-			m_address[i].~T();
-
-		m_count = 0;
-	}
-
-	void Reallocate(Size newCapacity)
-	{
-		if(newCapacity < m_capacity)
-			return;
-
-		T* newAddress = malloc(sizeof(T) * newCapacity.ToRawValue());
-		memcpy(newAddress, m_address, m_count);
-		m_address = newAddress;
-	}
+	friend class ArrayRef<T>;
 };

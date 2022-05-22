@@ -351,6 +351,11 @@ public:
 	Float<T> ToRadians() const { return m_value * (PI / 180); }
 	Float<T> ToDegrees() const { return m_value * (180 / PI); }
 	
+	Float<T> Floor();
+	Float<T> Ceiling();
+	Float<T> Truncate();
+	Float<T> Round();
+
 	Float<T> Sin();
 	Float<T> Cos();
 	Float<T> Tan();
@@ -442,6 +447,15 @@ template<>
 Float<float> Float<float>::Pow(Float<float> power) const { return Float<float>(powf(m_value, power.m_value)); }
 
 template<>
+Float<float> Float<float>::Floor()    { return Float<float>(floorf(m_value)); }
+template<>
+Float<float> Float<float>::Ceiling()  { return Float<float>( ceilf(m_value)); }
+template<>
+Float<float> Float<float>::Truncate() { return Float<float>(truncf(m_value)); }
+template<>
+Float<float> Float<float>::Round()    { return Float<float>(roundf(m_value)); }
+
+template<>
 Float<float> Float<float>::Sin() { return Float<float>(sinf(m_value)); }
 template<>
 Float<float> Float<float>::Cos() { return Float<float>(cosf(m_value)); }
@@ -477,6 +491,17 @@ Float<double> Float<double>::Sqrt() const { return Float<double>(sqrt(m_value));
 
 template<>
 Float<double> Float<double>::Pow(Float<double> power) const { return Float<double>(pow(m_value, power.m_value)); }
+
+
+template<>
+Float<double> Float<double>::Floor()    { return Float<double>(floor(m_value)); }
+template<>
+Float<double> Float<double>::Ceiling()  { return Float<double>( ceil(m_value)); }
+template<>
+Float<double> Float<double>::Truncate() { return Float<double>(trunc(m_value)); }
+template<>
+Float<double> Float<double>::Round()    { return Float<double>(round(m_value)); }
+
 
 template<>
 Float<double> Float<double>::Sin() { return Float<double>(sin(m_value)); }
