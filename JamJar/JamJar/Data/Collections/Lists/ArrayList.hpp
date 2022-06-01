@@ -1,26 +1,29 @@
 #pragma once
 
-#include "../../Memory/Span.hpp"
+#include "../List.hpp"
 
 template<typename T>
-class ArrayList 
+class ArrayList : public IList<T>
 {
 private:
-	BufferSpan<T> m_buffer;
+	BufferRef<T> m_buffer;
 public:
-	ArrayList(Size initialCapacity = 4U) : m_buffer(BufferRef<T>(initialCapacity), 0U, 0U) {}
+	ArrayList(Size initialCapacity = 4U) : m_buffer(initialCapacity) {}
 
-	Size Count() const { return m_buffer.Count(); }
+	virtual Size Count() const override { return m_buffer.Count(); }
 
-	void Add   (const T& item);
-	void Insert(const T& item, Size index);
+	virtual void Add     (const T& item)               override;
+	virtual void AddRange(const ICollection<T>& items) override;
 
-	void RemoveAt   (Size index);
-	void RemoveRange(Size index, Size count);
+	virtual void Insert     (Size index, const T& item)               override;
+	virtual void InsertRange(Size index, const ICollection<T>& items) override;
 
-	void Clear();
+	virtual void RemoveAt   (Size index)             override;
+	virtual void RemoveRange(Size index, Size count) override;
 
-	Boolean Remove(const T& item) requires Equatable<T>;
+	virtual Boolean Remove(const T& item) = 0;
 
-	ArrayRef<T> ToArray() const;
+	virtual SharedRef<IList<T>> SubList(Size index, Size count) const override;
+
+	virtual ArrayRef<T> ToArray() const override;
 };

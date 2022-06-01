@@ -5,9 +5,13 @@
 
 #include <string>
 
+String Boolean::ToString() const { return m_value ? "True" : "False"; }
+
+String Character::ToString() const { return String(m_value, 1U); }
+
 ArrayRef<Character> String::FromCString(const char* cString)
 {
-	ArrayRef<Character> result = NewArray<Character>(strlen(cString));
+	ArrayRef<Character> result = ArrayRef<Character>(strlen(cString));
 	for (Size i = 0U; i < result.Count(); i++)
 		result[i] = cString[i.ToRawValue()];
 
@@ -16,7 +20,7 @@ ArrayRef<Character> String::FromCString(const char* cString)
 
 ArrayRef<Character> String::FromWCString(const wchar_t* wcString)
 {
-	ArrayRef<Character> result = NewArray<Character>(wcslen(wcString));
+	ArrayRef<Character> result = ArrayRef<Character>(wcslen(wcString));
 	for (Size i = 0U; i < result.Count(); i++)
 		result[i] = wcString[i.ToRawValue()];
 
@@ -25,7 +29,7 @@ ArrayRef<Character> String::FromWCString(const wchar_t* wcString)
 
 ArrayRef<Character> String::FromChar(Character character, Size length)
 {
-	ArrayRef<Character> result = NewArray<Character>(length);
+	ArrayRef<Character> result = ArrayRef<Character>(length);
 	result.Fill(character);
 	return result;
 }
@@ -53,6 +57,8 @@ String::String(const ArraySpan<Character>& chars) : m_chars(chars) {}
 String::String(const String& other) : m_chars(other.m_chars) {}
 
 Size String::Length() const { return m_chars.Count(); }
+
+const Character& String::operator[](Size index) const { return m_chars[index]; }
 
 ArrayRef<Character> String::ToCharacterArray() const { return m_chars.ToArray(); }
 
@@ -135,7 +141,7 @@ String String::Trim() const { return TrimStart().TrimEnd(); }
 
 String operator+(const String& left, const String& right)
 {
-	ArrayRef<Character> resultChars = NewArray<Character>(left.Length() + right.Length());
+	ArrayRef<Character> resultChars = ArrayRef<Character>(left.Length() + right.Length());
 	left.m_chars.CopyTo(resultChars, 0U, 0U, left.Length());
 	right.m_chars.CopyTo(resultChars, 0U, left.Length(), right.Length());
 	return String(ArraySpan<Character>(resultChars));

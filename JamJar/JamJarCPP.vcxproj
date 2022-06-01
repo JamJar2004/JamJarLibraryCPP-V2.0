@@ -23,11 +23,13 @@
     <ClInclude Include="JamJar\Concepts.hpp" />
     <ClInclude Include="JamJar\Console.hpp" />
     <ClInclude Include="JamJar\Core.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\Collection.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\Iterator.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\List.hpp" />
     <ClInclude Include="JamJar\Data\Collections\Lists\ArrayList.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Array.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Buffer.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Refs.hpp" />
-    <ClInclude Include="JamJar\Data\Memory\Span.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Stack.hpp" />
     <ClInclude Include="JamJar\Data\Reflection.hpp" />
     <ClInclude Include="JamJar\Delegate.hpp" />
@@ -37,11 +39,14 @@
     <ClInclude Include="JamJar\Numerics.hpp" />
     <ClInclude Include="JamJar\Rendering\Color.hpp" />
     <ClInclude Include="JamJar\String.hpp" />
+    <ClInclude Include="JamJar\Timing\Time.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JamJar\Console.cpp" />
     <ClCompile Include="JamJar\Core.cpp" />
     <ClCompile Include="JamJar\Dynamic.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
+    <ClCompile Include="JamJar\Numerics.cpp" />
     <ClCompile Include="JamJar\String.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

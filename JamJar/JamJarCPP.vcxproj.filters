@@ -19,9 +19,6 @@
       <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="JamJar\Dynamic.hpp" />
-    <ClInclude Include="JamJar\Data\Memory\Span.hpp">
-      <Filter>Data\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="JamJar\Data\Collections\Lists\ArrayList.hpp">
       <Filter>Data\Collections\Lists</Filter>
     </ClInclude>
@@ -37,12 +34,26 @@
     <ClInclude Include="JamJar\Data\Memory\Array.hpp">
       <Filter>Data\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="JamJar\Timing\Time.hpp">
+      <Filter>Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\Iterator.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\Collection.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\List.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
     <ClCompile Include="JamJar\Core.cpp" />
     <ClCompile Include="JamJar\Dynamic.cpp" />
+    <ClCompile Include="JamJar\Numerics.cpp" />
+    <ClCompile Include="JamJar\Console.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
@@ -62,6 +73,9 @@
     </Filter>
     <Filter Include="Rendering">
       <UniqueIdentifier>{6629250e-8b92-4c9a-b381-e974f517ae8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timing">
+      <UniqueIdentifier>{507239a1-3f66-4c98-bd1d-04194680d036}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

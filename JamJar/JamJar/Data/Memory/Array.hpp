@@ -1,12 +1,59 @@
 #pragma once
 
 #include "Buffer.hpp"
-#include "Refs.hpp"
+#include "../Collections/Collection.hpp"
 
 #include <iterator>
 
+template<typename T>
+class ArrayIterator : public Iterator<T>
+{
+private:
+	T* m_address;
+public:
+	ArrayIterator(T* address) : m_address(address) {}
+
+	virtual void MoveNext() override { ++m_address; }
+
+	virtual T& Current() { return *m_address; }
+
+	virtual Boolean Equals(const Iterator<T>& other) { return m_address == ((ArrayIterator<T>)other).m_address; }
+};
+
+template<typename T>
+class IArray : public ICollection<T>
+{
+public:
+	virtual       T& operator[](Size index)       = 0;
+	virtual const T& operator[](Size index) const = 0;
+};
+
+template<typename T>
+class Array : public IArray<T>
+{
+public:
+	SInt64 IndexOf(const T& item) const requires Equatable<T>
+	{
+		for(Size i = 0; i < Count(); i++)
+		{
+			if((*this)[i] == item)
+				return SInt64(i);
+		}
+
+		return -1;
+	}
+
+	Boolean Contains(const T& item) const requires Equatable<T> { return IndexOf(item) != -1; }
+
+	void Fill(const T& item) requires CopyAssignable<T>
+	{
+		for(Size i = 0U; i < m_count; i++)
+			(*this)[i] = item;
+	}
+};
+
 template<typename T, size_t C>
-class StackArray
+class StackArray : public Array<T>
 {
 private:
 	T m_elements[C];
@@ -20,110 +67,68 @@ public:
 	}
 
 	template<ConvertibleTo<T>... Args>
-	StackArray(Args&&... args) : m_elements { args... } {}
+	StackArray(Args&&... args) requires Contains<Args, C> : m_elements { args... } {}
 
-	Size Count() const { return C; }
+	virtual Size Count() const override { return C; }
 
-	      T& operator[](Size index)       { return m_elements[index]; }
-	const T& operator[](Size index) const { return m_elements[index]; }
-};
+	virtual       T& operator[](Size index)       override { return m_elements[index]; }
+	virtual const T& operator[](Size index) const override { return m_elements[index]; }
 
-enum class AllocType
-{
-	StackArray,
-	HeapArray,
-	Buffer,
+	virtual SharedRef<Iterator<T>> Start() { return ArrayIterator<T>(m_elements    ); }
+	virtual SharedRef<Iterator<T>> End()   { return ArrayIterator<T>(m_elements + C); }
 };
 
 template<typename T>
-class ArrayRef
+class ArrayRef : public Array<T>
 {
 private:
-	T*        m_array;
-	Size      m_count;
-	Size*     m_refCount;
-	AllocType m_allocType;
+	BufferRef<T> m_buffer;
+	Size*        m_refCount;
 
 	void AddRef() { ++(*m_refCount); }
 
-	Boolean RemRef()
+	void RemRef() 
 	{
 		--(*m_refCount);
-		return *m_refCount == 0U;
-	}
-
-	void Delete()
-	{
-		switch(m_allocType)
+		if(*m_refCount == 0U)
 		{
-			case AllocType::Buffer:
-				for(Size i = 0; i < m_count; i++)
-					m_array[i].~T();
-
-				break;
-			case AllocType::HeapArray:
-				delete[] m_array;
+			for(Size i = 0U; i < m_buffer.Count(); i++)
+				(m_buffer.m_address + i.ToRawValue())->~T();
 		}
 	}
 public:
-	ArrayRef(Size count) requires DefaultConstructible<T> : 
-		m_array(new T[count.ToRawValue()]), m_count(count), m_refCount(new Size(1U)), m_allocType(AllocType::HeapArray) {}
+	ArrayRef(Size count) requires DefaultConstructible<T> : ArrayRef(BufferRef(count)) {}
 
-	template<size_t C>
-	ArrayRef(const StackArray<T, C>& stackArray) : m_array(stackArray.m_elements), m_count(C), m_refCount(nullptr), m_allocType(AllocType::StackArray) {}
+	ArrayRef(Size count, const T& item) requires CopyConstructible<T> : ArrayRef(BufferRef(count), item) {}
 
-	ArrayRef(const BufferRef<T>& bufferRef) requires DefaultConstructible<T> :
-		m_array(bufferRef.m_buffer), m_count(bufferRef.m_count), m_refCount(bufferRef.m_refCount), m_allocType(AllocType::Buffer) 
+	ArrayRef(const BufferRef<T>& buffer) requires DefaultConstructible<T> : m_buffer(buffer)
 	{
-		if(!bufferRef.m_isInitialized)
-		{
-			for(Size i = 0; i < m_count; i++)
-				new(m_array + i.ToRawValue()) T();
-
-			(*bufferRef.m_isInitialized) = true;
-		}
+		for(Size i = 0U; i < buffer.Count(); i++)
+			new(buffer.m_address + i.ToRawValue()) T();
 	}
 
-	ArrayRef(const BufferRef<T>& bufferRef, const T& defaultValue) requires CopyConstructible<T> :
-		m_array(bufferRef.m_buffer), m_count(bufferRef.m_count), m_refCount(bufferRef.m_refCount), m_allocType(AllocType::Buffer) 
+	ArrayRef(const BufferRef<T>& buffer, const T& item) requires CopyConstructible<T> : m_buffer(buffer)
 	{
-		if(!bufferRef.m_isInitialized)
-		{
-			for(Size i = 0; i < m_count; i++)
-				new(m_array + i.ToRawValue()) T(defaultValue);
-
-			(*bufferRef.m_isInitialized) = true;
-		}
+		for(Size i = 0U; i < buffer.Count(); i++)
+			new(buffer.m_address + i.ToRawValue()) T(item);
 	}
 
-	ArrayRef(const ArrayRef<T>& other) : m_array(other.m_array), m_count(other.m_count), m_refCount(other.m_refCount), m_allocType(other.m_allocType) 
-	{
-		if(m_refCount)
-			AddRef();
-	}
+	ArrayRef(const ArrayRef<T>& other) : m_buffer(other.m_buffer), m_refCount(other.m_refCount) { AddRef(); }
+
+	~ArrayRef() { RemRef(); }
 
 	ArrayRef<T> operator=(const ArrayRef<T>& other) 
 	{
-		if(m_refCount && RemRef())
-			Delete();
-
-		m_array     = other.m_array;
-		m_count     = other.m_count;
-		m_refCount  = other.m_refCount;
-		m_allocType = other.m_allocType;
-
-		if(m_refCount)
-			AddRef();
+		RemRef();
+		m_buffer   = other.m_buffer;
+		m_refCount = other.m_refCount;
+		AddRef();
 	}
 
-	~ArrayRef()
-	{
-		if(m_refCount && RemRef())
-			Delete();
-	}
+	virtual Size Count() const override { return m_buffer.Count(); }
 
-	      T& operator[](Size index)       { return m_array[index.ToRawValue()]; }
-	const T& operator[](Size index) const { return m_array[index.ToRawValue()]; }
+	virtual       T& operator[](Size index)       override { return m_buffer.m_address[index.ToRawValue()]; }
+	virtual const T& operator[](Size index) const override { return m_buffer.m_address[index.ToRawValue()]; }
 };
 
 template<typename T>
@@ -134,7 +139,7 @@ private:
 	Size        m_index;
 	Size        m_count;
 public:
-	ArraySpan(const ArrayRef<T>& array) : ArraySpan(array, 0, array->Count()) {}
+	ArraySpan(const ArrayRef<T>& array) : ArraySpan(array, 0U, array.Count()) {}
 
 	ArraySpan(const ArrayRef<T>& array, Size index, Size count) : m_array(array), m_index(index), m_count(count) {}
 
@@ -151,6 +156,8 @@ public:
 		ArrayRef<T> result = ArrayRef<T>(m_count);
 		for(Size i = 0U; i < m_count; i++)
 			result[i] = m_array[i + m_index];
+
+		return result;
 	}
 
 	void Fill(const T& value) requires CopyAssignable<T> 
@@ -170,7 +177,7 @@ public:
 		if(left.Count() != right.Count())
 			return false;
 
-		for(Size i = 0; i < Count(); i++)
+		for(Size i = 0U; i < left.Count(); i++)
 		{
 			if(left[i] != right[i])
 				return false;
@@ -184,7 +191,7 @@ public:
 		if(left.Count() != right.Count())
 			return true;
 
-		for(Size i = 0; i < Count(); i++)
+		for(Size i = 0U; i < left.Count(); i++)
 		{
 			if(left[i] != right[i])
 				return true;

@@ -3,6 +3,12 @@
 #include "../../Numerics.hpp"
 
 template<typename T>
+class SharedRef;
+
+template<typename T>
+class NullableRef;
+
+template<typename T>
 class Allocation
 {
 private:
@@ -26,9 +32,6 @@ public:
 	friend class SharedRef<T>;
 	friend class NullableRef<T>;
 };
-
-template<typename T>
-class NullableRef;
 
 template<typename T>
 class SharedRef

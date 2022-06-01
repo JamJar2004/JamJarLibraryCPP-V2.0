@@ -37,6 +37,9 @@ concept AssignableFrom = std::is_assignable_v<To, From>;
 template<typename From, typename To>
 concept ConvertibleTo = std::is_convertible_v<From, To>;
 
+template<typename... Types, size_t Size>
+concept Contains = sizeof...(Types) == Size;
+
 template<typename T1, typename T2>
 concept SmallerSize = sizeof(T1) < sizeof(T2);
 

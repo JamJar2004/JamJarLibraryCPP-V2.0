@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Data/Memory/Refs.hpp"
-#include "Data/Memory/Span.hpp"
+#include "Data/Memory/Array.hpp"
 
 class Character
 {
@@ -19,6 +19,8 @@ public:
 
 	friend Boolean operator==(Character left, Character right) { return left.m_value == right.m_value; }
 	friend Boolean operator!=(Character left, Character right) { return left.m_value != right.m_value; }
+
+	friend class Console;
 };
 
 
@@ -50,6 +52,8 @@ public:
 	String(const String& other);
 
 	Size Length() const;
+
+	const Character& operator[](Size index) const;
 
 	ArrayRef<Character> ToCharacterArray() const;
 
@@ -83,9 +87,7 @@ public:
 	String ToString() const { return *this; }
 };
 
-String Boolean::ToString() const { return m_value ? "True" : "False"; }
 
-String Character::ToString() const { return String(m_value, 1U); }
 
 template<Printable T>
 inline String operator+(const String& left, const T& right) { return left + right.ToString(); }
