@@ -23,7 +23,6 @@ public:
 	friend class Console;
 };
 
-
 template<typename T>
 concept Printable = requires(T obj)
 {
@@ -40,6 +39,8 @@ private:
 	static ArrayRef<Character> FromChar(Character character, Size length);
 	//static ArrayRef<Character> FromCollection(const ICollection<Character>& items);
 public:
+	String() : String('\0', 0U) {}
+
 	String(const char*     cString);
 	String(const wchar_t* wcString);
 

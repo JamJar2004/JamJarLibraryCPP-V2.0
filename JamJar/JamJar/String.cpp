@@ -12,7 +12,7 @@ String Character::ToString() const { return String(m_value, 1U); }
 ArrayRef<Character> String::FromCString(const char* cString)
 {
 	ArrayRef<Character> result = ArrayRef<Character>(strlen(cString));
-	for (Size i = 0U; i < result.Count(); i++)
+	for(Size i = 0U; i < result.Count(); i++)
 		result[i] = cString[i.ToRawValue()];
 
 	return result;
@@ -21,7 +21,7 @@ ArrayRef<Character> String::FromCString(const char* cString)
 ArrayRef<Character> String::FromWCString(const wchar_t* wcString)
 {
 	ArrayRef<Character> result = ArrayRef<Character>(wcslen(wcString));
-	for (Size i = 0U; i < result.Count(); i++)
+	for(Size i = 0U; i < result.Count(); i++)
 		result[i] = wcString[i.ToRawValue()];
 
 	return result;

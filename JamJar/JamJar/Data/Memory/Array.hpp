@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Buffer.hpp"
 #include "../Collections/Collection.hpp"
 
 #include <iterator>
@@ -15,9 +14,9 @@ public:
 
 	virtual void MoveNext() override { ++m_address; }
 
-	virtual T& Current() { return *m_address; }
+	virtual T& Current() override { return *m_address; }
 
-	virtual Boolean Equals(const Iterator<T>& other) { return m_address == ((ArrayIterator<T>)other).m_address; }
+	virtual Boolean Equals(const Iterator<T>& other) const override { return m_address == ((const ArrayIterator<T>&)other).m_address; }
 };
 
 template<typename T>
@@ -34,7 +33,7 @@ class Array : public IArray<T>
 public:
 	SInt64 IndexOf(const T& item) const requires Equatable<T>
 	{
-		for(Size i = 0; i < Count(); i++)
+		for(Size i = 0U; i < this->Count(); i++)
 		{
 			if((*this)[i] == item)
 				return SInt64(i);
@@ -47,7 +46,7 @@ public:
 
 	void Fill(const T& item) requires CopyAssignable<T>
 	{
-		for(Size i = 0U; i < m_count; i++)
+		for(Size i = 0U; i < this->Count(); i++)
 			(*this)[i] = item;
 	}
 };
@@ -60,75 +59,77 @@ private:
 public:
 	StackArray() requires DefaultConstructible<T> {}
 
-	StackArray(const T& item) requires CopyConstructible<T>
-	{
-		for(Size i = 0; i < C; i++)
-			m_elements[i.ToRawValue()] = item;
-	}
+	StackArray(const T& item) requires CopyConstructible<T> : m_elements { item } {}
 
 	template<ConvertibleTo<T>... Args>
 	StackArray(Args&&... args) requires Contains<Args, C> : m_elements { args... } {}
 
 	virtual Size Count() const override { return C; }
 
-	virtual       T& operator[](Size index)       override { return m_elements[index]; }
-	virtual const T& operator[](Size index) const override { return m_elements[index]; }
+	virtual       T& operator[](Size index)       override { return m_elements[index.ToRawValue()]; }
+	virtual const T& operator[](Size index) const override { return m_elements[index.ToRawValue()]; }
 
-	virtual SharedRef<Iterator<T>> Start() { return ArrayIterator<T>(m_elements    ); }
-	virtual SharedRef<Iterator<T>> End()   { return ArrayIterator<T>(m_elements + C); }
+	virtual SharedRef<Iterator<T>> Start() override { return New<ArrayIterator<T>>(m_elements    ); }
+	virtual SharedRef<Iterator<T>> End()   override { return New<ArrayIterator<T>>(m_elements + C); }
+
+	virtual SharedRef<Iterator<const T>> Start() const override { return New<ArrayIterator<const T>>(m_elements    ); }
+	virtual SharedRef<Iterator<const T>> End()   const override { return New<ArrayIterator<const T>>(m_elements + C); }
 };
+
+template<typename T>
+class ArrayList;
 
 template<typename T>
 class ArrayRef : public Array<T>
 {
 private:
-	BufferRef<T> m_buffer;
-	Size*        m_refCount;
+	T*    m_address;
+	Size* m_refCount;
+	Size  m_count;
 
 	void AddRef() { ++(*m_refCount); }
 
-	void RemRef() 
+	void RemRef()
 	{
 		--(*m_refCount);
 		if(*m_refCount == 0U)
 		{
-			for(Size i = 0U; i < m_buffer.Count(); i++)
-				(m_buffer.m_address + i.ToRawValue())->~T();
+			delete[] m_address;
+			delete m_refCount;
 		}
 	}
+
+	ArrayRef(T* address, Size count) : m_address(address), m_refCount(new Size(1U)), m_count(count) {}
 public:
-	ArrayRef(Size count) requires DefaultConstructible<T> : ArrayRef(BufferRef(count)) {}
+	ArrayRef(Size count) requires DefaultConstructible<T> : m_address(new T[count.ToRawValue()]), m_refCount(new Size(1U)), m_count(count) {}
 
-	ArrayRef(Size count, const T& item) requires CopyConstructible<T> : ArrayRef(BufferRef(count), item) {}
+	ArrayRef(Size count, const T& item) requires CopyConstructible<T> : m_address(new T[count.ToRawValue()]{ item }), m_refCount(1U), m_count(count) {}
 
-	ArrayRef(const BufferRef<T>& buffer) requires DefaultConstructible<T> : m_buffer(buffer)
-	{
-		for(Size i = 0U; i < buffer.Count(); i++)
-			new(buffer.m_address + i.ToRawValue()) T();
-	}
-
-	ArrayRef(const BufferRef<T>& buffer, const T& item) requires CopyConstructible<T> : m_buffer(buffer)
-	{
-		for(Size i = 0U; i < buffer.Count(); i++)
-			new(buffer.m_address + i.ToRawValue()) T(item);
-	}
-
-	ArrayRef(const ArrayRef<T>& other) : m_buffer(other.m_buffer), m_refCount(other.m_refCount) { AddRef(); }
+	ArrayRef(const ArrayRef& other) : m_address(other.m_address), m_refCount(other.m_refCount), m_count(other.m_count) { AddRef(); }
 
 	~ArrayRef() { RemRef(); }
 
-	ArrayRef<T> operator=(const ArrayRef<T>& other) 
+	ArrayRef<T>& operator=(const ArrayRef<T>& other)
 	{
 		RemRef();
-		m_buffer   = other.m_buffer;
+		m_address  = other.m_address;
 		m_refCount = other.m_refCount;
+		m_count    = other.m_count;
 		AddRef();
 	}
 
-	virtual Size Count() const override { return m_buffer.Count(); }
+	virtual Size Count() const override { return m_count; }
 
-	virtual       T& operator[](Size index)       override { return m_buffer.m_address[index.ToRawValue()]; }
-	virtual const T& operator[](Size index) const override { return m_buffer.m_address[index.ToRawValue()]; }
+	virtual       T& operator[](Size index)       override { return m_address[index.ToRawValue()]; }
+	virtual const T& operator[](Size index) const override { return m_address[index.ToRawValue()]; }
+
+	virtual SharedRef<Iterator<T>> Start() override { return New<ArrayIterator<T>>(m_address                       ); }
+	virtual SharedRef<Iterator<T>> End()   override { return New<ArrayIterator<T>>(m_address + m_count.ToRawValue()); }
+
+	virtual SharedRef<Iterator<const T>> Start() const override { return New<ArrayIterator<const T>>(m_address                       ); }
+	virtual SharedRef<Iterator<const T>> End()   const override { return New<ArrayIterator<const T>>(m_address + m_count.ToRawValue()); }
+
+	friend class ArrayList<T>;
 };
 
 template<typename T>

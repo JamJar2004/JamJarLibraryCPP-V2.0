@@ -14,14 +14,23 @@ public:
 };
 
 template<typename T>
+class IteratorStorage;
+
+template<typename T>
 class IIterable
 {
 public:
 	virtual SharedRef<Iterator<T>> Start() = 0;
 	virtual SharedRef<Iterator<T>> End()   = 0;
 
-	IteratorStorage begin() { return Start(); }
-	IteratorStorage end()   { return End();   }
+	virtual SharedRef<Iterator<const T>> Start() const = 0;
+	virtual SharedRef<Iterator<const T>> End()   const = 0;
+
+	IteratorStorage<T> begin() { return Start(); }
+	IteratorStorage<T> end()   { return End();   }
+
+	IteratorStorage<const T> begin() const { return Start(); }
+	IteratorStorage<const T> end()   const { return End();   }
 };
 
 template<typename T>
@@ -34,6 +43,9 @@ public:
 
 	IteratorStorage<T>& operator++() { m_iterator->MoveNext(); return *this; }
 
-	Boolean operator==(const IteratorStorage& other) const { return  m_iterator->Equals(other.m_iterator); }
-	Boolean operator!=(const IteratorStorage& other) const { return !m_iterator->Equals(other.m_iterator); }
+	Boolean operator==(const IteratorStorage<T>& other) const { return  m_iterator->Equals(*other.m_iterator); }
+	Boolean operator!=(const IteratorStorage<T>& other) const { return !m_iterator->Equals(*other.m_iterator); }
+
+	      T& operator*()       { return m_iterator->Current(); }
+	const T& operator*() const { return m_iterator->Current(); }
 };

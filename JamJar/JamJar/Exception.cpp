@@ -1,6 +1,5 @@
 #include "Exception.hpp"
 
-void Exception::Throw() const
-{
+#include "Console.hpp"
 
-}
+void Exception::Throw() const { Console::PrintLine(m_message); }

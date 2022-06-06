@@ -9,25 +9,36 @@ template<typename T>
 class NullableRef;
 
 template<typename T>
-class Allocation
+class BaseAllocation
 {
-private:
+protected:
 	Size m_refCount;
-	T    m_value;
 
-	void    AddRef() { ++m_refCount;                          }
+	void    AddRef() { ++m_refCount; }
 	Boolean RemRef() { --m_refCount; return m_refCount == 0U; }
 public:
-	Allocation(const T& value) requires CopyConstructible<T> : m_refCount(0U), m_value(value) {}
+	BaseAllocation() {}
+
+	virtual       T& GetValue()       = 0;
+	virtual const T& GetValue() const = 0;
+
+	friend class SharedRef<T>;
+	friend class NullableRef<T>;
+};
+
+template<typename T>
+class Allocation : public BaseAllocation<T>
+{
+private:
+	T m_value;
+public:
+	Allocation(const T& value) requires CopyConstructible<T> : m_value(value) {}
 
 	template<typename... Args>
-	Allocation(Args&&... args) requires ConstructibleFrom<T, Args...> : m_refCount(0U), m_value(args...) {}
+	Allocation(Args&&... args) requires ConstructibleFrom<T, Args...> : m_value(args...) {}
 
-	      T& GetValue()       { return m_value; }
-	const T& GetValue() const { return m_value; }
-
-	      T* AsPointer()       { return &m_value; }
-	const T* AsPointer() const { return &m_value; }
+	      T& GetValue()       override { return m_value; }
+	const T& GetValue() const override { return m_value; }
 
 	friend class SharedRef<T>;
 	friend class NullableRef<T>;
@@ -37,7 +48,7 @@ template<typename T>
 class SharedRef
 {
 private:
-	Allocation<T>* m_allocation;
+	BaseAllocation<T>* m_allocation;
 
 	void AddRef() { m_allocation->AddRef(); }
 	
@@ -47,7 +58,7 @@ private:
 			delete m_allocation;
 	}
 
-	SharedRef(Allocation<T>* allocation) : m_allocation(allocation) { AddRef(); }
+	SharedRef(BaseAllocation<T>* allocation) : m_allocation(allocation) { AddRef(); }
 public:
 	SharedRef(const T& value) requires CopyConstructible<T> : SharedRef(new Allocation<T>()) {}
 
@@ -55,12 +66,12 @@ public:
 	SharedRef(Args&&... args) requires ConstructibleFrom<T, Args...> : SharedRef(new Allocation<T>(args...)) {}
 
 	template<Inherits<T> T2>
-	SharedRef(const SharedRef<T2>& other) : SharedRef((Allocation<T>*)other.m_allocation) {}
+	SharedRef(const SharedRef<T2>& other) : SharedRef((BaseAllocation<T>*)other.m_allocation) {}
 
 	~SharedRef() { RemRef(); }
 
 	template<Inherits<T> T2>
-	explicit operator SharedRef<T2>() const { return SharedRef<T2>((Allocation<T2>*)m_allocation); }
+	explicit operator SharedRef<T2>() const { return SharedRef<T2>(m_allocation); }
 
 	SharedRef<T>& operator=(const SharedRef<T>& other) 
 	{
@@ -72,8 +83,8 @@ public:
 		  T& operator*()       { return m_allocation->GetValue(); }
 	const T& operator*() const { return m_allocation->GetValue(); }
 
-	      T* operator->()       { return m_allocation->AsPointer(); }
-	const T* operator->() const { return m_allocation->AsPointer(); }
+	      T* operator->()       { return &m_allocation->GetValue(); }
+	const T* operator->() const { return &m_allocation->GetValue(); }
 
 	template<typename T2>
 	friend Boolean operator==(const SharedRef<T>& left, const SharedRef<T2>& right) { return left.m_allocation == right.m_allocation; }
@@ -81,17 +92,20 @@ public:
 	template<typename T2>
 	friend Boolean operator!=(const SharedRef<T>& left, const SharedRef<T2>& right) { return left.m_allocation != right.m_allocation; }
 
+	template<typename T2>
+	friend class SharedRef;
+
 	friend class NullableRef<T>;
 };
 
 template<typename T, typename... Args>
-SharedRef<T> New(Args&&... args) requires ConstructibleFrom<T> { return SharedRef<T>(args...); }
+SharedRef<T> New(Args&&... args) requires ConstructibleFrom<T, Args...> { return SharedRef<T>(args...); }
 
 template<typename T>
 class NullableRef
 {
 private:
-	Allocation<T>* m_allocation;
+	BaseAllocation<T>* m_allocation;
 
 	void AddRef()
 	{ 
@@ -131,7 +145,7 @@ public:
 	{
 		RemRef();
 		m_allocation = other.m_allocation;
-		m_allocation->AddRef();
+		AddRef();
 	}
 
 	NullableRef<T>& operator=(const NullableRef<T>& other)

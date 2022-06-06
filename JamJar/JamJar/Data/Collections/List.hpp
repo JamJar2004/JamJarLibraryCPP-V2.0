@@ -18,6 +18,4 @@ public:
 	virtual Boolean Remove(const T& item) = 0;
 
 	virtual SharedRef<IList<T>> SubList(Size index, Size count) const = 0;
-
-	virtual ArrayRef<T> ToArray() const = 0;
 };

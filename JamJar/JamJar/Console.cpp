@@ -8,6 +8,7 @@ void Console::Print(const String& value)
 
 	chars[value.Length().ToRawValue()] = '\0';
 	std::wcout << chars;
+	delete[] chars;
 }
 
 void Console::PrintLine(const String& value) 
@@ -18,4 +19,5 @@ void Console::PrintLine(const String& value)
 
 	chars[value.Length().ToRawValue()] = '\0';
 	std::wcout << chars << std::endl;
+	delete[] chars;
 }

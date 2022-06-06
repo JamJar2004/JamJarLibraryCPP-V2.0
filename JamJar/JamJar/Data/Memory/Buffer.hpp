@@ -6,65 +6,29 @@ template<typename T>
 class ArrayRef;
 
 template<typename T>
-class InitializedRange
-{
-private:
-	T*   m_address;
-	Size m_count;
-public:
-	InitializedRange(T* address) : m_address(address), m_count(0U) {}
+class UnsafeRef;
 
-      	  T& operator[](Size index)       { return m_address[index.ToRawValue()]; }
-	const T& operator[](Size index) const { return m_address[index.ToRawValue()]; }
-
-	void Add() requires DefaultConstructible<T>
-	{
-		new(m_address + m_count.ToRawValue()) T();
-		++m_count;
-	}
-
-	void Add(const T& item) requires CopyConstructible<T>
-	{
-		new(m_address + m_count.ToRawValue()) T(item);
-		++m_count;
-	}
-
-	void Remove(Size index)
-	{
-		T* location = m_address + index.ToRawValue();
-
-		location->~T();
-		if(index < m_count - 1U)
-			memcpy(location, location + 1U, (m_count - 1U - index).ToRawValue());
-
-		--m_count;
-	}
-
-	void Clear()
-	{
-		for(Size i = 0U; i < m_count; i++)
-			(m_address + i.ToRawValue())->~T();
-
-		m_count = 0U;
-	}
-};
+template<typename T>
+class ArrayList;
 
 template<typename T>
 class BufferRef
 {
 private:
-	T*                   m_address;
-	Size*                m_refCount;
-	InitializedRange<T>* m_initRange;
-	Size                 m_count;
+	T*    m_address;
+	Size* m_refCount;
+	Size  m_count;
 
-	void AddRef() { ++(*m_refCount) }
+	void AddRef() { ++(*m_refCount); }
 
 	void RemRef() 
 	{
 		--(*m_refCount);
 		if(*m_refCount == 0U)
+		{ 
 			free(m_address);
+			delete m_refCount;
+		}
 	}
 public:
 	BufferRef(Size count) : m_address((T*)malloc(sizeof(T) * count.ToRawValue())), m_refCount(new Size(1U)), m_count(count) {}
@@ -73,6 +37,11 @@ public:
 		m_address(other.m_address), m_refCount(other.m_refCount), m_count(other.m_count) { AddRef(); }
 
 	~BufferRef() { RemRef(); }
+
+	operator UnsafeRef<T>() const { return UnsafeRef<T>(m_address); }
+
+	      UnsafeRef<T> operator[](Size index)       { return UnsafeRef<T>(m_address + index.ToRawValue()); }
+	const UnsafeRef<T> operator[](Size index) const { return UnsafeRef<T>(m_address + index.ToRawValue()); }
 
 	Size Count() const { return m_count; }
 
@@ -83,13 +52,57 @@ public:
 		m_refCount = other.m_refCount;
 		m_count    = other.m_count;
 		AddRef();
+
+		return *this;
 	}
 
-	InitializedRange<T>& GetInitializedRange()
+	void CopyTo(const UnsafeRef<T>& other, Size count) const
 	{
-		if(!m_initRange)
-			m_initRange = new InitializedRange<T>()
+		if(count == 0U)
+			return;
+
+		memcpy(other.m_address, m_address, count.ToRawValue() * sizeof(T));
 	}
 
 	friend class ArrayRef<T>;
+	friend class UnsafeRef<T>;
+	friend class ArrayList<T>;
+};
+
+template<typename T>
+class UnsafeRef
+{
+private:
+	T* m_address;
+
+	UnsafeRef(T* address) : m_address(address) {}
+public:
+	      T& operator*()       { return *m_address; }
+	const T& operator*() const { return *m_address; }
+
+	      T* operator->()       { return m_address; }
+	const T* operator->() const { return m_address; }
+
+	friend UnsafeRef<T> operator+(const UnsafeRef<T>& left, Size right) { return left.m_address + right.ToRawValue(); }
+	friend UnsafeRef<T> operator-(const UnsafeRef<T>& left, Size right) { return left.m_address - right.ToRawValue(); }
+
+	UnsafeRef<T>& operator++() { ++m_address; return *this; }
+	UnsafeRef<T>& operator--() { --m_address; return *this; }
+
+	template<typename... Args>
+	void Initialize(Args&&... args) requires ConstructibleFrom<Args...> { new(m_address) T(args...); }
+
+	void Initialize(const T& item) requires CopyConstructible<T> { new(m_address) T(item); }
+
+	void Destroy() { m_address->~T(); }
+
+	void CopyTo(const UnsafeRef<T>& other, Size count) const
+	{
+		if(count == 0U)
+			return;
+
+		memcpy(other.m_address, m_address, count.ToRawValue() * sizeof(T));
+	}
+
+	friend class BufferRef<T>;
 };

@@ -3,10 +3,10 @@
 #include "Iterator.hpp"
 
 template<typename T>
-class ICollection
+class ICollection : public IIterable<T>
 {
 public:
-	virtual Size Count() = 0;
+	virtual Size Count() const = 0;
 };
 
 template<typename T>
