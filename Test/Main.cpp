@@ -25,13 +25,18 @@ public:
 	{
 		Console::PrintLine("Destroyed!");
 	}
+
+	void Print(const String& message) { Console::PrintLine(message); }
 };
 
 ExitStatus Start()
 {
-	Dynamic value = String("Hello World!");
+	Dynamic value1 = String("Hello");
+	Dynamic value2 = 6U;
 
-	Console::PrintLine(value);
+	value1 = String("World!");
+
+	Console::PrintLine(value1 == value2);
 
 	return ExitStatus::OK;
 }

@@ -60,6 +60,9 @@
     <ClCompile Include="JamJar\Dynamic.cpp" />
     <ClCompile Include="JamJar\Numerics.cpp" />
     <ClCompile Include="JamJar\Console.cpp" />
+    <ClCompile Include="JamJar\Data\Reflection.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

@@ -9,7 +9,24 @@ private:
 	const TypeInfo& m_type;
 public:
 	template<typename T>
-	Dynamic(const T& value) requires CopyConstructible<T> : m_address(new T(value)), m_type(Reflect::GetType<T>()) {}
+	Dynamic(const T& value) requires CopyConstructible<T> : m_address(malloc(sizeof(T))), m_type(Reflect::GetType<T>()) { new(m_address) T(value); }
+
+	Dynamic(const Dynamic& other);
+
+	~Dynamic();
+
+	template<typename T>
+	Dynamic& operator=(const T& other)
+	{
+		if(m_type != Reflect::GetType<T>())
+		{
+			InvalidCastException(Reflect::GetType<T>(), m_type).Throw();
+			return *this;
+		}
+
+		m_type.GetCopyAssigner()(&other, m_address);
+		return *this;
+	}
 
 	const TypeInfo& GetType() const { return m_type; }
 
@@ -35,4 +52,25 @@ public:
 
 	template<typename T>
 	operator T() const { return Cast<T>(); }
+
+	friend Boolean operator==(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+			return false;
+
+		const TypeInfo& type = left.m_type;
+
+		return type.GetEquator()(left.m_address, right.m_address);
+	}
+
+	friend Boolean operator!=(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+			return true;
+
+		const TypeInfo& type = left.m_type;
+
+		return type.GetNotEquator()(left.m_address, right.m_address);
+	}
 };
+

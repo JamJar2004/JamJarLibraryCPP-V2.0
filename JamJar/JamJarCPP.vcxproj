@@ -46,6 +46,7 @@
   <ItemGroup>
     <ClCompile Include="JamJar\Console.cpp" />
     <ClCompile Include="JamJar\Core.cpp" />
+    <ClCompile Include="JamJar\Data\Reflection.cpp" />
     <ClCompile Include="JamJar\Dynamic.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
     <ClCompile Include="JamJar\Numerics.cpp" />
