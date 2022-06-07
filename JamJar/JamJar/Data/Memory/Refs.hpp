@@ -199,4 +199,3 @@ public:
 	template<typename T2>
 	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T2>& right) { return left.m_allocation != right.m_allocation; }
 };
-

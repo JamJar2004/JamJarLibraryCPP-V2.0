@@ -80,6 +80,9 @@ template<typename T>
 class ArrayList;
 
 template<typename T>
+class ArraySpan;
+
+template<typename T>
 class ArrayRef : public Array<T>
 {
 private:
@@ -94,18 +97,31 @@ private:
 		--(*m_refCount);
 		if(*m_refCount == 0U)
 		{
-			delete[] m_address;
+			for(Size i = 0U; i < m_count; i++)
+				(m_address + i.ToRawValue())->~T();
+
+			free(m_address);
 			delete m_refCount;
 		}
 	}
 
 	ArrayRef(T* address, Size count) : m_address(address), m_refCount(new Size(1U)), m_count(count) {}
 public:
-	ArrayRef(Size count) requires DefaultConstructible<T> : m_address(new T[count.ToRawValue()]), m_refCount(new Size(1U)), m_count(count) {}
+	ArrayRef(Size count) requires DefaultConstructible<T> : 
+		m_address((T*)malloc(sizeof(T) * count.ToRawValue())), m_refCount(new Size(1U)), m_count(count)
+	{
+		for(Size i = 0U; i < count; i++)
+			new(m_address + i.ToRawValue()) T();
+	}
 
-	ArrayRef(Size count, const T& item) requires CopyConstructible<T> : m_address(new T[count.ToRawValue()]{ item }), m_refCount(1U), m_count(count) {}
+	ArrayRef(Size count, const T& item) requires CopyConstructible<T> : 
+		m_address((T*)malloc(sizeof(T)* count.ToRawValue())), m_refCount(new Size(1U)), m_count(count)
+	{
+		for(Size i = 0U; i < count; i++)
+			new(m_address + i.ToRawValue()) T(item);
+	}
 
-	ArrayRef(const ArrayRef& other) : m_address(other.m_address), m_refCount(other.m_refCount), m_count(other.m_count) { AddRef(); }
+	ArrayRef(const ArrayRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount), m_count(other.m_count) { AddRef(); }
 
 	~ArrayRef() { RemRef(); }
 
@@ -130,6 +146,7 @@ public:
 	virtual SharedRef<Iterator<const T>> End()   const override { return New<ArrayIterator<const T>>(m_address + m_count.ToRawValue()); }
 
 	friend class ArrayList<T>;
+	friend class ArraySpan<T>;
 };
 
 template<typename T>
@@ -152,13 +169,14 @@ public:
 
 	ArraySpan<T> Slice(Size index, Size count) const { return ArraySpan<T>(m_array, index, count); }
 
-	ArrayRef<T> ToArray() const requires CopyAssignable<T>
+	ArrayRef<T> ToArray() const requires CopyConstructible<T>
 	{
-		ArrayRef<T> result = ArrayRef<T>(m_count);
-		for(Size i = 0U; i < m_count; i++)
-			result[i] = m_array[i + m_index];
+		T* array = (T*)malloc(m_array.Count().ToRawValue() * sizeof(T));
 
-		return result;
+		for(Size i = 0U; i < m_count; i++)
+			new(array + i.ToRawValue()) T(m_array[i + m_index]);
+
+		return ArrayRef<T>(array, m_count);
 	}
 
 	void Fill(const T& value) requires CopyAssignable<T> 

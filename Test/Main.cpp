@@ -6,25 +6,44 @@
 
 #include <JamJar/Data/Collections/StringBuilder.hpp>
 
+class Object
+{
+public:
+	Object()
+	{
+		Console::PrintLine("Created!");
+	}
+
+	Object(const Object& other)
+	{
+		Console::PrintLine("Copied!");
+	}
+
+	~Object()
+	{
+		Console::PrintLine("Destroyed!");
+	}
+};
+
 ExitStatus Start()
 {
-	/*String sentence = "He was in the forest looking to see the trees but none were there.";
+	String sentence = "He was in the forest looking to see the trees but none were there.";
 
 	for(const String& word : sentence.Split(" "))
-		Console::PrintLine(word);*/
+		Console::PrintLine(word);
 
-	ArrayList<UInt32> list;
-	list.Add(1U);
-	list.Add(2U);
-	list.AddRange(StackArray<UInt32, 3U>(3U, 4U, 5U));
-	list.Add(8U);
+	//ArrayList<String> list;
+	//list.Add("A");
+	//list.Add("B");
+	//list.Add("C");
+	//list.Add("D");
+	//list.Add("E");
+	//list.Add("F");
+	//list.Add("G");
+	//list.Add("H");
+	//list.Add("I");
 
-	Console::PrintLine(list);
-
-	list.Insert(5U, 6U);
-	list.Insert(6U, 7U);
-
-	Console::PrintLine(list);
+	//Console::PrintLine(list.ToArray());
 
 	return ExitStatus::OK;
 }
