@@ -5,6 +5,8 @@
 #include <JamJar/Data/Collections/Lists/ArrayList.hpp>
 
 #include <JamJar/Data/Collections/StringBuilder.hpp>
+#include <JamJar/Dynamic.hpp>
+
 
 class Object
 {
@@ -27,19 +29,9 @@ public:
 
 ExitStatus Start()
 {
+	Dynamic value = String("Hello World!");
 
-	//ArrayList<String> list;
-	//list.Add("A");
-	//list.Add("B");
-	//list.Add("C");
-	//list.Add("D");
-	//list.Add("E");
-	//list.Add("F");
-	//list.Add("G");
-	//list.Add("H");
-	//list.Add("I");
-
-	//Console::PrintLine(list.ToArray());
+	Console::PrintLine(value);
 
 	return ExitStatus::OK;
 }

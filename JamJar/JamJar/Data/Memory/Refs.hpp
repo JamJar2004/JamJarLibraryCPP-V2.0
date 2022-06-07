@@ -19,6 +19,8 @@ protected:
 public:
 	BaseAllocation() {}
 
+	virtual ~BaseAllocation() {}
+
 	virtual       T& GetValue()       = 0;
 	virtual const T& GetValue() const = 0;
 

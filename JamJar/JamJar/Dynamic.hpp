@@ -9,19 +9,30 @@ private:
 	const TypeInfo& m_type;
 public:
 	template<typename T>
-	Dynamic(const T& value) requires CopyConstructible<T> : m_address(new T(value)), m_type(Reflection::GetType<T>()) {}
-
-	Dynamic(const Dynamic& other);
-	~Dynamic();
+	Dynamic(const T& value) requires CopyConstructible<T> : m_address(new T(value)), m_type(Reflect::GetType<T>()) {}
 
 	const TypeInfo& GetType() const { return m_type; }
 
 	template<typename T>
-	operator T() const
+	Boolean TryCast(T& result)
 	{
-		if(m_type != Reflection::GetType<T>())
-			InvalidCastException(m_type, Reflection::GetType<T>()).Throw();
-
-		return *(T*)m_address; 
+		if(m_type != Reflect::GetType<T>())
+			return false;
+		
+		result = *(T*)m_address;
+		return true;
 	}
+
+	template<typename T>
+	T Cast() const
+	{
+		if(m_type != Reflect::GetType<T>()) 
+			InvalidCastException(m_type, Reflect::GetType<T>()).Throw();
+		
+		return *(T*)m_address;
+	}
+
+
+	template<typename T>
+	operator T() const { return Cast<T>(); }
 };
