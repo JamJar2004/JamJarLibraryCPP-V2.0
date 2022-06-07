@@ -21,3 +21,5 @@ void Console::PrintLine(const String& value)
 	std::wcout << chars << std::endl;
 	delete[] chars;
 }
+
+

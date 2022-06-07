@@ -111,6 +111,8 @@ public:
 
 	template<std::floating_point T2>
 	UnsignedInteger<T> Pow(Float<T2> power) const { return UnsignedInteger<T>(powf(m_value, power.ToRawValue())); }
+
+	String ToString() const;
 };
 
 template<std::unsigned_integral T>
@@ -237,6 +239,8 @@ public:
 
 	template<std::floating_point T2>
 	SignedInteger<T> Pow(Float<T2> power) const { return SignedInteger<T>(powf(m_value, power.ToRawValue())); }
+
+	String ToString() const;
 };
 
 template<std::signed_integral T>
@@ -373,6 +377,8 @@ public:
 	Float<T> ATanH();
 
 	Float<T> ATan2(Float<T> x);
+
+	String ToString() const;
 };
 
 template<>

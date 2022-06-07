@@ -3,6 +3,8 @@
 #include "Data/Memory/Refs.hpp"
 #include "Data/Memory/Array.hpp"
 
+#include <string>
+
 class Character
 {
 private:
@@ -23,13 +25,7 @@ public:
 	friend class Console;
 };
 
-template<typename T>
-concept Printable = requires(T obj)
-{
-	{ obj.ToString() } -> SameAs<String>;
-};
-
-class String
+class String : public ICollection<const Character>
 {
 private:
 	const ArraySpan<Character> m_chars;
@@ -37,7 +33,7 @@ private:
 	static ArrayRef<Character> FromCString(const char* cString);
 	static ArrayRef<Character> FromWCString(const wchar_t* wcString);
 	static ArrayRef<Character> FromChar(Character character, Size length);
-	//static ArrayRef<Character> FromCollection(const ICollection<Character>& items);
+	static ArrayRef<Character> FromCollection(const ICollection<Character>& items);
 public:
 	String() : String('\0', 0U) {}
 
@@ -46,11 +42,13 @@ public:
 
 	String(Character character, Size length);
 	
-	//explicit String(const ICollection<Character>& chars);
+	explicit String(const ICollection<Character>& chars);
 
 	explicit String(const ArraySpan<Character>& chars);
 
 	String(const String& other);
+
+	virtual Size Count() const override { return Length(); }
 
 	Size Length() const;
 
@@ -86,12 +84,25 @@ public:
 	friend Boolean operator!=(const String& left, const String& right);
 
 	String ToString() const { return *this; }
+
+	virtual SharedRef<Iterator<const Character>> Start() override { return m_chars.Start(); }
+	virtual SharedRef<Iterator<const Character>> End()   override { return m_chars.End();   }
+
+	virtual SharedRef<Iterator<const Character>> Start() const override { return m_chars.Start(); }
+	virtual SharedRef<Iterator<const Character>> End()   const override { return m_chars.End();   }
 };
-
-
 
 template<Printable T>
 inline String operator+(const String& left, const T& right) { return left + right.ToString(); }
 
 template<Printable T>
 inline String operator+(const T& left, const String& right) { return left.ToString() + right; }
+
+template<std::unsigned_integral T>
+String UnsignedInteger<T>::ToString() const { return std::to_string(m_value).c_str(); }
+
+template<std::signed_integral T>
+String SignedInteger<T>::ToString() const { return std::to_string(m_value).c_str(); }
+
+template<std::floating_point T>
+String Float<T>::ToString() const { return std::to_string(m_value).c_str(); }

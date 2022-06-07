@@ -8,10 +8,12 @@ class Iterator
 public:
 	virtual void MoveNext() = 0;
 
-	virtual T& Current() = 0;
+	virtual T& Current() const = 0;
 
 	virtual Boolean Equals(const Iterator<T>& other) const = 0;
 };
+
+class String;
 
 template<typename T>
 class IteratorStorage;
@@ -31,6 +33,10 @@ public:
 
 	IteratorStorage<const T> begin() const { return Start(); }
 	IteratorStorage<const T> end()   const { return End();   }
+
+	operator IIterable<const T>() { return *this; }
+
+	String ToString() const;// requires Printable<T>;
 };
 
 template<typename T>

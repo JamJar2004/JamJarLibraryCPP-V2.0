@@ -14,7 +14,7 @@ class BaseAllocation
 protected:
 	Size m_refCount;
 
-	void    AddRef() { ++m_refCount; }
+	void    AddRef() { ++m_refCount;                          }
 	Boolean RemRef() { --m_refCount; return m_refCount == 0U; }
 public:
 	BaseAllocation() {}
@@ -68,6 +68,8 @@ public:
 	template<Inherits<T> T2>
 	SharedRef(const SharedRef<T2>& other) : SharedRef((BaseAllocation<T>*)other.m_allocation) {}
 
+	SharedRef(const SharedRef<T>& other) : SharedRef(other.m_allocation) {}
+
 	~SharedRef() { RemRef(); }
 
 	template<Inherits<T> T2>
@@ -78,6 +80,8 @@ public:
 		RemRef();
 		m_allocation = other.m_allocation;
 		AddRef();
+
+		return *this;
 	}
 
 		  T& operator*()       { return m_allocation->GetValue(); }

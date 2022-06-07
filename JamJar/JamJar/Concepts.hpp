@@ -202,3 +202,9 @@ requires(T obj, T arg)
 {
 	{ obj.ATan2(arg) } -> SameAs<T>;
 };
+
+template<typename T>
+concept Printable = requires(T obj)
+{
+	{ obj.ToString() } -> SameAs<String>;
+};

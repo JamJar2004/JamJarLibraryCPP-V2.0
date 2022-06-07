@@ -78,8 +78,6 @@ inline void ArrayList<T>::Add(const T& item)
 
 	UnsafeRef<T> ptr = m_buffer[m_count++];
 	ptr.Initialize(item);
-
-	++m_count;
 }
 
 template<typename T>

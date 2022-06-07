@@ -3,8 +3,6 @@
 #include "Data/Collections/Lists/ArrayList.hpp"
 #include "Data/Memory/Refs.hpp"
 
-#include <string>
-
 String Boolean::ToString() const { return m_value ? "True" : "False"; }
 
 String Character::ToString() const { return String(m_value, 1U); }
@@ -34,15 +32,15 @@ ArrayRef<Character> String::FromChar(Character character, Size length)
 	return result;
 }
 
-//ArrayRef<Character> String::FromCollection(const ICollection<Character>& items)
-//{
-//	ArrayRef<Character> result = NewArray<Character>((items.Count());
-//	Size i = 0U;
-//	for(Character c : items)
-//		(*result)[i++] = c;
-//
-//	return result;
-//}
+ArrayRef<Character> String::FromCollection(const ICollection<Character>& items)
+{
+	ArrayRef<Character> result = ArrayRef<Character>(items.Count());
+	Size i = 0U;
+	for(Character c : items)
+		result[i++] = c;
+
+	return result;
+}
 
 String::String(const char* cString) : m_chars(FromCString(cString)) {}
 
@@ -50,7 +48,7 @@ String::String(const wchar_t* wcString) : m_chars(FromWCString(wcString)) {}
 
 String::String(Character character, Size length) : m_chars(FromChar(character, length)) {}
 
-//String::String(const ICollection<Character>& chars) : m_chars(FromCollection(chars)) {}
+String::String(const ICollection<Character>& chars) : m_chars(FromCollection(chars)) {}
 
 String::String(const ArraySpan<Character>& chars) : m_chars(chars) {}
 

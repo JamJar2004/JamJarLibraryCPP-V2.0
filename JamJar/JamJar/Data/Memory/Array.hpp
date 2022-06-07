@@ -14,7 +14,7 @@ public:
 
 	virtual void MoveNext() override { ++m_address; }
 
-	virtual T& Current() override { return *m_address; }
+	virtual T& Current() const override { return *m_address; }
 
 	virtual Boolean Equals(const Iterator<T>& other) const override { return m_address == ((const ArrayIterator<T>&)other).m_address; }
 };
@@ -62,7 +62,7 @@ public:
 	StackArray(const T& item) requires CopyConstructible<T> : m_elements { item } {}
 
 	template<ConvertibleTo<T>... Args>
-	StackArray(Args&&... args) requires Contains<Args, C> : m_elements { args... } {}
+	StackArray(Args&&... args) requires Contains<Args..., C> : m_elements { args... } {}
 
 	virtual Size Count() const override { return C; }
 
@@ -126,14 +126,14 @@ public:
 	virtual SharedRef<Iterator<T>> Start() override { return New<ArrayIterator<T>>(m_address                       ); }
 	virtual SharedRef<Iterator<T>> End()   override { return New<ArrayIterator<T>>(m_address + m_count.ToRawValue()); }
 
-	virtual SharedRef<Iterator<const T>> Start() const override { return New<ArrayIterator<const T>>(m_address                       ); }
+	virtual SharedRef<Iterator<const T>> Start() const override { return New<ArrayIterator<const T>>(m_address); }
 	virtual SharedRef<Iterator<const T>> End()   const override { return New<ArrayIterator<const T>>(m_address + m_count.ToRawValue()); }
 
 	friend class ArrayList<T>;
 };
 
 template<typename T>
-class ArraySpan 
+class ArraySpan : public Array<T>
 {
 private:
 	ArrayRef<T> m_array;
@@ -200,4 +200,10 @@ public:
 
 		return false;
 	}
+
+	virtual SharedRef<Iterator<T>> Start() override { return New<ArrayIterator<T>>(&m_array[m_index          ]); }
+	virtual SharedRef<Iterator<T>> End()   override { return New<ArrayIterator<T>>(&m_array[m_index + m_count]); }
+
+	virtual SharedRef<Iterator<const T>> Start() const override { return New<ArrayIterator<const T>>(&m_array[m_index]); }
+	virtual SharedRef<Iterator<const T>> End()   const override { return New<ArrayIterator<const T>>(&m_array[m_index + m_count]); }
 };
