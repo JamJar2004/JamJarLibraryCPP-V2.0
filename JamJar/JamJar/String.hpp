@@ -64,6 +64,8 @@ public:
 
 	ArrayRef<String> Split(const String& splitter) const;
 
+	String Replace(const String& oldString, const String& newString) const;
+
 	Boolean Contains(const String& string) const;
 
 	Boolean StartsWith(const String& string) const;

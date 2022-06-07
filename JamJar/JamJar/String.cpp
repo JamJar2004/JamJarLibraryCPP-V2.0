@@ -1,6 +1,7 @@
 #include "String.hpp"
 
 #include "Data/Collections/Lists/ArrayList.hpp"
+#include "Data/Collections/StringBuilder.hpp"
 #include "Data/Memory/Refs.hpp"
 
 String Boolean::ToString() const { return m_value ? "True" : "False"; }
@@ -111,6 +112,33 @@ ArrayRef<String> String::Split(const String& splitter) const
 		resultList.Add(Slice(lastIndex, leftLength));
 
 	return resultList.ToArray();
+}
+
+String String::Replace(const String& oldString, const String& newString) const
+{
+	StringBuilder resultBuilder;
+
+	if(oldString.Length() == 0U)
+		return *this;
+
+	Size lastIndex = 0U;
+	for(Size i = 0U; i < Length() - oldString.Length(); i++)
+	{
+		if(Slice(i, oldString.Length()) == oldString)
+		{
+			if(lastIndex != i)
+				resultBuilder << Slice(lastIndex, i - lastIndex) << newString;
+
+			lastIndex = i + oldString.Length();
+		}
+	}
+
+	Size leftLength = Length() - lastIndex;
+
+	if(leftLength > 0U)
+		resultBuilder << Slice(lastIndex, leftLength);
+
+	return resultBuilder.ToString();
 }
 
 Boolean String::Contains(const String& string) const { return IndexOf(string) != -1; }
