@@ -64,7 +64,7 @@ SInt64 String::IndexOf(const String& string, Size offset) const
 {
 	for(Size i = offset; i < Length() - string.Length(); i++)
 	{
-		if(SubString(i, string.Length()) == string)
+		if(Slice(i, string.Length()) == string)
 			return SInt64(i);
 	}
 
@@ -75,16 +75,16 @@ SInt64 String::LastIndexOf(const String& string, Size offset) const
 {
 	for(Size i = offset - string.Length(); i < Length(); i--)
 	{
-		if(SubString(i, string.Length()) == string)
+		if(Slice(i, string.Length()) == string)
 			return SInt64(i);
 	}
 
 	return -1;
 }
 
-String String::SubString(Size index) const { return SubString(index, Length() - index); }
+String String::Slice(Size index) const { return Slice(index, Length() - index); }
 
-String String::SubString(Size index, Size length) const { return String(m_chars.Slice(index, length)); }
+String String::Slice(Size index, Size length) const { return String(m_chars.Slice(index, length)); }
 
 ArrayRef<String> String::Split(const String& splitter) const
 {
@@ -96,43 +96,40 @@ ArrayRef<String> String::Split(const String& splitter) const
 	Size lastIndex = 0U;
 	for(Size i = 0U; i < Length() - splitter.Length(); i++)
 	{
-		if(SubString(i, splitter.Length()) == splitter)
+		if(Slice(i, splitter.Length()) == splitter)
 		{
-			if(lastIndex == i)
-			{
-				lastIndex = splitter.Length();
-				i = lastIndex - 1U;
-				continue;
-			}
-			resultList.Add(SubString(lastIndex, i - lastIndex));
+			if(lastIndex != i)
+				resultList.Add(Slice(lastIndex, i - lastIndex));
+
+			lastIndex = i + splitter.Length();
 		}
 	}
 
 	Size leftLength = Length() - lastIndex;
 
 	if(leftLength > 0U)
-		resultList.Add(SubString(lastIndex, leftLength));
+		resultList.Add(Slice(lastIndex, leftLength));
 
 	return resultList.ToArray();
 }
 
 Boolean String::Contains(const String& string) const { return IndexOf(string) != -1; }
 
-Boolean String::StartsWith(const String& string) const { return SubString(0U                        , string.Length()) == string; }
-Boolean String::EndsWith(const String& string)   const { return SubString(Length() - string.Length(), string.Length()) == string; }
+Boolean String::StartsWith(const String& string) const { return Slice(0U                        , string.Length()) == string; }
+Boolean String::EndsWith(const String& string)   const { return Slice(Length() - string.Length(), string.Length()) == string; }
 
 String String::TrimStart() const
 {
 	Size i;
 	for(i = 0U; m_chars[i].IsWhiteSpace() && i < Length(); i++);
-	return SubString(i);
+	return Slice(i);
 }
 
 String String::TrimEnd() const
 {
 	Size i;
 	for(i = Length(); m_chars[i].IsWhiteSpace() && i < Length(); i--);
-	return SubString(0U, i);
+	return Slice(0U, i);
 }
 
 String String::Trim() const { return TrimStart().TrimEnd(); }

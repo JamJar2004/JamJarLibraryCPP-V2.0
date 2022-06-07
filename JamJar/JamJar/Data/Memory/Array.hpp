@@ -167,7 +167,7 @@ public:
 	      T& operator[](Size index)       { return m_array[index + m_index]; }
 	const T& operator[](Size index) const { return m_array[index + m_index]; }
 
-	ArraySpan<T> Slice(Size index, Size count) const { return ArraySpan<T>(m_array, index, count); }
+	ArraySpan<T> Slice(Size index, Size count) const { return ArraySpan<T>(m_array, index + m_index, count); }
 
 	ArrayRef<T> ToArray() const requires CopyConstructible<T>
 	{

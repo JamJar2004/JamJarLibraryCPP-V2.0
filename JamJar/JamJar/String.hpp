@@ -59,8 +59,8 @@ public:
 	SInt64     IndexOf(const String& string, Size offset = 0U) const;
 	SInt64 LastIndexOf(const String& string, Size offset = 0U) const;
 
-	String SubString(Size index)              const;
-	String SubString(Size index, Size length) const;
+	String Slice(Size index)              const;
+	String Slice(Size index, Size length) const;
 
 	ArrayRef<String> Split(const String& splitter) const;
 

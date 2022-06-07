@@ -27,10 +27,8 @@ public:
 
 ExitStatus Start()
 {
-	String sentence = "He was in the forest looking to see the trees but none were there.";
-
-	for(const String& word : sentence.Split(" "))
-		Console::PrintLine(word);
+	String sentence = "    He was in the forest looking to see the trees but none were there.";
+	Console::PrintLine(sentence.Trim());
 
 	//ArrayList<String> list;
 	//list.Add("A");
