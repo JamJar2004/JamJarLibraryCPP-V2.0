@@ -3,105 +3,60 @@
 #include "../../Numerics.hpp"
 
 template<typename T>
-class SharedRef;
-
-template<typename T>
 class NullableRef;
-
-template<typename T>
-class BaseAllocation
-{
-protected:
-	Size m_refCount;
-
-	void    AddRef() { ++m_refCount;                          }
-	Boolean RemRef() { --m_refCount; return m_refCount == 0U; }
-public:
-	BaseAllocation() {}
-
-	virtual ~BaseAllocation() {}
-
-	virtual       T& GetValue()       = 0;
-	virtual const T& GetValue() const = 0;
-
-	friend class SharedRef<T>;
-	friend class NullableRef<T>;
-};
-
-template<typename T>
-class Allocation : public BaseAllocation<T>
-{
-private:
-	T m_value;
-public:
-	Allocation(const T& value) requires CopyConstructible<T> : m_value(value) {}
-
-	template<typename... Args>
-	Allocation(Args&&... args) requires ConstructibleFrom<T, Args...> : m_value(args...) {}
-
-	      T& GetValue()       override { return m_value; }
-	const T& GetValue() const override { return m_value; }
-
-	friend class SharedRef<T>;
-	friend class NullableRef<T>;
-};
 
 template<typename T>
 class SharedRef
 {
 private:
-	BaseAllocation<T>* m_allocation;
+	T*    m_address;
+	Size* m_refCount;
 
-	void AddRef() { m_allocation->AddRef(); }
-	
+	void AddRef() { ++(*m_refCount); }
+
 	void RemRef()
 	{
-		if(m_allocation->RemRef())
-			delete m_allocation;
+		--(*m_refCount);
+		if(*m_refCount == 0U)
+		{
+			delete m_address;
+			delete m_refCount;
+		}
 	}
-
-	SharedRef(BaseAllocation<T>* allocation) : m_allocation(allocation) { AddRef(); }
+	
+	SharedRef(T* address, Size* refCount) : m_address(address), m_refCount(refCount) {}
 public:
-	SharedRef(const T& value) requires CopyConstructible<T> : SharedRef(new Allocation<T>()) {}
-
 	template<typename... Args>
-	SharedRef(Args&&... args) requires ConstructibleFrom<T, Args...> : SharedRef(new Allocation<T>(args...)) {}
+	SharedRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new Size(1U)) {}
+
+	SharedRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
 	template<Inherits<T> T2>
-	SharedRef(const SharedRef<T2>& other) : SharedRef((BaseAllocation<T>*)other.m_allocation) {}
-
-	SharedRef(const SharedRef<T>& other) : SharedRef(other.m_allocation) {}
+	SharedRef(const SharedRef<T2>& other) : m_address((T*)other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
 	~SharedRef() { RemRef(); }
 
 	template<Inherits<T> T2>
-	explicit operator SharedRef<T2>() const { return SharedRef<T2>(m_allocation); }
+	explicit operator SharedRef<T2>() { return SharedRef<T2>((T2*)m_address, m_refCount); }
 
-	SharedRef<T>& operator=(const SharedRef<T>& other) 
+	SharedRef<T>& operator=(const SharedRef<T>& other)
 	{
 		RemRef();
-		m_allocation = other.m_allocation;
+		m_address  = other.m_address;
+		m_refCount = other.m_refCount;
 		AddRef();
 
 		return *this;
 	}
 
-		  T& operator*()       { return m_allocation->GetValue(); }
-	const T& operator*() const { return m_allocation->GetValue(); }
-
-	      T* operator->()       { return &m_allocation->GetValue(); }
-	const T* operator->() const { return &m_allocation->GetValue(); }
-
-	template<typename T2>
-	friend Boolean operator==(const SharedRef<T>& left, const SharedRef<T2>& right) { return left.m_allocation == right.m_allocation; }
-
-	template<typename T2>
-	friend Boolean operator!=(const SharedRef<T>& left, const SharedRef<T2>& right) { return left.m_allocation != right.m_allocation; }
+	T&       operator *() const { return *m_address; }
+	T* const operator->() const { return  m_address; }
 
 	template<typename T2>
 	friend class SharedRef;
 
-	friend class NullableRef<T>;
+	template<typename T2>
+	friend class NullableRef;
 };
 
 template<typename T, typename... Args>
@@ -111,93 +66,78 @@ template<typename T>
 class NullableRef
 {
 private:
-	BaseAllocation<T>* m_allocation;
+	T*    m_address;
+	Size* m_refCount;
 
-	void AddRef()
-	{ 
-		if(m_allocation)
-			m_allocation->AddRef(); 
-	}
+	void AddRef() { ++(*m_refCount); }
 
 	void RemRef()
 	{
-		if(m_allocation)
-			if(m_allocation->RemRef())
-				delete m_allocation;
+		--(*m_refCount);
+		if(*m_refCount == 0U)
+		{
+			delete m_address;
+			delete m_refCount;
+		}
 	}
 public:
-	NullableRef(std::nullptr_t) : m_allocation(nullptr) {}
+	NullableRef(std::nullptr_t) : m_address(nullptr), m_refCount(nullptr) {}
 
-	NullableRef(const T& value) requires CopyConstructible<T> : m_allocation(new Allocation<T>()) { m_allocation->AddRef(); }
+	template<typename T, typename... Args>
+	NullableRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new Size(1U)) {}
 
-	template<typename... Args>
-	NullableRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_allocation(new Allocation<T>(args...)) { m_allocation->AddRef(); }
+	NullableRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
-	NullableRef(const SharedRef<T>& other) : m_allocation(other.m_allocation) { m_allocation->AddRef(); }
+	template<Inherits<T> T2>
+	NullableRef(const SharedRef<T2>& other) : m_address((T*)other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
-	NullableRef(const NullableRef<T>& other) : m_allocation(other.m_allocation) { AddRef(); }
+	NullableRef(const NullableRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) 
+	{
+		if(m_refCount)
+			AddRef(); 
+	}
 
-	~NullableRef() { m_allocation->RemRef(); }
+	template<Inherits<T> T2>
+	NullableRef(const NullableRef<T2>& other) : m_address((T*)other.m_address), m_refCount(other.m_refCount)
+	{
+		if(m_refCount)
+			AddRef();
+	}
 
-	explicit operator SharedRef<T>() const;
-	/*{
-		if(!m_allocation)
-			NullReferenceException().Throw();
-
-		return SharedRef<T>(m_allocation); 
-	}*/
+	~NullableRef() 
+	{
+		if(m_refCount)
+			RemRef();
+	}
 
 	NullableRef<T>& operator=(const SharedRef<T>& other)
 	{
-		RemRef();
-		m_allocation = other.m_allocation;
+		if(m_refCount)
+			RemRef();
+
+		m_address  = other.m_address;
+		m_refCount = other.m_refCount;
+		
 		AddRef();
+		return *this;
 	}
 
 	NullableRef<T>& operator=(const NullableRef<T>& other)
 	{
-		RemRef();
-		m_allocation = other.m_allocation;
-		AddRef();
+		if(m_refCount)
+			RemRef();
+
+		m_address  = other.m_address;
+		m_refCount = other.m_refCount;
+		
+		if(m_refCount)
+			AddRef();
+
+		return *this;
 	}
 
-	Boolean IsNull() { return !m_allocation; }
+	operator SharedRef<T>() const;
 
-	T& operator*();
-	//{
-	//	if(!m_allocation)
-	//		NullReferenceException().Throw();
-
-	//	return m_allocation->GetValue();
-	//}
-
-	const T& operator*() const;
-	//{
-	//	if(!m_allocation)
-	//		NullReferenceException().Throw();
-
-	//	return m_allocation->GetValue();
-	//}
-
-	T* operator->();
-	//{
-	//	if(!m_allocation)
-	//		NullReferenceException().Throw();
-
-	//	return m_allocation->AsPointer();
-	//}
-
-	const T* operator->() const;
-	//{ 
-	//	if(!m_allocation)
-	//		NullReferenceException().Throw();
-
-	//	return m_allocation->AsPointer();
-	//}
-
-	template<typename T2>
-	friend Boolean operator==(const NullableRef<T>& left, const NullableRef<T2>& right) { return left.m_allocation == right.m_allocation; }
-
-	template<typename T2>
-	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T2>& right) { return left.m_allocation != right.m_allocation; }
+	T&       operator *() const;
+	T* const operator->() const;
 };

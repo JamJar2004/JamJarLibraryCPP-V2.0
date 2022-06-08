@@ -17,3 +17,30 @@ class NullReferenceException : public Exception
 public:
 	NullReferenceException() : Exception("Cannot dereference a null reference.") {}
 };
+
+template<typename T>
+NullableRef<T>::operator SharedRef<T>() const
+{
+	if(!m_address)
+		NullReferenceException().Throw();
+
+	return SharedRef<T>(m_address, m_refCount);
+}
+
+template<typename T>
+T& NullableRef<T>::operator*() const
+{
+	if(!m_address)
+		NullReferenceException().Throw();
+
+	return *m_address;
+}
+
+template<typename T>
+T* const NullableRef<T>::operator->() const
+{
+	if(!m_address)
+		NullReferenceException().Throw();
+
+	return m_address;
+}

@@ -2,4 +2,8 @@
 
 #include "Console.hpp"
 
-void Exception::Throw() const { Console::PrintLine(m_message); }
+void Exception::Throw() const 
+{
+	Console::PrintLine(m_message);
+	std::exit(1);
+}

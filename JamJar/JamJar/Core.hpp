@@ -13,3 +13,5 @@ enum class ExitStatus
 ExitStatus Start();
 
 int main();
+
+void Exit(ExitStatus exitStatus);

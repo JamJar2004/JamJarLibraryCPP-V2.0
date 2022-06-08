@@ -202,4 +202,14 @@ public:
 		return type.GetNotEquator()(left.m_address, right.m_address);
 	}
 };
-
+//
+//class DynamicRef
+//{
+//private:
+//	void* m_address;
+//	Size* m_refCount;
+//
+//	const TypeInfo& m_type;
+//public:
+//	DynamicRef() : m_address() {}
+//};
