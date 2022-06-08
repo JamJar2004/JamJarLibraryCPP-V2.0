@@ -8,11 +8,18 @@ template<typename T>
 class ArrayIterator : public Iterator<T>
 {
 private:
-	T* m_address;
+	T*      m_address;
+	Boolean m_isReverse;
 public:
-	ArrayIterator(T* address) : m_address(address) {}
+	ArrayIterator(T* address, Boolean isReverse = false) : m_address(address), m_isReverse(isReverse) {}
 
-	virtual void MoveNext() override { ++m_address; }
+	virtual void MoveNext() override 
+	{
+		if(!m_isReverse)
+			++m_address;
+		else
+			--m_address;
+	}
 
 	virtual T& Current() const override { return *m_address; }
 

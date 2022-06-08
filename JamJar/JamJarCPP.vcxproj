@@ -30,6 +30,7 @@
     <ClInclude Include="JamJar\Data\Collections\Lists\LinkedList.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Array.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Buffer.hpp" />
+    <ClInclude Include="JamJar\Data\Memory\Queue.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Refs.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Stack.hpp" />
     <ClInclude Include="JamJar\Data\Reflection.hpp" />

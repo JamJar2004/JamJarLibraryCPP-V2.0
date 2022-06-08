@@ -3,6 +3,7 @@
 #include <JamJar/Data/Collections/Lists/ArrayList.hpp>
 
 #include <JamJar/Data/Memory/Stack.hpp>
+#include <JamJar/Data/Memory/Queue.hpp>
 
 #include <JamJar/Dynamic.hpp>
 
@@ -67,14 +68,21 @@ ExitStatus Start()
 
 	//Console::PrintLine(list);
 
-	Stack<String> stack;
-	stack.Push("He");
-	stack.Push("was");
-	stack.Push("in");
-	stack.Push("the");
-	stack.Push("forest");
+	Queue<String> queue;
+	queue.Push("He");
+	queue.Push("was");
+	queue.Push("in");
+	queue.Push("the");
+	queue.Push("forest");
 
-	Console::PrintLine(stack);
+	Console::PrintLine(queue);
+
+	queue.Pop();
+	queue.Pop();
+	queue.Pop();
+	queue.Pop();
+
+	Console::PrintLine(queue);
 
 	return ExitStatus::OK;
 }

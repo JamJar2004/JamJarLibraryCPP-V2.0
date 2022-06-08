@@ -40,7 +40,8 @@ public:
 
 	operator UnsafeRef<T>() const { return UnsafeRef<T>(m_address); }
 
-	UnsafeRef<T> AsUnsafeRef() const { return UnsafeRef<T>(m_address); }
+	UnsafeRef<T> First() const { return UnsafeRef<T>(m_address                       ); }
+	UnsafeRef<T> Last()  const { return UnsafeRef<T>(m_address + m_count.ToRawValue()); }
 
 	      UnsafeRef<T> operator[](Size index)       { return UnsafeRef<T>(m_address + index.ToRawValue()); }
 	const UnsafeRef<T> operator[](Size index) const { return UnsafeRef<T>(m_address + index.ToRawValue()); }
@@ -92,6 +93,9 @@ public:
 
 	UnsafeRef<T>& operator++() { ++m_address; return *this; }
 	UnsafeRef<T>& operator--() { --m_address; return *this; }
+
+	friend Boolean operator==(const UnsafeRef<T>& left, const UnsafeRef<T>& right) { return left.m_address == right.m_address; }
+	friend Boolean operator!=(const UnsafeRef<T>& left, const UnsafeRef<T>& right) { return left.m_address != right.m_address; }
 
 	T* ToUnsafePointer() const { return m_address; }
 

@@ -49,6 +49,9 @@
     <ClInclude Include="JamJar\Data\Collections\Lists\LinkedList.hpp">
       <Filter>Data\Collections\Lists</Filter>
     </ClInclude>
+    <ClInclude Include="JamJar\Data\Memory\Queue.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
