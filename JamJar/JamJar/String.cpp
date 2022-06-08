@@ -1,7 +1,6 @@
 #include "String.hpp"
 
 #include "Data/Collections/Lists/ArrayList.hpp"
-#include "Data/Collections/StringBuilder.hpp"
 #include "Data/Memory/Refs.hpp"
 
 String Boolean::ToString() const { return m_value ? "True" : "False"; }

@@ -46,9 +46,6 @@
     <ClInclude Include="JamJar\Data\Collections\List.hpp">
       <Filter>Data\Collections</Filter>
     </ClInclude>
-    <ClInclude Include="JamJar\Data\Collections\StringBuilder.hpp">
-      <Filter>Data\Collections</Filter>
-    </ClInclude>
     <ClInclude Include="JamJar\Data\Collections\Lists\LinkedList.hpp">
       <Filter>Data\Collections\Lists</Filter>
     </ClInclude>

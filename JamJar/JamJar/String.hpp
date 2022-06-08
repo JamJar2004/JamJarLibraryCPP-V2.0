@@ -75,6 +75,8 @@ public:
 	String TrimEnd()   const;
 	String Trim()      const;
 
+	const ArraySpan<Character> AsSpan() const { return m_chars; }
+
 	friend String operator+(const String& left, const String& right);
 
 	template<Printable T>
@@ -108,3 +110,52 @@ String SignedInteger<T>::ToString() const { return std::to_string(m_value).c_str
 
 template<std::floating_point T>
 String Float<T>::ToString() const { return std::to_string(m_value).c_str(); }
+
+class StringBuilder
+{
+private:
+	ArrayRef<Character> m_chars;
+	Size                m_length;
+public:
+	StringBuilder(Size initialCapacity = 16U) : m_chars(initialCapacity) {}
+
+	Size Length() const { return m_length; }
+
+	StringBuilder& operator<<(const String& string) 
+	{
+		if(m_length + string.Length() >= m_chars.Count())
+		{
+			ArrayRef<Character> newChars(m_length * 2U + string.Length());
+			m_chars.AsSpan().CopyTo(newChars, 0U, 0U, m_length);
+			m_chars = newChars;
+		}
+
+		string.AsSpan().CopyTo(m_chars, 0U, m_length, string.Length());
+		m_length += string.Length();
+
+		return *this;
+	}
+
+	void Remove(Size index, Size length) { m_length -= length; }
+
+	void Clear() { m_length = 0U; }
+
+	String ToString() const { return String(ArraySpan<Character>(m_chars, 0U, m_length)); }
+};
+
+template<typename T>
+String IIterable<T>::ToString() const requires Printable<T>
+{
+	StringBuilder resultBuilder;
+
+	resultBuilder << "{";
+
+	for(const T& item : *this)
+		resultBuilder << item.ToString() << ", ";
+
+	resultBuilder.Remove(resultBuilder.Length() - 2U, 2U);
+
+	resultBuilder << "}";
+
+	return resultBuilder.ToString();
+}

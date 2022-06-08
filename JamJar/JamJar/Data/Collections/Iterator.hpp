@@ -36,7 +36,7 @@ public:
 
 	operator IIterable<const T>() { return *this; }
 
-	String ToString() const;// requires Printable<T>;
+	String ToString() const requires Printable<T>;
 };
 
 template<typename T>
