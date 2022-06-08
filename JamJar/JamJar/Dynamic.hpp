@@ -202,14 +202,49 @@ public:
 		return type.GetNotEquator()(left.m_address, right.m_address);
 	}
 };
-//
-//class DynamicRef
-//{
-//private:
-//	void* m_address;
-//	Size* m_refCount;
-//
-//	const TypeInfo& m_type;
-//public:
-//	DynamicRef() : m_address() {}
-//};
+
+class DynamicRef
+{
+private:
+	void* m_address;
+	Size* m_refCount;
+
+	const TypeInfo& m_type;
+
+	void AddRef() { ++(*m_refCount); }
+
+	void RemRef()
+	{
+		--(*m_refCount);
+		if (*m_refCount == 0U)
+		{
+			delete m_address;
+			delete m_refCount;
+		}
+	}
+public:
+	template<typename T>
+	DynamicRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount), m_type(Reflect::GetType<T>()) { AddRef(); }
+
+	DynamicRef(const DynamicRef& other) : m_address(other.m_address), m_refCount(other.m_refCount), m_type(other.m_type) { AddRef(); }
+
+	template<typename T>
+	operator SharedRef<T>() const 
+	{
+		if(m_type != Reflect::GetType<T>())
+			InvalidCastException(m_type, Reflect::GetType<T>()).Throw();
+
+		return SharedRef<T>((T*)m_address, m_refCount);
+	}
+
+	const TypeInfo& GetType() const { return m_type; }
+
+	template<typename T>
+	T& Get() const
+	{
+		if(m_type != Reflect::GetType<T>())
+			InvalidCastException(m_type, Reflect::GetType<T>()).Throw();
+
+		return *(T*)m_address;
+	}
+};

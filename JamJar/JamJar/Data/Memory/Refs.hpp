@@ -5,6 +5,8 @@
 template<typename T>
 class NullableRef;
 
+class DynamicRef;
+
 template<typename T>
 class SharedRef
 {
@@ -57,6 +59,8 @@ public:
 
 	template<typename T2>
 	friend class NullableRef;
+
+	friend class DynamicRef;
 };
 
 template<typename T, typename... Args>
