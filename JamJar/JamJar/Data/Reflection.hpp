@@ -10,6 +10,8 @@ using Destructor      = Function<void, void*>;
 
 using CopyAssigner = Function<void, const void*, void*>;
 
+using MathOperation = Function<void, void*, const void*, const void*>;
+
 using Comparer = Function<Boolean, const void*, const void*>;
 
 class TypeInfo
@@ -28,6 +30,16 @@ private:
 
 	CopyAssigner m_copyAssigner;
 
+	MathOperation m_addOperation;
+	MathOperation m_subOperation;
+	MathOperation m_mulOperation;
+	MathOperation m_divOperation;
+	MathOperation m_modOperation;
+
+	Comparer m_smaller;
+	Comparer m_greater;
+	Comparer m_smallerOrEqual;
+	Comparer m_greaterOrEqual;
 	Comparer m_equator;
 	Comparer m_notEquator;
 
@@ -67,6 +79,102 @@ private:
 		template<typename T>
 		static void Assign(const void* source, void* dest) { Exception("Type " + s_type + " is not copy assignable.").Throw(); }
 		
+		template<Addable T>
+		static void Add(void* dest, const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			new(dest) T(leftValue + rightValue);
+		}
+
+		template<Subtractable T>
+		static void Subtract(void* dest, const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			new(dest) T(leftValue - rightValue);
+		}
+
+		template<Multiplicable T>
+		static void Multiply(void* dest, const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			new(dest) T(leftValue * rightValue);
+		}
+
+		template<Divisible T>
+		static void Divide(void* dest, const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			new(dest) T(leftValue / rightValue);
+		}
+
+		template<Modable T>
+		static void Modulate(void* dest, const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			new(dest) T(leftValue % rightValue);
+		}
+
+		template<typename T>
+		static void Add(void* dest, const void* left, const void* right)      { Exception("Type " + s_type + " is not addable.").Throw(); }
+
+		template<typename T>
+		static void Subtract(void* dest, const void* left, const void* right) { Exception("Type " + s_type + " is not subtractable.").Throw(); }
+
+		template<typename T>
+		static void Multiply(void* dest, const void* left, const void* right) { Exception("Type " + s_type + " is not multiplicable.").Throw(); }
+
+		template<typename T>
+		static void Divide(void* dest, const void* left, const void* right)   { Exception("Type " + s_type + " is not divisible.").Throw(); }
+
+		template<typename T>
+		static void Modulate(void* dest, const void* left, const void* right) { Exception("Type " + s_type + " is not modable.").Throw(); }
+
+		template<Comparable T>
+		static Boolean Smaller(const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			return leftValue < rightValue;
+		}
+
+		template<Comparable T>
+		static Boolean SmallerOrEqual(const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			return leftValue <= rightValue;
+		}
+
+		template<Comparable T>
+		static Boolean Greater(const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			return leftValue > rightValue;
+		}
+
+		template<Comparable T>
+		static Boolean GreaterOrEqual(const void* left, const void* right)
+		{
+			T& leftValue = *(T*)left;
+			T& rightValue = *(T*)right;
+
+			return leftValue >= rightValue;
+		}
+
 		template<Equatable T>
 		static Boolean Equal(const void* left, const void* right)
 		{
@@ -76,9 +184,6 @@ private:
 			return leftValue == rightValue;
 		}
 
-		template<typename T>
-		static Boolean Equal(const void* left, const void* right) { Exception("Type " + s_type + " is not equatable.").Throw(); return false; }
-
 		template<Equatable T>
 		static Boolean NotEqual(const void* left, const void* right)
 		{
@@ -87,6 +192,21 @@ private:
 
 			return leftValue != rightValue;
 		}
+
+		template<typename T>
+		static Boolean Smaller(const void* left, const void* right) { Exception("Type " + s_type + " is not comparable.").Throw(); return false; }
+
+		template<typename T>
+		static Boolean SmallerOrEqual(const void* left, const void* right) { Exception("Type " + s_type + " is not comparable.").Throw(); return false; }
+
+		template<typename T>
+		static Boolean Greater(const void* left, const void* right) { Exception("Type " + s_type + " is not comparable.").Throw(); return false; }
+
+		template<typename T>
+		static Boolean GreaterOrEqual(const void* left, const void* right) { Exception("Type " + s_type + " is not comparable.").Throw(); return false; }
+
+		template<typename T>
+		static Boolean Equal(const void* left, const void* right) { Exception("Type " + s_type + " is not equatable.").Throw(); return false; }
 
 		template<typename T>
 		static Boolean NotEqual(const void* left, const void* right) { Exception("Type " + s_type + " is not equatable.").Throw(); return false; }
@@ -99,7 +219,16 @@ public:
 		CopyConstructor copyConstructor,
 		CopyConstructor moveConstructor,
 		Destructor destructor,
-		CopyAssigner copyAssigner, 
+		CopyAssigner copyAssigner,
+		MathOperation addOperation,
+		MathOperation subOperation,
+		MathOperation mulOperation,
+		MathOperation divOperation,
+		MathOperation modOperation,
+		Comparer smaller,
+		Comparer greater,
+		Comparer smallerOrEqual,
+		Comparer greaterOrEqual,
 		Comparer equator,
 		Comparer notEquator) :
 
@@ -110,6 +239,15 @@ public:
 		m_moveConstructor(moveConstructor),
 		m_destructor(destructor), 
 		m_copyAssigner(copyAssigner),
+		m_addOperation(addOperation),
+		m_subOperation(subOperation),
+		m_mulOperation(mulOperation),
+		m_divOperation(divOperation),
+		m_modOperation(modOperation),
+		m_smaller(smaller),
+		m_greater(greater),
+		m_smallerOrEqual(smallerOrEqual),
+		m_greaterOrEqual(greaterOrEqual),
 		m_equator(equator),
 		m_notEquator(notEquator) {}
 
@@ -122,8 +260,18 @@ public:
 
 	CopyAssigner GetCopyAssigner() const { return m_copyAssigner; }
 
-	Comparer GetEquator()    const { return m_equator;    }
-	Comparer GetNotEquator() const { return m_notEquator; }
+	MathOperation GetAdditionOperation()       const { return m_addOperation; }
+	MathOperation GetSubtractionOperation()    const { return m_subOperation; }
+	MathOperation GetMultiplicationOperation() const { return m_mulOperation; }
+	MathOperation GetDivisionOperation()       const { return m_divOperation; }
+	MathOperation GetModulusOperation()        const { return m_modOperation; }
+
+	Comparer GetSmaller()        const { return m_smaller;        }
+	Comparer GetGreater()        const { return m_greater;        }
+	Comparer GetSmallerOrEqual() const { return m_smallerOrEqual; }
+	Comparer GetGreaterOrEqual() const { return m_greaterOrEqual; }
+	Comparer GetEquator()        const { return m_equator;        }
+	Comparer GetNotEquator()     const { return m_notEquator;     }
 
 	friend Boolean operator==(const TypeInfo& left, const TypeInfo& right) { return left.m_ID == right.m_ID; }
 	friend Boolean operator!=(const TypeInfo& left, const TypeInfo& right) { return left.m_ID != right.m_ID; }
@@ -134,7 +282,23 @@ public:
 };
 
 template<typename T>
-TypeInfo TypeInfo::TypeStore<T>::s_type(s_lastID++, typeid(T).name(), sizeof(T), Copy<T>, Move<T>, Destroy<T>, Assign<T>, Equal<T>, NotEqual<T>);
+TypeInfo TypeInfo::TypeStore<T>::s_type(s_lastID++, typeid(T).name(), sizeof(T),
+	Copy<T>,
+	Move<T>,
+	Destroy<T>,
+	Assign<T>, 
+	Add<T>, 
+	Subtract<T>,
+	Multiply<T>,
+	Divide<T>, 
+	Modulate<T>,
+	Smaller<T>, 
+	Greater<T>,
+	SmallerOrEqual<T>,
+	GreaterOrEqual<T>,
+	Equal<T>, 
+	NotEqual<T>);
+
 
 class Reflect
 {

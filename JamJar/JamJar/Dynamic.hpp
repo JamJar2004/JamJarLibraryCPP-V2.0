@@ -2,11 +2,18 @@
 
 #include "Data/Reflection.hpp"
 
+class NullType
+{
+
+};
+
 class Dynamic
 {
 private:
 	      void*     m_address;
 	const TypeInfo& m_type;
+
+	Dynamic(void* address, const TypeInfo& type) : m_address(address), m_type(type) {}
 public:
 	template<CopyConstructible T>
 	Dynamic(const T& value) : m_address(malloc(sizeof(T))), m_type(Reflect::GetType<T>()) { new(m_address) T(value); }
@@ -15,6 +22,7 @@ public:
 	Dynamic(T&& value) requires(!SameAs<T, Dynamic&>) : m_address(malloc(sizeof(T))), m_type(Reflect::GetType<T>()) { new(m_address) T(std::move(value)); }
 
 	Dynamic(const Dynamic& other);
+	Dynamic(Dynamic&& other) noexcept;
 
 	~Dynamic();
 
@@ -55,6 +63,124 @@ public:
 
 	template<typename T>
 	operator T() const { return Cast<T>(); }
+
+	friend Dynamic operator+(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+		{
+			Exception("Addition can only be done between dynamics of the same type.").Throw();
+			return NullType();
+		}
+
+		Dynamic result = Dynamic(malloc(left.m_type.GetSize().ToRawValue()), left.m_type);
+		result.m_type.GetAdditionOperation()(result.m_address, left.m_address, right.m_address);
+
+		return result;
+	}
+
+	friend Dynamic operator-(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+		{
+			Exception("Subtraction can only be done between dynamics of the same type.").Throw();
+			return NullType();
+		}
+
+		Dynamic result = Dynamic(malloc(left.m_type.GetSize().ToRawValue()), left.m_type);
+		result.m_type.GetSubtractionOperation()(result.m_address, left.m_address, right.m_address);
+
+		return result;
+	}
+
+	friend Dynamic operator*(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+		{
+			Exception("Multiplication can only be done between dynamics of the same type.").Throw();
+			return NullType();
+		}
+
+		Dynamic result = Dynamic(malloc(left.m_type.GetSize().ToRawValue()), left.m_type);
+		result.m_type.GetMultiplicationOperation()(result.m_address, left.m_address, right.m_address);
+
+		return result;
+	}
+
+	friend Dynamic operator/(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+		{
+			Exception("Division can only be done between dynamics of the same type.").Throw();
+			return NullType();
+		}
+
+		Dynamic result = Dynamic(malloc(left.m_type.GetSize().ToRawValue()), left.m_type);
+		result.m_type.GetDivisionOperation()(result.m_address, left.m_address, right.m_address);
+
+		return result;
+	}
+
+	friend Dynamic operator%(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+		{
+			Exception("Modulus can only be done between dynamics of the same type").Throw();
+			return NullType();
+		}
+
+		Dynamic result = Dynamic(malloc(left.m_type.GetSize().ToRawValue()), left.m_type);
+		result.m_type.GetModulusOperation()(result.m_address, left.m_address, right.m_address);
+
+		return result;
+	}
+
+	friend Boolean operator<(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+		{
+			Exception("Comparisons can only be done between dynamics of the same type").Throw();
+			return false;
+		}
+
+		const TypeInfo& type = left.m_type;
+		return type.GetSmaller()(left.m_address, right.m_address);
+	}
+
+	friend Boolean operator>(const Dynamic& left, const Dynamic& right)
+	{
+		if(left.m_type != right.m_type)
+		{
+			Exception("Comparisons can only be done between dynamics of the same type").Throw();
+			return false;
+		}
+
+		const TypeInfo& type = left.m_type;
+		return type.GetGreater()(left.m_address, right.m_address);
+	}
+
+	friend Boolean operator<=(const Dynamic& left, const Dynamic& right)
+	{
+		if (left.m_type != right.m_type)
+		{
+			Exception("Comparisons can only be done between dynamics of the same type").Throw();
+			return false;
+		}
+
+		const TypeInfo& type = left.m_type;
+		return type.GetSmallerOrEqual()(left.m_address, right.m_address);
+	}
+
+	friend Boolean operator>=(const Dynamic& left, const Dynamic& right)
+	{
+		if (left.m_type != right.m_type)
+		{
+			Exception("Comparisons can only be done between dynamics of the same type").Throw();
+			return false;
+		}
+
+		const TypeInfo& type = left.m_type;
+		return type.GetGreaterOrEqual()(left.m_address, right.m_address);
+	}
 
 	friend Boolean operator==(const Dynamic& left, const Dynamic& right)
 	{

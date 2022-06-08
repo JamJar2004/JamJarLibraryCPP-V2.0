@@ -87,6 +87,17 @@ template<typename T>
 concept Divisible     = requires(T left, T right) { { left / right } -> SameAs<T>; };
 template<typename T>
 concept Modable       = requires(T left, T right) { { left % right } -> SameAs<T>; };
+//
+//template<typename T, typename T2>
+//concept Addable       = requires(T left, T2 right) { { left + right } -> SameAs<T>; };
+//template<typename T, typename T2>
+//concept Subtractable  = requires(T left, T2 right) { { left - right } -> SameAs<T>; };
+//template<typename T, typename T2>
+//concept Multiplicable = requires(T left, T2 right) { { left * right } -> SameAs<T>; };
+//template<typename T, typename T2>
+//concept Divisible     = requires(T left, T2 right) { { left / right } -> SameAs<T>; };
+//template<typename T, typename T2>
+//concept Modable       = requires(T left, T2 right) { { left % right } -> SameAs<T>; };
 
 template<typename T>
 concept BitwiseAnd = requires(T left, T right) { { left & right } -> SameAs<T>; };

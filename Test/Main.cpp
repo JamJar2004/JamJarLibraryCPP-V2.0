@@ -42,7 +42,7 @@ public:
 
 ExitStatus Start()
 {
-	Dynamic value = Dynamic(Object());
+
 
 	return ExitStatus::OK;
 }
