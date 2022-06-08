@@ -1,74 +1,68 @@
 #pragma once
 
-#include "../../Numerics.hpp"
+#include "Array.hpp"
+#include "Buffer.hpp"
+#include "../Collections/Collection.hpp"
 
 template<typename T>
-class Stack
+class Stack : public IResizableCollection<T>
 {
 private:
-	T* m_base;
-	T* m_top;
+	BufferRef<T> m_buffer;
+	UnsafeRef<T> m_top;
 
-	Size m_capacity;
-
-	void ReAllocate();
+	void ReAllocate(Size extraCount);
 public:
-	Stack(Size initialCapacity = 4U) : m_base(malloc(sizeof(T) * initialCapacity.ToRawValue())), m_top(m_base), m_capacity(initialCapacity) {}
+	Stack(Size initialCapacity = 4U) : m_buffer(initialCapacity), m_top(m_buffer.AsUnsafeRef()) {}
 
-	Size Count() const { return Size(m_top - m_base); }
+	~Stack() { Clear(); }
+	
+	virtual Size Count() const override { return m_top - m_buffer.AsUnsafeRef(); }
 
-	      T& Last()       { return *m_top; }
-	const T& Last() const { return *m_top; }
-
-	void Push(const T& item);
+	      T& Top()       { return *(m_top - 1U); }
+	const T& Top() const { return *(m_top - 1U); }
 
 	template<typename... Args>
-	void Push(Args&&... args) requires ConstructibleFrom<T, Args...>;
+	void Push(Args&&... args) requires ConstructibleFrom<T, Args...>
+	{
+		if(Count() + 1U >= m_buffer.Count())
+			ReAllocate(1U);
 
-	void Pop();
+		m_top.Initialize(args...);
+		++m_top;
+	}
 
-	void Clear();
+	T Pop()
+	{
+		T result = Top();
+		--m_top;
+		m_top.Destroy();
+		return result;
+	}
+
+	virtual void Clear() override
+	{
+		while(Count() > 0U)
+		{
+			--m_top;
+			m_top.Destroy();
+		}
+	}
+
+	virtual SharedRef<Iterator<T>> Start() override { return New<ArrayIterator<T>>(m_buffer.AsUnsafeRef().ToUnsafePointer()); }
+	virtual SharedRef<Iterator<T>> End()   override { return New<ArrayIterator<T>>(m_top.ToUnsafePointer());                  }
+
+	virtual SharedRef<Iterator<const T>> Start() const override { return New<ArrayIterator<const T>>(m_buffer.AsUnsafeRef().ToUnsafePointer()); }
+	virtual SharedRef<Iterator<const T>> End()   const override { return New<ArrayIterator<const T>>(m_top.ToUnsafePointer());                  }
 };
 
 template<typename T>
-inline void Stack<T>::ReAllocate()
+inline void Stack<T>::ReAllocate(Size extraCount)
 {
 	Size count = Count();
 
-	T* newBase = malloc(sizeof(T) * m_capacity.ToRawValue() * 2);
-	memcpy(newBase, m_base, count.ToRawValue());
-	m_base = newBase;
-	m_top  = m_base + count.ToRawValue();
+	BufferRef<T> newBuffer = BufferRef<T>(m_buffer.Count() * 2U + extraCount);
+	m_buffer.CopyTo(newBuffer, count);
+	m_top = newBuffer[count];
+	m_buffer = newBuffer;
 }
-
-template<typename T>
-inline void Stack<T>::Push(const T& item)
-{
-	if(Count() >= m_capacity)
-		ReAllocate();
-
-	new(m_top) T(item);
-	++m_top;
-}
-
-template<typename T>
-template<typename... Args>
-inline void Stack<T>::Push(Args&&... args) requires ConstructibleFrom<T, Args...>
-{
-
-}
-
-template<typename T>
-inline void Stack<T>::Pop()
-{
-
-	--m_top;
-}
-
-template<typename T>
-inline void Stack<T>::Clear()
-{
-
-}
-
-

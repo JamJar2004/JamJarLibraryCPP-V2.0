@@ -150,9 +150,17 @@ String IIterable<T>::ToString() const requires Printable<T>
 
 	resultBuilder << "{";
 
-	for(const T& item : *this)
-		resultBuilder << item.ToString() << ", ";
+	Boolean empty = true;
 
+	for(const T& item : *this)
+	{
+		empty = false;
+		resultBuilder << item.ToString() << ", ";
+	}
+
+	if(empty)
+		return "<Empty>";
+	
 	resultBuilder.Remove(resultBuilder.Length() - 2U, 2U);
 
 	resultBuilder << "}";

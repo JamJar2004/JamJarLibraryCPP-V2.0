@@ -14,10 +14,25 @@ private:
 public:
 	ArrayList(Size initialCapacity = 4U) : m_buffer(initialCapacity), m_count(0U) {}
 
+	~ArrayList()
+	{
+		Clear();
+	}
+
 	virtual Size Count() const override { return m_count; }
 
 	virtual       T& operator[](Size index)       override { return *m_buffer[index]; }
 	virtual const T& operator[](Size index) const override { return *m_buffer[index]; }
+
+	template<typename... Args>
+	void Emplace(Args&&... args) requires ConstructibleFrom<T, Args...>
+	{
+		if(m_count + 1U >= m_buffer.Count())
+			ReAllocate(1U);
+
+		UnsafeRef<T> ptr = m_buffer[m_count++];
+		ptr.Initialize(args...);
+	}
 
 	virtual void Add     (const T& item)               override;
 	virtual void AddRange(const ICollection<T>& items) override;
@@ -41,7 +56,7 @@ public:
 		return -1;
 	}
 
-	virtual Boolean Remove(const T& item) override;
+	Boolean Remove(const T& item) requires Equatable<T>;
 
 	virtual SharedRef<IList<T>> SubList(Size index, Size count) const override;
 
@@ -135,7 +150,7 @@ inline void ArrayList<T>::Clear()
 }
 
 template<typename T>
-inline Boolean ArrayList<T>::Remove(const T& item)
+inline Boolean ArrayList<T>::Remove(const T& item) requires Equatable<T>
 {
 	SInt64 index = IndexOf(item);
 	if(index == -1)

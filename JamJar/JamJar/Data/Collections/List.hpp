@@ -18,7 +18,5 @@ public:
 	virtual void RemoveAt   (Size index)             = 0;
 	virtual void RemoveRange(Size index, Size count) = 0;
 
-	virtual Boolean Remove(const T& item) = 0;
-
 	virtual SharedRef<IList<T>> SubList(Size index, Size count) const = 0;
 };

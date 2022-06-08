@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Data/Collections/Array.hpp"
+#include "../String.hpp"
 
 template<Number T, size_t D>
 class Vector
@@ -14,8 +14,8 @@ public:
 			m_values[i] = value;
 	}
 
-	template<ConvertibleTo<T>... Args, std::enable_if<sizeof...(Args) == D>>
-	Vector(Args... args) : m_values { args... } {}
+	template<ConvertibleTo<T>... Args>
+	Vector(Args... args) requires Contains<Args..., D> : m_values { args... } {}
 
 	Size Dimensions() const { return D; }
 
@@ -148,7 +148,19 @@ public:
 	Vector<T, D> operator+() const requires SignedNumber<T> { return  *this;          }
 	Vector<T, D> operator-() const requires SignedNumber<T> { return (*this) * T(-1); }
 	
-	String ToString() const;
+	String ToString() const
+	{
+		StringBuilder resultBuilder;
+		resultBuilder << "Vector" << Size(D) << "(";
+
+		for(T value : m_values)
+			resultBuilder << value << ", ";
+
+		resultBuilder.Remove(2);
+		resultBuilder << ")";
+
+		return resultBuilder.ToString();
+	}
 };
 
 template<Number T>
