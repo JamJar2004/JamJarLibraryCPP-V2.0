@@ -22,6 +22,9 @@ concept DefaultConstructible = std::is_default_constructible_v<T>;
 template<typename T>
 concept CopyConstructible = std::is_copy_constructible_v<T>;
 
+template<typename T>
+concept MoveConstructible = std::is_move_constructible_v<T>;
+
 template<typename T, typename... Args>
 concept ConstructibleFrom = std::is_constructible_v<T, Args...>;
 
@@ -30,6 +33,9 @@ concept Destructible = std::is_destructible_v<T>;
 
 template<typename T>
 concept CopyAssignable = std::is_copy_assignable_v<T>;
+
+template<typename T>
+concept MoveAssignable = std::is_move_assignable_v<T>;
 
 template<typename To, typename From>
 concept AssignableFrom = std::is_assignable_v<To, From>;

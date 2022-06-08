@@ -8,8 +8,11 @@ private:
 	      void*     m_address;
 	const TypeInfo& m_type;
 public:
-	template<typename T>
-	Dynamic(const T& value) requires CopyConstructible<T> : m_address(malloc(sizeof(T))), m_type(Reflect::GetType<T>()) { new(m_address) T(value); }
+	template<CopyConstructible T>
+	Dynamic(const T& value) : m_address(malloc(sizeof(T))), m_type(Reflect::GetType<T>()) { new(m_address) T(value); }
+
+	template<MoveConstructible T>
+	Dynamic(T&& value) requires(!SameAs<T, Dynamic&>) : m_address(malloc(sizeof(T))), m_type(Reflect::GetType<T>()) { new(m_address) T(std::move(value)); }
 
 	Dynamic(const Dynamic& other);
 

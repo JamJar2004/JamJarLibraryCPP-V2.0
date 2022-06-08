@@ -23,6 +23,7 @@ private:
 	Size   m_size;
 
 	CopyConstructor m_copyConstructor;
+	CopyConstructor m_moveConstructor;
 	Destructor      m_destructor;
 
 	CopyAssigner m_copyAssigner;
@@ -38,21 +39,36 @@ private:
 	public:
 		friend class Reflect;
 
-		static void Copy(const void* source, void* dest) requires CopyConstructible<T> { new(dest) T(*(const T*)source);                                      }
-		static void Copy(const void* source, void* dest)                               { Exception("Type " + s_type + " is not copy constructible.").Throw(); }
+		template<CopyConstructible T>
+		static void Copy(const void* source, void* dest) { new(dest) T(*(const T*)source); }
 
-		static void Destroy(void* address) requires Destructible<T> { ((T*)address)->~T(); }
-		static void Destroy(void* address)                          {                      }
+		template<typename T>
+		static void Copy(const void* source, void* dest) { Exception("Type " + s_type + " is not copy constructible.").Throw(); }
 
-		static void Assign(const void* source, void* dest) requires CopyAssignable<T>
+		template<MoveConstructible T>
+		static void Move(const void* source, void* dest) { new(dest) T(std::move(*(const T*)source)); }
+
+		template<typename T>
+		static void Move(const void* source, void* dest) { Copy<T>(source, dest); }
+
+		template<Destructible T>
+		static void Destroy(void* address) { ((T*)address)->~T(); }
+		
+		template<typename T>
+		static void Destroy(void* address) {}
+
+		template<CopyAssignable T>
+		static void Assign(const void* source, void* dest)
 		{
 			T& destValue = *(T*)dest;
 			destValue = *(T*)source;
 		}
 
+		template<typename T>
 		static void Assign(const void* source, void* dest) { Exception("Type " + s_type + " is not copy assignable.").Throw(); }
 		
-		static Boolean Equal(const void* left, const void* right) requires Equatable<T>
+		template<Equatable T>
+		static Boolean Equal(const void* left, const void* right)
 		{
 			T& leftValue  = *(T*)left;
 			T& rightValue = *(T*)right;
@@ -60,9 +76,11 @@ private:
 			return leftValue == rightValue;
 		}
 
+		template<typename T>
 		static Boolean Equal(const void* left, const void* right) { Exception("Type " + s_type + " is not equatable.").Throw(); return false; }
 
-		static Boolean NotEqual(const void* left, const void* right) requires Equatable<T>
+		template<Equatable T>
+		static Boolean NotEqual(const void* left, const void* right)
 		{
 			T& leftValue  = *(T*)left;
 			T& rightValue = *(T*)right;
@@ -70,14 +88,16 @@ private:
 			return leftValue != rightValue;
 		}
 
+		template<typename T>
 		static Boolean NotEqual(const void* left, const void* right) { Exception("Type " + s_type + " is not equatable.").Throw(); return false; }
 	};
 public:
 	TypeInfo(
-		Size ID, 
+		Size ID,
 		const String& name,
-		Size size, 
-		CopyConstructor copyConstructor, 
+		Size size,
+		CopyConstructor copyConstructor,
+		CopyConstructor moveConstructor,
 		Destructor destructor,
 		CopyAssigner copyAssigner, 
 		Comparer equator,
@@ -86,7 +106,8 @@ public:
 		m_ID(ID), 
 		m_name(name),
 		m_size(size), 
-		m_copyConstructor(copyConstructor), 
+		m_copyConstructor(copyConstructor),
+		m_moveConstructor(moveConstructor),
 		m_destructor(destructor), 
 		m_copyAssigner(copyAssigner),
 		m_equator(equator),
@@ -96,6 +117,7 @@ public:
 	      Size    GetSize() const { return m_size; }
 
 	CopyConstructor GetCopyConstructor() const { return m_copyConstructor; }
+	CopyConstructor GetMoveConstructor() const { return m_moveConstructor; }
 	Destructor      GetDestructor()      const { return m_destructor;      }
 
 	CopyAssigner GetCopyAssigner() const { return m_copyAssigner; }
@@ -112,7 +134,7 @@ public:
 };
 
 template<typename T>
-TypeInfo TypeInfo::TypeStore<T>::s_type(s_lastID++, typeid(T).name(), sizeof(T), Copy, Destroy, Assign, Equal, NotEqual);
+TypeInfo TypeInfo::TypeStore<T>::s_type(s_lastID++, typeid(T).name(), sizeof(T), Copy<T>, Move<T>, Destroy<T>, Assign<T>, Equal<T>, NotEqual<T>);
 
 class Reflect
 {

@@ -7,10 +7,13 @@
 #include <JamJar/Data/Collections/StringBuilder.hpp>
 #include <JamJar/Dynamic.hpp>
 
-
 class Object
 {
 public:
+	//Object(const Object&) = delete;
+
+	//Object& operator=(const Object&) = delete;
+
 	Object()
 	{
 		Console::PrintLine("Created!");
@@ -21,22 +24,25 @@ public:
 		Console::PrintLine("Copied!");
 	}
 
+	Object(Object&& other) noexcept
+	{
+		Console::PrintLine("Moved!");
+	}
+
 	~Object()
 	{
 		Console::PrintLine("Destroyed!");
 	}
 
 	void Print(const String& message) { Console::PrintLine(message); }
+
+	friend Boolean operator==(const Object& left, const Object& right) { return true;  }
+	friend Boolean operator!=(const Object& left, const Object& right) { return false; }
 };
 
 ExitStatus Start()
 {
-	Dynamic value1 = String("Hello");
-	Dynamic value2 = 6U;
-
-	value1 = String("World!");
-
-	Console::PrintLine(value1 == value2);
+	Dynamic value = Dynamic(Object());
 
 	return ExitStatus::OK;
 }
