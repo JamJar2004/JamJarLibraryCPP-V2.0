@@ -89,6 +89,9 @@ public:
 	friend UnsafeRef<T> operator+(const UnsafeRef<T>& left, Size right) { return left.m_address + right.ToRawValue(); }
 	friend UnsafeRef<T> operator-(const UnsafeRef<T>& left, Size right) { return left.m_address - right.ToRawValue(); }
 
+	UnsafeRef<T>& operator+=(Size other) { m_address += other.ToRawValue(); return *this; }
+	UnsafeRef<T>& operator-=(Size other) { m_address -= other.ToRawValue(); return *this; }
+
 	friend Size operator-(const UnsafeRef<T>& left, const UnsafeRef<T>& right) { return Size(left.m_address - right.m_address); }
 
 	UnsafeRef<T>& operator++() { ++m_address; return *this; }

@@ -233,6 +233,8 @@ private:
 public:
 	HashCode(size_t value = 17U) : m_value(value) {}
 
+	size_t GetValue() const { return m_value; }
+
 	friend HashCode operator&(const HashCode& left, const HashCode& right) 
 	{
 		size_t hash = 17U;

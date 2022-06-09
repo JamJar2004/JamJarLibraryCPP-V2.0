@@ -54,6 +54,9 @@ public:
 	T&       operator *() const { return *m_address; }
 	T* const operator->() const { return  m_address; }
 
+	friend Boolean operator==(const SharedRef<T>& left, const SharedRef<T>& right) { return left.m_address == right.m_address; }
+	friend Boolean operator!=(const SharedRef<T>& left, const SharedRef<T>& right) { return left.m_address != right.m_address; }
+
 	template<typename T2>
 	friend class SharedRef;
 
@@ -85,6 +88,8 @@ private:
 		}
 	}
 public:
+	NullableRef() : NullableRef(nullptr) {}
+
 	NullableRef(std::nullptr_t) : m_address(nullptr), m_refCount(nullptr) {}
 
 	template<typename T, typename... Args>
@@ -144,4 +149,7 @@ public:
 
 	T&       operator *() const;
 	T* const operator->() const;
+
+	friend Boolean operator==(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address == right.m_address; }
+	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address != right.m_address; }
 };

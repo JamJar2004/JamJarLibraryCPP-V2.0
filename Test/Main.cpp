@@ -58,17 +58,23 @@ public:
 
 ExitStatus Start()
 {
-	//ArrayList<String> list;
-	//list.Add("ABC");
-	//list.Add("DEF");
-	//list.Add("GHI");
-	//list.Add("JKL");
-	//list.Add("MNO");
-	//list.Add("PQR");
+	ArrayList<String> list;
+	list.Add("ABC");
+	/*list.Add("DEF");
+	list.Add("GHI");
+	list.Add("JKL");*/
+	list.Add("MNO");
+	list.Add("PQR");
 
-	//Console::PrintLine(list);
+	list.InsertRange(1U, StackArray<String, 3>("DEF", "GHI", "JKL"));
 
-	Queue<String> queue;
+	Console::PrintLine(*list.SubList(1U, 3U));
+
+	list.Clear();
+
+	Console::PrintLine(list);
+
+	/*Queue<String> queue;
 	queue.Push("He");
 	queue.Push("was");
 	queue.Push("in");
@@ -82,7 +88,7 @@ ExitStatus Start()
 	queue.Pop();
 	queue.Pop();
 
-	Console::PrintLine(queue);
+	Console::PrintLine(queue);*/
 
 	return ExitStatus::OK;
 }

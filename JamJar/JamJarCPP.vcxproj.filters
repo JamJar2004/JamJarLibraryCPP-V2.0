@@ -52,6 +52,18 @@
     <ClInclude Include="JamJar\Data\Memory\Queue.hpp">
       <Filter>Data\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\Set.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\Sets\HashSet.hpp">
+      <Filter>Data\Collections\Sets</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\Map.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Pair.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
@@ -85,6 +97,12 @@
     </Filter>
     <Filter Include="Timing">
       <UniqueIdentifier>{507239a1-3f66-4c98-bd1d-04194680d036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Collections\Maps">
+      <UniqueIdentifier>{476979cd-fdec-412f-bda7-de0b630a036a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Collections\Sets">
+      <UniqueIdentifier>{6eb2712b-505f-429a-8d6a-af573627e765}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
