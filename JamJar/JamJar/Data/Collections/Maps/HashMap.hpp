@@ -3,6 +3,19 @@
 #include "../Map.hpp"
 #include "../../Memory/Array.hpp"
 
+#include "../../../Exception.hpp"
+#include "../../Reflection.hpp"
+
+class KeyNotFoundException : public Exception
+{
+public:
+	template<Printable K>
+	KeyNotFoundException(const K& key) : Exception("Key " + key + " not found.") {}
+
+	template<typename K>
+	KeyNotFoundException(const K& key) : Exception("Key of type " + Reflect::GetType<K>() + ", not found.") {}
+};
+
 template<typename T>
 concept HashableEquatable = Hashable<T> && Equatable<T>;
 
@@ -35,6 +48,10 @@ private:
 		Size index = hashCode.GetValue();
 		return m_buckets[index % m_buckets.Count()];
 	}
+
+	void ReAllocate();
+
+	NullableRef<HashEntry> Get(const K& key);
 public:
 	HashMap(Size initialCapacity = 16U) : m_buckets(initialCapacity) {}
 
@@ -56,6 +73,42 @@ public:
 
 	virtual void Clear() override;
 };
+
+template<HashableEquatable K, typename V>
+inline NullableRef<typename HashMap<K, V>::HashEntry> HashMap<K, V>::Get(const K& key)
+{
+	HashCode hashCode = key.GetHashCode();
+
+	NullableRef<HashEntry>& first = GetBucket(hashCode);
+
+	for(NullableRef<HashEntry> entry = first; entry != nullptr; entry = entry->GetNext())
+	{
+		if(entry->GetHashCode() == hashCode && entry->GetKey() == key)
+			return entry;
+	}
+
+	return nullptr;
+}
+
+template<HashableEquatable K, typename V>
+inline V& HashMap<K, V>::operator[](const K& key)
+{
+	NullableRef<HashEntry> entry = Get(key);
+	if(entry == nullptr)
+		return KeyNotFoundException().Throw();
+
+	return entry->GetValue();
+}
+
+template<HashableEquatable K, typename V>
+inline const V& HashMap<K, V>::operator[](const K& key) const
+{
+	NullableRef<HashEntry> entry = Get(key);
+	if(entry == nullptr)
+		return KeyNotFoundException().Throw();
+
+	return entry->GetValue();
+}
 
 template<HashableEquatable K, typename V>
 inline Boolean HashMap<K, V>::Add(const K& key, const V& value)
@@ -112,4 +165,50 @@ inline Boolean HashMap<K, V>::Remove(const K& key)
 	}
 
 	return false;
+}
+
+template<HashableEquatable K, typename V>
+inline Size HashMap<K, V>::AddRange(const IMap<K, V>& map)
+{
+	Size result = 0U;
+	for(const Entry<K, V>& entry : map)
+	{ 
+		if(Add(entry.GetKey(), entry.GetValue()))
+			++result;
+	}
+
+	return result;
+}
+
+template<HashableEquatable K, typename V>
+inline Size HashMap<K, V>::RemoveRange(const ICollection<K>& keys)
+{
+	Size result = 0U;
+	for(const K& key : keys)
+	{ 
+		if(Remove(key))
+			++result;
+	}
+
+	return result;
+}
+
+template<HashableEquatable K, typename V>
+inline Boolean HashMap<K, V>::TryGet(const K& key, V& outValue)
+{
+	NullableRef<HashEntry> entry = Get(key);
+	if(entry == nullptr)
+		return false;
+
+	outValue = entry->GetValue();
+	return true;
+}
+
+template<HashableEquatable K, typename V>
+inline void HashMap<K, V>::Clear()
+{
+	for(Size i = 0U; i < m_buckets.Count(); i++)
+		m_buckets[i] = nullptr;
+
+	m_count = 0U;
 }

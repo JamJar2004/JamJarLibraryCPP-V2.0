@@ -14,6 +14,8 @@ public:
 	const K& GetKey()   const { return m_key;   }
 	const V& GetValue() const { return m_value; }
 
+	V& GetValue() { return m_value; }
+
 	void SetValue(const V& value) { m_value = value; }
 };
 
