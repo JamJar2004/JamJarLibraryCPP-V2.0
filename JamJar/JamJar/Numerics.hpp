@@ -112,6 +112,8 @@ public:
 	template<std::floating_point T2>
 	UnsignedInteger<T> Pow(Float<T2> power) const { return UnsignedInteger<T>(powf(m_value, power.ToRawValue())); }
 
+	HashCode GetHashCode() const { return HashCode(size_t(m_value)); }
+
 	String ToString() const;
 };
 
@@ -239,6 +241,8 @@ public:
 
 	template<std::floating_point T2>
 	SignedInteger<T> Pow(Float<T2> power) const { return SignedInteger<T>(powf(m_value, power.ToRawValue())); }
+
+	HashCode GetHashCode() const { return HashCode(size_t(m_value)); }
 
 	String ToString() const;
 };
@@ -377,6 +381,13 @@ public:
 	Float<T> ATanH();
 
 	Float<T> ATan2(Float<T> x);
+
+	HashCode GetHashCode() const
+	{
+		double value = m_value;
+		uint64_t hash = *(uint64_t*)&value;
+		return HashCode(size_t(hash));
+	}
 
 	String ToString() const;
 };

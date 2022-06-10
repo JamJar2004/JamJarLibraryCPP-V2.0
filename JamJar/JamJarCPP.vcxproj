@@ -29,6 +29,7 @@
     <ClInclude Include="JamJar\Data\Collections\Lists\ArrayList.hpp" />
     <ClInclude Include="JamJar\Data\Collections\Lists\LinkedList.hpp" />
     <ClInclude Include="JamJar\Data\Collections\Map.hpp" />
+    <ClInclude Include="JamJar\Data\Collections\Maps\HashMap.hpp" />
     <ClInclude Include="JamJar\Data\Collections\Set.hpp" />
     <ClInclude Include="JamJar\Data\Collections\Sets\HashSet.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Array.hpp" />
@@ -36,7 +37,6 @@
     <ClInclude Include="JamJar\Data\Memory\Queue.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Refs.hpp" />
     <ClInclude Include="JamJar\Data\Memory\Stack.hpp" />
-    <ClInclude Include="JamJar\Data\Pair.hpp" />
     <ClInclude Include="JamJar\Data\Reflection.hpp" />
     <ClInclude Include="JamJar\Delegate.hpp" />
     <ClInclude Include="JamJar\Dynamic.hpp" />

@@ -17,6 +17,8 @@ public:
 
 	Boolean IsWhiteSpace() const { return m_value == ' ' || m_value == '\t' || m_value == '\n' || m_value == '\r'; }
 
+	HashCode GetHashCode() const { return HashCode(size_t(m_value)); }
+
 	String ToString() const;
 
 	friend Boolean operator==(Character left, Character right) { return left.m_value == right.m_value; }

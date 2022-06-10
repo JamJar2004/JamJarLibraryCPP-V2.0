@@ -17,6 +17,11 @@ public:
 	V& GetValue() { return m_value; }
 
 	void SetValue(const V& value) { m_value = value; }
+
+	String ToString() const requires Printable<K> && Printable<V>
+	{
+		return "[Key: " + m_key + ", Value: " + m_value + "]";
+	}
 };
 
 template<typename K, typename V>
@@ -34,8 +39,8 @@ public:
 
 	virtual Boolean TryGet(const K& key, V& outValue) = 0;
 
-	virtual const ICollection<const K> GetKeys()   const = 0;
-	virtual const ICollection<      V> GetValues() const = 0;
+	virtual const ICollection<const K>& GetKeys()   const = 0;
+	virtual const ICollection<      V>& GetValues() const = 0;
 };
 
 template<Comparable K, typename V>

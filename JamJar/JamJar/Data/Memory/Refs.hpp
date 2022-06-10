@@ -150,6 +150,8 @@ public:
 	T&       operator *() const;
 	T* const operator->() const;
 
+	Boolean IsNull() const { return m_address == nullptr; }
+
 	friend Boolean operator==(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address == right.m_address; }
 	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address != right.m_address; }
 };

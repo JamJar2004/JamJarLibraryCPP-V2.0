@@ -7,6 +7,8 @@
 
 #include <JamJar/Dynamic.hpp>
 
+#include <JamJar/Data/Collections/Maps/HashMap.hpp>
+
 class Shape
 {
 public:
@@ -58,21 +60,21 @@ public:
 
 ExitStatus Start()
 {
-	ArrayList<String> list;
-	list.Add("ABC");
-	/*list.Add("DEF");
-	list.Add("GHI");
-	list.Add("JKL");*/
-	list.Add("MNO");
-	list.Add("PQR");
+	//ArrayList<String> list;
+	//list.Add("ABC");
+	///*list.Add("DEF");
+	//list.Add("GHI");
+	//list.Add("JKL");*/
+	//list.Add("MNO");
+	//list.Add("PQR");
 
-	list.InsertRange(1U, StackArray<String, 3>("DEF", "GHI", "JKL"));
+	//list.InsertRange(1U, StackArray<String, 3>("DEF", "GHI", "JKL"));
 
-	Console::PrintLine(*list.SubList(1U, 3U));
+	//Console::PrintLine(*list.SubList(1U, 3U));
 
-	list.Clear();
+	//list.Clear();
 
-	Console::PrintLine(list);
+	//Console::PrintLine(list);
 
 	/*Queue<String> queue;
 	queue.Push("He");
@@ -89,6 +91,21 @@ ExitStatus Start()
 	queue.Pop();
 
 	Console::PrintLine(queue);*/
+
+	HashMap<String, UInt32> map;
+	map.Add("A", 1U);
+	map.Add("B", 2U);
+	map.Add("C", 3U);
+	map.Add("D", 4U);
+	map.Add("E", 5U);
+	map.Add("F", 6U);
+	map.Add("G", 7U);
+	map.Add("H", 8U);
+	map.Add("I", 9U);
+	map.Add("J", 10U);
+	map.Add("K", 11U);
+
+	Console::PrintLine(map);
 
 	return ExitStatus::OK;
 }

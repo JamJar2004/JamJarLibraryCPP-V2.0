@@ -61,8 +61,8 @@
     <ClInclude Include="JamJar\Data\Collections\Map.hpp">
       <Filter>Data\Collections</Filter>
     </ClInclude>
-    <ClInclude Include="JamJar\Data\Pair.hpp">
-      <Filter>Data</Filter>
+    <ClInclude Include="JamJar\Data\Collections\Maps\HashMap.hpp">
+      <Filter>Data\Collections\Maps</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

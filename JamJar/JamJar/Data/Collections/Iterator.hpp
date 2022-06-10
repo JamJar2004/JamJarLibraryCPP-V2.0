@@ -36,6 +36,15 @@ public:
 
 	operator IIterable<const T>() { return *this; }
 
+	HashCode GetHashCode() const requires Hashable<T>
+	{
+		HashCode result;
+		for(const T& item : *this)
+			result &= item.GetHashCode();
+
+		return result;
+	}
+
 	String ToString() const requires Printable<T>;
 };
 
