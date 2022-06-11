@@ -148,7 +148,8 @@ public:
 	virtual       T& operator[](Size index)       override { return m_address[index.ToRawValue()]; }
 	virtual const T& operator[](Size index) const override { return m_address[index.ToRawValue()]; }
 
-	ArraySpan<T> AsSpan() { return *this; }
+	      ArraySpan<T> AsSpan()       { return *this; }
+	const ArraySpan<T> AsSpan() const { return *this; }
 
 	virtual SharedRef<Iterator<T>> Start() override { return New<ArrayIterator<T>>(m_address                       ); }
 	virtual SharedRef<Iterator<T>> End()   override { return New<ArrayIterator<T>>(m_address + m_count.ToRawValue()); }

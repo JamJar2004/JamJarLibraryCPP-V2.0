@@ -60,7 +60,6 @@ public:
 		return *(T*)m_address;
 	}
 
-
 	template<typename T>
 	operator T() const { return Cast<T>(); }
 
@@ -201,6 +200,8 @@ public:
 
 		return type.GetNotEquator()(left.m_address, right.m_address);
 	}
+
+	HashCode GetHashCode() const { return m_type.GetHasher()(m_address); }
 };
 
 class DynamicRef

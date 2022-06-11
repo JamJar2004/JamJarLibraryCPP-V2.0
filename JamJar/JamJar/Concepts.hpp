@@ -2,7 +2,7 @@
 
 #include <concepts>
 
-#include "Boolean.hpp"
+class Boolean;
 
 template<typename T1, typename T2>
 concept SameAs = std::is_same_v<T1, T2>;
@@ -220,41 +220,15 @@ requires(T obj, T arg)
 	{ obj.ATan2(arg) } -> SameAs<T>;
 };
 
+class String;
+
 template<typename T>
 concept Printable = requires(T obj)
 {
 	{ obj.ToString() } -> SameAs<String>;
 };
 
-class HashCode
-{
-private:
-	size_t m_value;
-public:
-	HashCode(size_t value = 17U) : m_value(value) {}
-
-	size_t GetValue() const { return m_value; }
-
-	friend HashCode operator&(const HashCode& left, const HashCode& right) 
-	{
-		size_t hash = 17U;
-		hash = hash * 31 + left.m_value;
-		hash = hash * 31 + right.m_value;
-		return HashCode(hash);
-	}
-
-	HashCode& operator&=(const HashCode& other)
-	{
-		size_t hash = 17U;
-		hash = hash * 31 + m_value;
-		hash = hash * 31 + other.m_value;
-		m_value = hash;
-		return *this;
-	}
-
-	friend Boolean operator==(const HashCode& left, const HashCode& right) { return left.m_value == right.m_value; }
-	friend Boolean operator!=(const HashCode& left, const HashCode& right) { return left.m_value != right.m_value; }
-};
+class HashCode;
 
 template<typename T>
 concept Hashable = requires(T obj)

@@ -17,7 +17,7 @@ public:
 
 	Boolean IsWhiteSpace() const { return m_value == ' ' || m_value == '\t' || m_value == '\n' || m_value == '\r'; }
 
-	HashCode GetHashCode() const { return HashCode(size_t(m_value)); }
+	HashCode GetHashCode() const { return HashCode(Size(m_value)); }
 
 	String ToString() const;
 
@@ -26,6 +26,8 @@ public:
 
 	friend class Console;
 };
+
+class MutableString;
 
 class String : public ICollection<const Character>
 {
@@ -52,7 +54,7 @@ public:
 
 	virtual Size Count() const override { return Length(); }
 
-	Size Length() const;
+	Size Length() const { return m_chars.Count(); }
 
 	const Character& operator[](Size index) const;
 
@@ -96,6 +98,8 @@ public:
 
 	virtual SharedRef<Iterator<const Character>> Start() const override { return m_chars.Start(); }
 	virtual SharedRef<Iterator<const Character>> End()   const override { return m_chars.End();   }
+
+	friend class MutableString;
 };
 
 template<Printable T>
@@ -169,3 +173,37 @@ String IIterable<T>::ToString() const requires Printable<T>
 
 	return resultBuilder.ToString();
 }
+
+class MutableString : public ICollection<Character>
+{
+private:
+	ArrayRef<Character> m_chars;
+	Size                m_length;
+public:
+	MutableString() : m_chars(0U), m_length(0U) {}
+
+	MutableString(const String& string) : m_chars(string.ToCharacterArray()), m_length(string.Length()) {}
+
+	MutableString(const char*     cString);
+	MutableString(const wchar_t* wcString);
+
+	MutableString(Character character, Size length);
+
+	virtual Size Count() const override { return Length(); }
+
+	Size Length() const { return m_length; }
+
+	operator String() const { return String(ArraySpan<Character>(m_chars, 0U, m_length)); }
+
+ 	      Character& operator[](Size index);
+	const Character& operator[](Size index) const;
+
+	MutableString& Append(const MutableString& other);
+
+	MutableString& operator+=(const MutableString& other) { return Append(other); }
+
+	friend MutableString operator+(const MutableString& left, const MutableString& right);
+
+	friend Boolean operator==(const MutableString& left, const MutableString& right);
+	friend Boolean operator!=(const MutableString& left, const MutableString& right);
+};

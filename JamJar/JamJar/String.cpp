@@ -54,8 +54,6 @@ String::String(const ArraySpan<Character>& chars) : m_chars(chars) {}
 
 String::String(const String& other) : m_chars(other.m_chars) {}
 
-Size String::Length() const { return m_chars.Count(); }
-
 const Character& String::operator[](Size index) const { return m_chars[index]; }
 
 ArrayRef<Character> String::ToCharacterArray() const { return m_chars.ToArray(); }
@@ -171,3 +169,26 @@ String operator+(const String& left, const String& right)
 
 Boolean operator==(const String& left, const String& right) { return left.m_chars == right.m_chars; }
 Boolean operator!=(const String& left, const String& right) { return left.m_chars != right.m_chars; }
+
+MutableString::MutableString(const char* cString) : m_chars(String::FromCString(cString)), m_length(m_chars.Count()) {}
+
+MutableString::MutableString(const wchar_t* wcString) : m_chars(String::FromWCString(wcString)), m_length(m_chars.Count()) {}
+
+MutableString::MutableString(Character character, Size length) : m_chars(String::FromChar(character, length)), m_length(length) {}
+
+      Character& MutableString::operator[](Size index)       { return m_chars[index]; }
+const Character& MutableString::operator[](Size index) const { return m_chars[index]; }
+
+MutableString& MutableString::Append(const MutableString& other)
+{
+	if(m_length + other.Length() >= m_chars.Count())
+	{
+		ArrayRef<Character> newChars(m_chars.Count() * 2U + other.Length());
+		m_chars.AsSpan().CopyTo(newChars, 0U, 0U, m_length);
+		m_chars = newChars;
+	}
+
+	other.m_chars.AsSpan().CopyTo(m_chars, 0U, m_length, other.Length());
+	m_length += other.Length();
+	return *this;
+}

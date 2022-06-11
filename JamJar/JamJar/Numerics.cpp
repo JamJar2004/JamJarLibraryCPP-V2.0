@@ -1,5 +1,7 @@
 #include "Numerics.hpp"
 
+HashCode::HashCode(UnsignedInteger<size_t> value) : m_value(value.ToRawValue()) {}
+
 Float<float>  operator%(Float<float>  left, Float<float>  right) { return fmodf(left.m_value, right.m_value); }
 Float<double> operator%(Float<double> left, Float<double> right) { return fmod (left.m_value, right.m_value); }
 

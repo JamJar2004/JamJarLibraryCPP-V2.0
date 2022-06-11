@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Concepts.hpp"
+#include "HashCode.hpp"
 #include <limits>
 
 template<std::signed_integral T>

@@ -14,6 +14,8 @@ using MathOperation = Function<void, void*, const void*, const void*>;
 
 using Comparer = Function<Boolean, const void*, const void*>;
 
+using Hasher = Function<HashCode, const void*>;
+
 class TypeInfo
 {
 private:
@@ -42,6 +44,8 @@ private:
 	Comparer m_greaterOrEqual;
 	Comparer m_equator;
 	Comparer m_notEquator;
+
+	Hasher m_hasher;
 
 	template<typename T>
 	class TypeStore
@@ -210,6 +214,12 @@ private:
 
 		template<typename T>
 		static Boolean NotEqual(const void* left, const void* right) { Exception("Type " + s_type + " is not equatable.").Throw(); return false; }
+
+		template<Hashable T>
+		static HashCode GetHashCode(const void* value) { return ((T*)value)->GetHashCode(); }
+
+		template<typename T>
+		static HashCode GetHashCode(const void* value) { Exception("Type " + s_type + " is not hashable.").Throw(); return HashCode(); }
 	};
 public:
 	TypeInfo(
@@ -230,7 +240,8 @@ public:
 		Comparer smallerOrEqual,
 		Comparer greaterOrEqual,
 		Comparer equator,
-		Comparer notEquator) :
+		Comparer notEquator,
+		Hasher hasher) :
 
 		m_ID(ID), 
 		m_name(name),
@@ -249,7 +260,8 @@ public:
 		m_smallerOrEqual(smallerOrEqual),
 		m_greaterOrEqual(greaterOrEqual),
 		m_equator(equator),
-		m_notEquator(notEquator) {}
+		m_notEquator(notEquator),
+		m_hasher(hasher) {}
 
 	const String& GetName() const { return m_name; }
 	      Size    GetSize() const { return m_size; }
@@ -273,8 +285,12 @@ public:
 	Comparer GetEquator()        const { return m_equator;        }
 	Comparer GetNotEquator()     const { return m_notEquator;     }
 
+	Hasher GetHasher() const { return m_hasher; }
+
 	friend Boolean operator==(const TypeInfo& left, const TypeInfo& right) { return left.m_ID == right.m_ID; }
 	friend Boolean operator!=(const TypeInfo& left, const TypeInfo& right) { return left.m_ID != right.m_ID; }
+
+	HashCode GetHashCode() const { return m_ID; }
 
 	String ToString() const { return m_name; }
 
@@ -297,7 +313,8 @@ TypeInfo TypeInfo::TypeStore<T>::s_type(s_lastID++, typeid(T).name(), sizeof(T),
 	SmallerOrEqual<T>,
 	GreaterOrEqual<T>,
 	Equal<T>, 
-	NotEqual<T>);
+	NotEqual<T>,
+	GetHashCode<T>);
 
 
 class Reflect

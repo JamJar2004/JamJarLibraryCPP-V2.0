@@ -55,7 +55,7 @@ public:
 
 	~Object() { Console::PrintLine("Destroyed!"); }
 
-	Object& operator=(const Object& other) { Console::PrintLine("Assigned!"); }
+	Object& operator=(const Object& other) { Console::PrintLine("Assigned!"); return *this; }
 };
 
 ExitStatus Start()
@@ -91,21 +91,6 @@ ExitStatus Start()
 	queue.Pop();
 
 	Console::PrintLine(queue);*/
-
-	HashMap<String, UInt32> map;
-	map.Add("A", 1U);
-	map.Add("B", 2U);
-	map.Add("C", 3U);
-	map.Add("D", 4U);
-	map.Add("E", 5U);
-	map.Add("F", 6U);
-	map.Add("G", 7U);
-	map.Add("H", 8U);
-	map.Add("I", 9U);
-	map.Add("J", 10U);
-	map.Add("K", 11U);
-
-	Console::PrintLine(map);
 
 	return ExitStatus::OK;
 }

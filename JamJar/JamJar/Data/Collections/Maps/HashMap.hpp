@@ -20,7 +20,7 @@ template<typename T>
 concept HashableEquatable = Hashable<T> && Equatable<T>;
 
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 class HashMap : public IMap<K, V>
 {
 private:
@@ -171,7 +171,7 @@ public:
 	virtual Size    AddRange(const IMap<K, V>& map     ) override;
 	virtual Size RemoveRange(const ICollection<K>& keys) override;
 
-	virtual Boolean TryGet(const K& key, V& outValue) override;
+	Boolean TryGet(const K& key, V& outValue) const requires CopyAssignable<V>;
 
 	virtual const ICollection<const K>& GetKeys()   const override { return m_keys;   }
 	virtual const ICollection<      V>& GetValues() const override { return m_values; }
@@ -185,7 +185,7 @@ public:
 	virtual SharedRef<Iterator<const Entry<K, V>>> End()   const override { return New<ConstEntryIterator>(*this, true ); }
 };
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline NullableRef<typename HashMap<K, V>::HashEntry> HashMap<K, V>::Get(const K& key) const
 {
 	HashCode hashCode = key.GetHashCode();
@@ -201,7 +201,7 @@ inline NullableRef<typename HashMap<K, V>::HashEntry> HashMap<K, V>::Get(const K
 	return nullptr;
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline V& HashMap<K, V>::operator[](const K& key)
 {
 	NullableRef<HashEntry> entry = Get(key);
@@ -211,7 +211,7 @@ inline V& HashMap<K, V>::operator[](const K& key)
 	return entry->GetValue();
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline const V& HashMap<K, V>::operator[](const K& key) const
 {
 	NullableRef<HashEntry> entry = Get(key);
@@ -221,7 +221,7 @@ inline const V& HashMap<K, V>::operator[](const K& key) const
 	return entry->GetValue();
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline Boolean HashMap<K, V>::Add(const K& key, const V& value)
 {
 	HashCode hashCode = key.GetHashCode();
@@ -251,7 +251,7 @@ inline Boolean HashMap<K, V>::Add(const K& key, const V& value)
 	return true;
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline Boolean HashMap<K, V>::Remove(const K& key)
 {
 	HashCode hashCode = key.GetHashCode();
@@ -278,7 +278,7 @@ inline Boolean HashMap<K, V>::Remove(const K& key)
 	return false;
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline Size HashMap<K, V>::AddRange(const IMap<K, V>& map)
 {
 	Size result = 0U;
@@ -291,7 +291,7 @@ inline Size HashMap<K, V>::AddRange(const IMap<K, V>& map)
 	return result;
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline Size HashMap<K, V>::RemoveRange(const ICollection<K>& keys)
 {
 	Size result = 0U;
@@ -304,8 +304,8 @@ inline Size HashMap<K, V>::RemoveRange(const ICollection<K>& keys)
 	return result;
 }
 
-template<HashableEquatable K, typename V>
-inline Boolean HashMap<K, V>::TryGet(const K& key, V& outValue)
+template<HashableEquatable K, CopyAssignable V>
+inline Boolean HashMap<K, V>::TryGet(const K& key, V& outValue) const requires CopyAssignable<V>
 {
 	NullableRef<HashEntry> entry = Get(key);
 	if(entry == nullptr)
@@ -315,7 +315,7 @@ inline Boolean HashMap<K, V>::TryGet(const K& key, V& outValue)
 	return true;
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 inline void HashMap<K, V>::Clear()
 {
 	for(Size i = 0U; i < m_buckets.Count(); i++)
@@ -324,7 +324,7 @@ inline void HashMap<K, V>::Clear()
 	m_count = 0U;
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 template<typename T>
 inline HashMap<K, V>::HashIterator<T>::HashIterator(const HashMap<K, V>& map, Boolean isEnd) : 
 	m_map(map), m_bucketIndex(0U), m_current(isEnd ? nullptr : map.m_buckets[0U])
@@ -339,7 +339,7 @@ inline HashMap<K, V>::HashIterator<T>::HashIterator(const HashMap<K, V>& map, Bo
 	}
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 template<typename T>
 inline void HashMap<K, V>::HashIterator<T>::MoveNext()
 {
@@ -352,11 +352,11 @@ inline void HashMap<K, V>::HashIterator<T>::MoveNext()
 	}
 }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 template<typename T>
 inline Entry<K, V>& HashMap<K, V>::HashIterator<T>::CurrentEntry() const { return *m_current; }
 
-template<HashableEquatable K, typename V>
+template<HashableEquatable K, CopyAssignable V>
 template<typename T>
 inline Boolean HashMap<K, V>::HashIterator<T>::Equals(const Iterator<T>& other) const
 {

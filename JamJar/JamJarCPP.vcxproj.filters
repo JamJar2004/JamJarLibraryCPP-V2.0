@@ -64,6 +64,7 @@
     <ClInclude Include="JamJar\Data\Collections\Maps\HashMap.hpp">
       <Filter>Data\Collections\Maps</Filter>
     </ClInclude>
+    <ClInclude Include="JamJar\HashCode.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
@@ -75,6 +76,7 @@
     <ClCompile Include="JamJar\Data\Reflection.cpp">
       <Filter>Data</Filter>
     </ClCompile>
+    <ClCompile Include="JamJar\HashCode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

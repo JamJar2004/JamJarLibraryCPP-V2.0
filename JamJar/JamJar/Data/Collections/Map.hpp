@@ -16,7 +16,7 @@ public:
 
 	V& GetValue() { return m_value; }
 
-	void SetValue(const V& value) { m_value = value; }
+	void SetValue(const V& value) requires CopyAssignable<V> { m_value = value; }
 
 	String ToString() const requires Printable<K> && Printable<V>
 	{
@@ -36,8 +36,6 @@ public:
 
 	virtual Size    AddRange(const IMap<K, V>& map     ) = 0;
 	virtual Size RemoveRange(const ICollection<K>& keys) = 0;
-
-	virtual Boolean TryGet(const K& key, V& outValue) = 0;
 
 	virtual const ICollection<const K>& GetKeys()   const = 0;
 	virtual const ICollection<      V>& GetValues() const = 0;

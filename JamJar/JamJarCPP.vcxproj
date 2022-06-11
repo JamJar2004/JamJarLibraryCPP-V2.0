@@ -41,6 +41,7 @@
     <ClInclude Include="JamJar\Delegate.hpp" />
     <ClInclude Include="JamJar\Dynamic.hpp" />
     <ClInclude Include="JamJar\Exception.hpp" />
+    <ClInclude Include="JamJar\HashCode.hpp" />
     <ClInclude Include="JamJar\Math\Vector.hpp" />
     <ClInclude Include="JamJar\Numerics.hpp" />
     <ClInclude Include="JamJar\Rendering\Color.hpp" />
@@ -53,6 +54,7 @@
     <ClCompile Include="JamJar\Data\Reflection.cpp" />
     <ClCompile Include="JamJar\Dynamic.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
+    <ClCompile Include="JamJar\HashCode.cpp" />
     <ClCompile Include="JamJar\Numerics.cpp" />
     <ClCompile Include="JamJar\String.cpp" />
   </ItemGroup>
