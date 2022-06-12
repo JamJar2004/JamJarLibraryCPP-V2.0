@@ -113,7 +113,7 @@ ArrayRef<String> String::Split(const String& splitter) const
 
 String String::Replace(const String& oldString, const String& newString) const
 {
-	StringBuilder resultBuilder;
+	MutableString resultBuilder;
 
 	if(oldString.Length() == 0U)
 		return *this;
@@ -124,7 +124,7 @@ String String::Replace(const String& oldString, const String& newString) const
 		if(Slice(i, oldString.Length()) == oldString)
 		{
 			if(lastIndex != i)
-				resultBuilder << Slice(lastIndex, i - lastIndex) << newString;
+				resultBuilder += MutableString(Slice(lastIndex, i - lastIndex)) += newString;
 
 			lastIndex = i + oldString.Length();
 		}
@@ -133,7 +133,7 @@ String String::Replace(const String& oldString, const String& newString) const
 	Size leftLength = Length() - lastIndex;
 
 	if(leftLength > 0U)
-		resultBuilder << Slice(lastIndex, leftLength);
+		resultBuilder += Slice(lastIndex, leftLength);
 
 	return resultBuilder.ToString();
 }
@@ -159,12 +159,14 @@ String String::TrimEnd() const
 
 String String::Trim() const { return TrimStart().TrimEnd(); }
 
+MutableString String::ToMutableString() const { return MutableString(*this); }
+
 String operator+(const String& left, const String& right)
 {
 	ArrayRef<Character> resultChars = ArrayRef<Character>(left.Length() + right.Length());
 	left.m_chars.CopyTo(resultChars, 0U, 0U, left.Length());
 	right.m_chars.CopyTo(resultChars, 0U, left.Length(), right.Length());
-	return String(ArraySpan<Character>(resultChars));
+	return String(resultChars);
 }
 
 Boolean operator==(const String& left, const String& right) { return left.m_chars == right.m_chars; }
@@ -204,9 +206,7 @@ MutableString& MutableString::operator=(const MutableString& other)
       Character& MutableString::operator[](Size index)       { return m_chars[index]; }
 const Character& MutableString::operator[](Size index) const { return m_chars[index]; }
 
-String MutableString::Slice(Size index) const { return Slice(index, Length() - index); }
-
-String MutableString::Slice(Size index, Size length) const { return String(m_chars.AsSpan().Slice(index, length)); }
+void MutableString::TrimEnd(Size length) { m_length -= length; }
 
 MutableString& MutableString::Append(const MutableString& other)
 {

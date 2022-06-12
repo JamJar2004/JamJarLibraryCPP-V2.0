@@ -154,7 +154,7 @@ private:
 		return m_buckets[index % m_buckets.Count()];
 	}
 
-	//void ReAllocate();
+	void ReAllocate();
 
 	NullableRef<HashEntry> Get(const K& key) const;
 public:
@@ -184,6 +184,18 @@ public:
 	virtual SharedRef<Iterator<const Entry<K, V>>> Start() const override { return New<ConstEntryIterator>(*this, false); }
 	virtual SharedRef<Iterator<const Entry<K, V>>> End()   const override { return New<ConstEntryIterator>(*this, true ); }
 };
+
+template<HashableEquatable K, CopyAssignable V>
+inline void HashMap<K, V>::ReAllocate()
+{
+	ArrayList<Entry<K, V>> entries;
+	entries.AddRange(*this);
+
+	m_buckets = ArrayRef<NullableRef<HashEntry>>(m_buckets.Count() * 2U + 1U);
+	m_count = 0U;
+	for(const Entry<K, V>& entry : entries)
+		Add(entry.GetKey(), entry.GetValue());
+}
 
 template<HashableEquatable K, CopyAssignable V>
 inline NullableRef<typename HashMap<K, V>::HashEntry> HashMap<K, V>::Get(const K& key) const
@@ -225,6 +237,9 @@ template<HashableEquatable K, CopyAssignable V>
 inline Boolean HashMap<K, V>::Add(const K& key, const V& value)
 {
 	HashCode hashCode = key.GetHashCode();
+
+	if(m_count >= m_loadFactor * m_buckets.Count())
+		ReAllocate();
 
 	NullableRef<HashEntry>& first = GetBucket(hashCode);
 

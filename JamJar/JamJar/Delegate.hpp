@@ -6,6 +6,8 @@ using Function = T(*)(Args...);
 template<typename C, typename T, typename... Args>
 using Method = T(C::*)(Args...);
 
+
+
 //class DynamicFunction
 //{
 //private:

@@ -93,6 +93,8 @@ public:
 
 	String ToString() const { return *this; }
 
+	MutableString ToMutableString() const;
+
 	virtual SharedRef<Iterator<const Character>> Start() override { return m_chars.Start(); }
 	virtual SharedRef<Iterator<const Character>> End()   override { return m_chars.End();   }
 
@@ -116,63 +118,6 @@ String SignedInteger<T>::ToString() const { return std::to_string(m_value).c_str
 
 template<std::floating_point T>
 String Float<T>::ToString() const { return std::to_string(m_value).c_str(); }
-
-class StringBuilder
-{
-private:
-	ArrayRef<Character> m_chars;
-	Size                m_length;
-public:
-	StringBuilder(Size initialCapacity = 16U) : m_chars(initialCapacity) {}
-
-	Size Length() const { return m_length; }
-
-	StringBuilder& operator<<(const String& string) 
-	{
-		if(m_length + string.Length() >= m_chars.Count())
-		{
-			ArrayRef<Character> newChars(m_length * 2U + string.Length());
-			m_chars.AsSpan().CopyTo(newChars, 0U, 0U, m_length);
-			m_chars = newChars;
-		}
-
-		string.AsSpan().CopyTo(m_chars, 0U, m_length, string.Length());
-		m_length += string.Length();
-
-		return *this;
-	}
-
-	void Remove(Size index, Size length) { m_length -= length; }
-
-	void Clear() { m_length = 0U; }
-
-	String ToString() const { return String(ArraySpan<Character>(m_chars, 0U, m_length)); }
-};
-
-template<typename T>
-String IIterable<T>::ToString() const requires Printable<T>
-{
-	StringBuilder resultBuilder;
-
-	resultBuilder << "{";
-
-	Boolean empty = true;
-
-	for(const T& item : *this)
-	{
-		empty = false;
-		resultBuilder << item.ToString() << ", ";
-	}
-
-	if(empty)
-		return "<Empty>";
-	
-	resultBuilder.Remove(resultBuilder.Length() - 2U, 2U);
-
-	resultBuilder << "}";
-
-	return resultBuilder.ToString();
-}
 
 class MutableString : public ICollection<Character>
 {
@@ -198,13 +143,15 @@ public:
 
 	Size Length() const { return m_length; }
 
-	operator String() const { return String(ArraySpan<Character>(m_chars, 0U, m_length)); }
+	operator String() const { return ToString(); }
 
  	      Character& operator[](Size index);
 	const Character& operator[](Size index) const;
 
 	String Slice(Size index)              const;
 	String Slice(Size index, Size length) const;
+
+	void TrimEnd(Size length);
 
 	MutableString& Append(const MutableString& other);
 
@@ -221,5 +168,36 @@ public:
 	virtual SharedRef<Iterator<const Character>> Start() const override { return m_chars.Start(); }
 	virtual SharedRef<Iterator<const Character>> End()   const override { return m_chars.End();   }
 
-	String ToString() const { return String(m_chars.AsSpan()); }
+	String ToString() const
+	{
+		ArrayRef<Character> chars(m_length);
+		m_chars.AsSpan().CopyTo(chars, 0U, 0U, m_length);
+		return String(chars);
+	}
 };
+
+template<typename T>
+String IIterable<T>::ToString() const requires Printable<T>
+{
+
+	MutableString result;
+
+	result += "{";
+
+	Boolean empty = true;
+
+	for(const T& item : *this)
+	{
+		empty = false;
+		result += MutableString(item.ToString()) += ", ";
+	}
+
+	if(empty)
+		return "<Empty>";
+	
+	result.TrimEnd(2U);
+
+	result += "}";
+
+	return result.ToString();
+}

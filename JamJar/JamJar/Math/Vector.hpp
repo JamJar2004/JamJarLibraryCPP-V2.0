@@ -10,7 +10,7 @@ private:
 public:
 	Vector(T value = T::Zero)
 	{
-		for(Size i = 0; i < D; i++)
+		for(Size i = 0U; i < D; i++)
 			m_values[i] = value;
 	}
 
@@ -52,7 +52,7 @@ public:
 	friend Vector<T, D> operator+(const Vector<T, D>& left, const Vector<T, D>& right)
 	{
 		Vector<T, D> result;
-		for(Size i = 0; i < D; i++)
+		for(Size i = 0U; i < D; i++)
 			result[i] = left[i] + right[i];
 
 		return result;
@@ -61,7 +61,7 @@ public:
 	friend Vector<T, D> operator-(const Vector<T, D>& left, const Vector<T, D>& right)
 	{
 		Vector<T, D> result;
-		for(Size i = 0; i < D; i++)
+		for(Size i = 0U; i < D; i++)
 			result[i] = left[i] - right[i];
 
 		return result;
@@ -70,7 +70,7 @@ public:
 	friend Vector<T, D> operator*(const Vector<T, D>& left, const Vector<T, D>& right)
 	{
 		Vector<T, D> result;
-		for(Size i = 0; i < D; i++)
+		for(Size i = 0U; i < D; i++)
 			result[i] = left[i] * right[i];
 
 		return result;
@@ -97,7 +97,7 @@ public:
 
 	friend Boolean operator==(const Vector<T, D>& left, const Vector<T, D>& right)
 	{
-		for(Size i = 0; i < D; i++)
+		for(Size i = 0U; i < D; i++)
 		{
 			if(left[i] != right[i])
 				return false;
@@ -110,7 +110,7 @@ public:
 
 	Vector<T, D>& operator+=(const Vector<T, D>& other)
 	{
-		for(Size i = 0; i < D; i++)
+		for(Size i = 0U; i < D; i++)
 			m_values[i] += other[i];
 
 		return *this;
@@ -150,16 +150,16 @@ public:
 	
 	String ToString() const
 	{
-		StringBuilder resultBuilder;
-		resultBuilder << "Vector" << Size(D) << "(";
+		MutableString result;
+		result += MutableString("Vector") += MutableString(Size(D).ToString()) += MutableString("(");
 
 		for(T value : m_values)
-			resultBuilder << value << ", ";
+			result += MutableString(value.ToString()) += MutableString(", ");
 
-		resultBuilder.Remove(2);
-		resultBuilder << ")";
+		result.TrimEnd(2U);
+		result += ")";
 
-		return resultBuilder.ToString();
+		return result.ToString();
 	}
 };
 
