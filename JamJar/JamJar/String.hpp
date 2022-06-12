@@ -189,6 +189,11 @@ public:
 
 	MutableString(Character character, Size length);
 
+	MutableString(const MutableString& other);
+	MutableString(MutableString&& other) noexcept;
+
+	MutableString& operator=(const MutableString& other);
+
 	virtual Size Count() const override { return Length(); }
 
 	Size Length() const { return m_length; }
@@ -198,6 +203,9 @@ public:
  	      Character& operator[](Size index);
 	const Character& operator[](Size index) const;
 
+	String Slice(Size index)              const;
+	String Slice(Size index, Size length) const;
+
 	MutableString& Append(const MutableString& other);
 
 	MutableString& operator+=(const MutableString& other) { return Append(other); }
@@ -206,4 +214,12 @@ public:
 
 	friend Boolean operator==(const MutableString& left, const MutableString& right);
 	friend Boolean operator!=(const MutableString& left, const MutableString& right);
+
+	virtual SharedRef<Iterator<Character>> Start() override { return m_chars.Start(); }
+	virtual SharedRef<Iterator<Character>> End()   override { return m_chars.End();   }
+
+	virtual SharedRef<Iterator<const Character>> Start() const override { return m_chars.Start(); }
+	virtual SharedRef<Iterator<const Character>> End()   const override { return m_chars.End();   }
+
+	String ToString() const { return String(m_chars.AsSpan()); }
 };

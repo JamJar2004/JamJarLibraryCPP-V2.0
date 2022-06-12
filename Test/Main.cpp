@@ -92,5 +92,13 @@ ExitStatus Start()
 
 	Console::PrintLine(queue);*/
 
+	HashMap<String, MutableString> map;
+	map.Add("James", "Cutajar");
+	map.Add("Kieran", "Vella");
+	map.Add("Raoul", "Briffa");
+	map.Add("Gabriel", "Cassar");
+
+	Console::PrintLine(map);
+
 	return ExitStatus::OK;
 }

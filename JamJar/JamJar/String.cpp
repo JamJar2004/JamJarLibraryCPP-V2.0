@@ -170,14 +170,43 @@ String operator+(const String& left, const String& right)
 Boolean operator==(const String& left, const String& right) { return left.m_chars == right.m_chars; }
 Boolean operator!=(const String& left, const String& right) { return left.m_chars != right.m_chars; }
 
+MutableString operator+(const MutableString& left, const MutableString& right)
+{
+	MutableString result = left;
+	result.Append(right);
+	return result;
+}
+
+Boolean operator==(const MutableString& left, const MutableString& right) { return left.m_chars.AsSpan() == right.m_chars.AsSpan(); }
+Boolean operator!=(const MutableString& left, const MutableString& right) { return left.m_chars.AsSpan() == right.m_chars.AsSpan(); }
+
 MutableString::MutableString(const char* cString) : m_chars(String::FromCString(cString)), m_length(m_chars.Count()) {}
 
 MutableString::MutableString(const wchar_t* wcString) : m_chars(String::FromWCString(wcString)), m_length(m_chars.Count()) {}
 
 MutableString::MutableString(Character character, Size length) : m_chars(String::FromChar(character, length)), m_length(length) {}
 
+MutableString::MutableString(const MutableString& other) : m_chars(other.Length()), m_length(other.Length())
+{
+	other.m_chars.AsSpan().CopyTo(m_chars, 0U, 0U, other.Length());
+}
+
+MutableString::MutableString(MutableString&& other) noexcept : m_chars(other.m_chars), m_length(other.m_length) {}
+
+MutableString& MutableString::operator=(const MutableString& other)
+{
+	m_chars = ArrayRef<Character>(other.Length());
+	other.m_chars.AsSpan().CopyTo(m_chars, 0U, 0U, other.Length());
+	m_length = other.Length();
+	return *this;
+}
+
       Character& MutableString::operator[](Size index)       { return m_chars[index]; }
 const Character& MutableString::operator[](Size index) const { return m_chars[index]; }
+
+String MutableString::Slice(Size index) const { return Slice(index, Length() - index); }
+
+String MutableString::Slice(Size index, Size length) const { return String(m_chars.AsSpan().Slice(index, length)); }
 
 MutableString& MutableString::Append(const MutableString& other)
 {
