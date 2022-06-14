@@ -110,6 +110,9 @@ public:
 
 	UnsignedInteger<T> Sqrt() const { return UnsignedInteger<T>(sqrtf(m_value)); }
 
+	UnsignedInteger<T> Min(const UnsignedInteger<T>& other) const { return m_value < other.m_value ? *this : other; }
+	UnsignedInteger<T> Max(const UnsignedInteger<T>& other) const { return m_value > other.m_value ? *this : other; }
+
 	template<std::floating_point T2>
 	UnsignedInteger<T> Pow(Float<T2> power) const { return UnsignedInteger<T>(powf(m_value, power.ToRawValue())); }
 
@@ -240,6 +243,9 @@ public:
 
 	SignedInteger<T> Sqrt() const { return SignedInteger<T>(sqrtf(m_value)); }
 
+	SignedInteger<T> Min(const SignedInteger<T>& other) const { return m_value < other.m_value ? *this : other; }
+	SignedInteger<T> Max(const SignedInteger<T>& other) const { return m_value > other.m_value ? *this : other; }
+
 	template<std::floating_point T2>
 	SignedInteger<T> Pow(Float<T2> power) const { return SignedInteger<T>(powf(m_value, power.ToRawValue())); }
 
@@ -345,6 +351,9 @@ public:
 		--(*this);
 		return result;
 	}
+
+	Float<T> Min(const Float<T>& other) const { return m_value < other.m_value ? *this : other; }
+	Float<T> Max(const Float<T>& other) const { return m_value > other.m_value ? *this : other; }
 
 	Float<T> Abs() const
 	{

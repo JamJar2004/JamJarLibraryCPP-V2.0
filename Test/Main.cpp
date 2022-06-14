@@ -62,14 +62,14 @@ public:
 
 ExitStatus Start()
 {
-	HashMap<String, UInt32> map;
+	/*HashMap<String, UInt32> map;
 	map.Add("A", 1U);
 	map.Add("B", 2U);
 	map.Add("C", 3U);
 	map.Add("D", 4U);
 	map.Add("E", 5U);
-	map.Add("F", 6U);
 	map.Add("G", 7U);
+	map.Add("F", 6U);
 	map.Add("H", 8U);
 	map.Add("I", 9U);
 	map.Add("J", 10U);
@@ -83,7 +83,10 @@ ExitStatus Start()
 	map.Add("R", 18U);
 	map.Add("S", 19U);
 
-	Console::PrintLine(map);
+	Console::PrintLine(map);*/
+
+	Console::PrintLine("Hello");
+	
 
 	return ExitStatus::OK;
 }

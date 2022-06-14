@@ -2,70 +2,126 @@
 
 #include "../Numerics.hpp"
 
-class Color
+class HSLColor;
+
+class RGBColor
 {
 private:
-	union
-	{
-		struct
-		{
-			UInt8 m_alpha;
-			UInt8 m_red;
-			UInt8 m_green;
-			UInt8 m_blue;
-		};
-
-		UInt32 m_value;
-	};
+	Float32 m_red;
+	Float32 m_green;
+	Float32 m_blue;
 public:
-	Color(UInt8 alpha, UInt8 red, UInt8 green, UInt8 blue) : m_alpha(alpha), m_red(red), m_green(green), m_blue(blue) {}
+	RGBColor(Float32 red, Float32 green, Float32 blue) : m_red(red), m_green(green), m_blue(blue) {}
 
-	Color(UInt32 value) : m_value(value) {}
+	explicit RGBColor(Float32 shade) : m_red(shade), m_green(shade), m_blue(shade) {}
 
-	Color& InitFromARGB(Float32 alpha, Float32 red, Float32 green, Float32 blue)
+	explicit operator HSLColor();
+
+	Float32 GetRed()   const { return m_red;   }
+	Float32 GetGreen() const { return m_green; }
+	Float32 GetBlue()  const { return m_blue;  }
+
+	void SetRed  (Float32 red  ) { m_red   = red;   }
+	void SetGreen(Float32 green) { m_green = green; }
+	void SetBlue (Float32 blue ) { m_blue  = blue;  }
+};
+
+class ARGBColor : public RGBColor
+{
+private:
+	Float32 m_alpha;
+public:
+	ARGBColor(Float32 alpha, Float32 red, Float32 green, Float32 blue) : RGBColor(red, green, blue), m_alpha(alpha) {}
+	
+	ARGBColor(Float32 alpha, const RGBColor& baseColor) : RGBColor(baseColor), m_alpha(alpha) {}
+
+	explicit ARGBColor(const RGBColor& baseColor) : RGBColor(baseColor), m_alpha(1.0f) {}
+
+	Float32 GetAlpha() const { return m_alpha; }
+
+	void SetAlpha(Float32 alpha) { m_alpha = alpha; }
+};
+
+class HSLColor
+{
+private:
+	Float32 m_hue;
+	Float32 m_sat;
+	Float32 m_lum;
+public:
+	HSLColor(Float32 hue, Float32 saturation, Float32 luminance) : m_hue(hue), m_sat(saturation), m_lum(luminance) {}
+
+	explicit HSLColor(const RGBColor& rgbColor) {}
+
+	explicit operator RGBColor() const 
 	{
-		m_alpha = UInt8(alpha * 255);
-		m_red   = UInt8(red   * 255);
-		m_green = UInt8(green * 255);
-		m_blue  = UInt8(blue  * 255);
+		Float32 r, g, b;
 
-		return *this;
+		Float32 h = m_hue % 360.0f;
+
+		UInt32  section = UInt32(h / 60);
+		Float32 varying = (h / 60.0f) - h;
+
+		switch(section.ToRawValue())
+		{
+			case 0:
+				r = 1.0f;
+				g = varying;
+				b = 0.0f;
+				break;
+			case 1:
+				r = 1.0f - varying;
+				g = 1.0f;
+				b = 0.0f;
+				break;
+			case 2:
+				r = 0.0f;
+				g = 1.0f;
+				b = varying;
+				break;
+			case 3:
+				r = 0.0f;
+				g = 1.0f - varying;
+				b = 1.0f;
+				break;
+			case 4:
+				r = varying;
+				g = 0;
+				b = 1.0f;
+				break;
+			case 5:
+				r = 1.0f;
+				g = 0;
+				b = 1.0f - varying;
+				break;
+		}
+
+		if(m_lum <= 0.5f)
+        {
+            r *= (m_lum * 2.0f);
+            g *= (m_lum * 2.0f);
+            b *= (m_lum * 2.0f);
+        }
+        else
+        {
+            Float32 value = (m_lum - 0.5f) * 2.0f;
+            r += value - (value * r);
+            g += value - (value * g);
+            b += value - (value * b);
+        }
+
+        r = (r * m_sat) + (m_lum * (1.0f - m_sat));
+        g = (g * m_sat) + (m_lum * (1.0f - m_sat));
+        b = (b * m_sat) + (m_lum * (1.0f - m_sat));
+
+		return RGBColor(r, g, b);
 	}
 
-	Color& InitFromTCMY(Float32 transparency, Float32 cyan, Float32 magenta, Float32 yellow)
-	{
-		m_alpha = UInt8((1.0f - transparency) * 255);
-		m_red   = UInt8((1.0f - cyan        ) * 255);
-		m_green = UInt8((1.0f - magenta     ) * 255);
-		m_blue  = UInt8((1.0f - yellow      ) * 255);
+	Float32 GetHue()        const { return m_hue; }
+	Float32 GetSaturation() const { return m_sat; }
+	Float32 GetLuminance()  const { return m_lum; }
 
-		return *this;
-	}
-
-	Color& InitFromRGB(Float32 red , Float32 green  , Float32 blue  ) { return InitFromARGB(1.0f, red , green  , blue  ); }
-	Color& InitFromCMY(Float32 cyan, Float32 magenta, Float32 yellow) { return InitFromTCMY(0.0f, cyan, magenta, yellow); }
-
-	Color& InitFromHSL(Float32 hue, Float32 saturation, Float32 luminance)
-	{
-
-	}
-
-	Float32 GetAlpha() const { return Float32(m_alpha) / 255.0f; }
-	Float32 GetRed()   const { return Float32(m_red  ) / 255.0f; }
-	Float32 GetGreen() const { return Float32(m_green) / 255.0f; }
-	Float32 GetBlue()  const { return Float32(m_blue ) / 255.0f; }
-
-	Float32 GetTransparency() const { return 1.0f - GetAlpha(); }
-	Float32 GetCyan()         const { return 1.0f - GetRed()  ; }
-	Float32 GetMagenta()      const { return 1.0f - GetGreen(); }
-	Float32 GetYellow()       const { return 1.0f - GetBlue() ; }
-
-	Float32 GetHue()        const { return 0; }
-	Float32 GetSaturation() const { return 0; }
-	Float32 GetLuminance()  const { return 0; }
-
-	void SetAlpha(Float32 alpha) { m_alpha = UInt8(alpha * 255.0f); }
-	void SetRed  (Float32 red  ) { m_alpha = UInt8(red   * 255.0f); }
-	void SetGreen(Float32 green) { m_alpha = UInt8(green * 255.0f); }
-	void SetBlue (Float32 blue ) { m_alpha = UInt8(blue  * 255.0f); }
+	void SetHue       (Float32 hue       ) { m_hue = hue;        }
+	void SetSaturation(Float32 saturation) { m_sat = saturation; }
+	void SetLuminance (Float32 luminance ) { m_lum = luminance;  }
 };

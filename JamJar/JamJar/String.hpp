@@ -24,7 +24,7 @@ public:
 	friend Boolean operator==(Character left, Character right) { return left.m_value == right.m_value; }
 	friend Boolean operator!=(Character left, Character right) { return left.m_value != right.m_value; }
 
-	friend class Console;
+	friend class String;
 };
 
 class MutableString;
@@ -80,6 +80,9 @@ public:
 	String Trim()      const;
 
 	const ArraySpan<Character> AsSpan() const { return m_chars; }
+
+	void CopyTo(char*     cString) const;
+	void CopyTo(wchar_t* wcString) const;
 
 	friend String operator+(const String& left, const String& right);
 
@@ -147,9 +150,6 @@ public:
 
  	      Character& operator[](Size index);
 	const Character& operator[](Size index) const;
-
-	String Slice(Size index)              const;
-	String Slice(Size index, Size length) const;
 
 	void TrimEnd(Size length);
 

@@ -159,6 +159,22 @@ String String::TrimEnd() const
 
 String String::Trim() const { return TrimStart().TrimEnd(); }
 
+void String::CopyTo(char* cString) const
+{
+	for(Size i = 0U; i < Length(); i++)
+		cString[i.ToRawValue()] = (char)m_chars[i].m_value;
+
+	cString[Length().ToRawValue()] = '\0';
+}
+
+void String::CopyTo(wchar_t* wcString) const
+{
+	for(Size i = 0U; i < Length(); i++)
+		wcString[i.ToRawValue()] = m_chars[i].m_value;
+
+	wcString[Length().ToRawValue()] = '\0';
+}
+
 MutableString String::ToMutableString() const { return MutableString(*this); }
 
 String operator+(const String& left, const String& right)
