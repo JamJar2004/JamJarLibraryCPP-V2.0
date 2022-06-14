@@ -3,33 +3,57 @@
 #include "../../Numerics.hpp"
 
 template<typename T>
+class SharedRef;
+
+template<typename T>
 class NullableRef;
 
+template<typename T>
+class WeakRef;
+
 class DynamicRef;
+
+class RefCounter
+{
+private:
+	Size m_useCount;
+	Size m_weakCount;
+public:
+	RefCounter(Size useCount, Size weakCount) : m_useCount(useCount), m_weakCount(weakCount) {}
+
+	template<typename T>
+	friend class SharedRef;
+
+	template<typename T>
+	friend class NullableRef;
+
+	template<typename T>
+	friend class WeakRef;
+};
 
 template<typename T>
 class SharedRef
 {
 private:
-	T*    m_address;
-	Size* m_refCount;
+	T*          m_address;
+	RefCounter* m_refCount;
 
-	void AddRef() { ++(*m_refCount); }
+	void AddRef() { ++m_refCount->m_useCount; }
 
 	void RemRef()
 	{
-		--(*m_refCount);
-		if(*m_refCount == 0U)
+		if(--m_refCount->m_useCount == 0U)
 		{
 			delete m_address;
-			delete m_refCount;
+			if(m_refCount->m_weakCount == 0U)
+				delete m_refCount;
 		}
 	}
 	
-	SharedRef(T* address, Size* refCount) : m_address(address), m_refCount(refCount) {}
+	SharedRef(T* address, RefCounter* refCount) : m_address(address), m_refCount(refCount) {}
 public:
 	template<typename... Args>
-	SharedRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new Size(1U)) {}
+	SharedRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new RefCounter(1U, 0U)) {}
 
 	SharedRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
@@ -63,6 +87,9 @@ public:
 	template<typename T2>
 	friend class NullableRef;
 
+	template<typename T2>
+	friend class WeakRef;
+
 	friend class DynamicRef;
 };
 
@@ -73,18 +100,18 @@ template<typename T>
 class NullableRef
 {
 private:
-	T*    m_address;
-	Size* m_refCount;
+	T*          m_address;
+	RefCounter* m_refCount;
 
-	void AddRef() { ++(*m_refCount); }
+	void AddRef() { ++m_refCount->m_useCount; }
 
 	void RemRef()
 	{
-		--(*m_refCount);
-		if(*m_refCount == 0U)
+		if(--m_refCount->m_useCount == 0U)
 		{
 			delete m_address;
-			delete m_refCount;
+			if(m_refCount->m_weakCount == 0U)
+				delete m_refCount;
 		}
 	}
 public:
@@ -93,14 +120,14 @@ public:
 	NullableRef(std::nullptr_t) : m_address(nullptr), m_refCount(nullptr) {}
 
 	template<typename T, typename... Args>
-	NullableRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new Size(1U)) {}
+	NullableRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new RefCounter()) {}
 
 	NullableRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
 	template<Inherits<T> T2>
 	NullableRef(const SharedRef<T2>& other) : m_address((T*)other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
-	NullableRef(const NullableRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) 
+	NullableRef(const NullableRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount)
 	{
 		if(m_refCount)
 			AddRef(); 
@@ -145,7 +172,7 @@ public:
 		return *this;
 	}
 
-	operator SharedRef<T>() const;
+	explicit operator SharedRef<T>() const;
 
 	T&       operator *() const;
 	T* const operator->() const;
@@ -154,4 +181,33 @@ public:
 
 	friend Boolean operator==(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address == right.m_address; }
 	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address != right.m_address; }
+};
+
+template<typename T>
+class WeakRef
+{
+private:
+	T*          m_address;
+	RefCounter* m_refCount;
+
+	void AddRef() { ++m_refCount->m_weakCount; }
+
+	void RemRef()
+	{
+		if(--m_refCount->m_weakCount == 0U && m_refCount->m_useCount == 0U)
+			delete m_refCount;
+	}
+public:
+	WeakRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
+
+	WeakRef(const WeakRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
+
+	operator NullableRef<T>()
+	{
+		if(!m_refCount->IsValid())
+			return nullptr;
+
+		m_refCount->AddUse();
+		return SharedRef<T>(m_address, m_refCount);
+	}
 };

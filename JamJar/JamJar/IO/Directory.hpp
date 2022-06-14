@@ -4,6 +4,35 @@
 
 #include <filesystem>
 
+class DirectoryIterator : public Iterator<const Directory>
+{
+private:
+	const Directory& m_parent;
+	std::filesystem::directory_iterator m_iterator;
+public:
+	DirectoryIterator(const Directory& parent, const std::filesystem::directory_iterator& iterator) : m_parent(parent), m_iterator(iterator) {}
+
+	virtual void MoveNext() override { ++m_iterator; }
+
+	virtual const Directory& Current() const override { return Directory(m_iterator->path().filename().c_str(), m_parent); }
+
+	virtual Boolean Equals(const Iterator<const Directory>& other) const override { return m_iterator == ((const DirectoryIterator&)other).m_iterator; }
+};
+
+class DirectoryCollection : public IIterable<const Directory>
+{
+private:
+	const Directory& m_parent;
+public:
+	DirectoryCollection(const Directory& parent) : m_parent(parent) {}
+
+	virtual SharedRef<Iterator<const Directory>> Start() override;
+	virtual SharedRef<Iterator<const Directory>> End()   override;
+
+	virtual SharedRef<Iterator<const Directory>> Start() const override;
+	virtual SharedRef<Iterator<const Directory>> End()   const override;
+};
+
 class Directory
 {
 private:
@@ -12,8 +41,10 @@ private:
 	std::filesystem::path m_path;
 
 	NullableRef<Directory> m_parent;
+
+	DirectoryCollection m_directories;
 public:
-	Directory(const String& name) : m_name(name), m_parent(nullptr)
+	Directory(const String& name) : m_name(name), m_parent(nullptr), m_directories(*this)
 	{
 		String fullName = GetFullName();
 
@@ -25,7 +56,7 @@ public:
 		delete[] chars;
 	}
 
-	Directory(const String& name, const Directory& parent) : m_name(name), m_parent(New<Directory>(parent)) 
+	Directory(const String& name, const Directory& parent) : m_name(name), m_parent(New<Directory>(parent)), m_directories(*this)
 	{
 		String fullName = GetFullName();
 
@@ -74,4 +105,7 @@ public:
 	void CopyTo(const Directory& directory) { std::filesystem::copy(m_path, directory.m_path); }
 
 	String ToString() const { return GetFullName(); }
+
+	friend class DirectoryCollection;
 };
+

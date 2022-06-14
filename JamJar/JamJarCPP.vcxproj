@@ -56,6 +56,7 @@
     <ClCompile Include="JamJar\Dynamic.cpp" />
     <ClCompile Include="JamJar\Exception.cpp" />
     <ClCompile Include="JamJar\HashCode.cpp" />
+    <ClCompile Include="JamJar\IO\Directory.cpp" />
     <ClCompile Include="JamJar\Numerics.cpp" />
     <ClCompile Include="JamJar\Rendering\Color.cpp" />
     <ClCompile Include="JamJar\String.cpp" />

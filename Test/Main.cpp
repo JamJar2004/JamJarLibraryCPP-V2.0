@@ -85,8 +85,7 @@ ExitStatus Start()
 
 	Console::PrintLine(map);*/
 
-	Console::PrintLine("Hello");
-	
+
 
 	return ExitStatus::OK;
 }

@@ -83,6 +83,9 @@
     <ClCompile Include="JamJar\Rendering\Color.cpp">
       <Filter>Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="JamJar\IO\Directory.cpp">
+      <Filter>IO</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">

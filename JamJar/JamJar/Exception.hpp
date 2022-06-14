@@ -1,6 +1,7 @@
 #pragma once
 
 #include "String.hpp"
+#include "Refs.hpp"
 
 class Exception
 {
@@ -19,7 +20,7 @@ public:
 };
 
 template<typename T>
-NullableRef<T>::operator SharedRef<T>() const
+inline NullableRef<T>::operator SharedRef<T>() const
 {
 	if(!m_address)
 		NullReferenceException().Throw();
