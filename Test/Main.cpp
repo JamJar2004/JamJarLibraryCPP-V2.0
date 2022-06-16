@@ -1,6 +1,7 @@
 #include <JamJar/Core.hpp>
 
 #include <JamJar/Data/Collections/Lists/ArrayList.hpp>
+#include <JamJar/Data/Collections/Lists/LinkedList.hpp>
 
 #include <JamJar/Data/Memory/Stack.hpp>
 #include <JamJar/Data/Memory/Queue.hpp>
@@ -10,6 +11,7 @@
 #include <JamJar/Data/Collections/Maps/HashMap.hpp>
 
 #include <JamJar/Math/Vector.hpp>
+
 
 class Shape
 {
@@ -87,17 +89,20 @@ ExitStatus Start()
 
 	Console::PrintLine(map);*/
 
-	WeakRef<Object> ref1 = New<Object>();
-	Console::PrintLine(ref1);
+	LinkedList<String> list;
+	list.Add("ABC");
+	list.Add("DEF");
 
-	{
-		SharedRef<Object> ref2 = New<Object>();
-		Console::PrintLine(ref2);
+	Console::PrintLine(list);
 
-		ref1 = ref2;
-	}
+	list.Add("PQR");
+	list.AddRange(StackArray<String, 2>("STU", "VWX"));
 
-	Console::PrintLine(ref1);
+	Console::PrintLine(list);
+
+	list.InsertRange(2U, StackArray<String, 3>("GHI", "JKL", "MNO"));
+
+	Console::PrintLine(list);
 
 	return ExitStatus::OK;
 }

@@ -29,6 +29,9 @@ public:
 
 	template<typename T>
 	friend class WeakRef;
+
+	template<typename T>
+	friend class NullableWeakRef;
 };
 
 template<typename T>
@@ -91,6 +94,9 @@ public:
 
 	template<typename T2>
 	friend class WeakRef;
+
+	template<typename T2>
+	friend class NullableWeakRef;
 
 	friend class DynamicRef;
 };
@@ -185,6 +191,9 @@ public:
 	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address != right.m_address; }
 
 	String ToString() const requires Printable<T>;
+
+	template<typename T2>
+	friend class NullableWeakRef;
 };
 
 template<typename T>
@@ -281,10 +290,15 @@ public:
 		
 		if(m_refCount)
 			AddRef();
+
+		return *this;
 	}
 
-	operator NullableRef<T>()
+	operator NullableRef<T>() const
 	{
+		if(!m_address)
+			return nullptr;
+
 		if(m_refCount->m_useCount == 0U)
 			return nullptr;
 

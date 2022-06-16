@@ -81,6 +81,25 @@ private:
 
 		return result;
 	}
+
+	NullableRef<Node> GetNode(Size index) const
+	{
+		NullableRef<Node> result;
+		if (index < m_count / 2U)
+		{
+			result = m_first;
+			for(Size i = 0U; i < index; i++)
+				result = result->GetNext();
+		}
+		else
+		{
+			result = m_last;
+			for(Size i = m_count - 1U; i > index; i--)
+				result = result->GetPrev();
+		}
+
+		return result;
+	}
 public:
 	LinkedList() : m_first(nullptr), m_last(nullptr), m_count(0U) {}
 
@@ -112,7 +131,7 @@ public:
 		return -1;
 	}
 
-	virtual Boolean Remove(const T& item) override;
+	Boolean Remove(const T& item) requires Equatable<T>;
 
 	ArrayRef<T> ToArray() const requires CopyConstructible<T>
 	{
@@ -150,7 +169,7 @@ inline void LinkedList<T>::AddRange(const ICollection<T>& items)
 {
 	NullableRef<Node> first = nullptr;
 
-	NullableRef<Node> last = nullptr;
+	NullableRef<Node> last = m_last;
 	for(const T& item : items)
 	{
 		NullableRef<Node> curr = New<Node>(item, last);
@@ -158,15 +177,10 @@ inline void LinkedList<T>::AddRange(const ICollection<T>& items)
 		if(last != nullptr)
 			last->SetNext(curr);
 		else
-			first = curr;
+			m_first = curr;
 
 		last = curr;
 	}
-
-	if(m_last == nullptr)
-		m_first = first;
-	else
-		m_last->SetNext(first);
 
 	m_last = last;
 
@@ -214,6 +228,8 @@ inline void LinkedList<T>::InsertRange(Size index, const ICollection<T>& items)
 
 		prev = curr;
 	}
+
+	prev->SetNext(next);
 
 	if(next != nullptr)
 		next->SetPrev(prev);
@@ -279,9 +295,9 @@ inline void LinkedList<T>::Clear()
 }
 
 template<typename T>
-inline Boolean LinkedList<T>::Remove(const T& item)
+inline Boolean LinkedList<T>::Remove(const T& item) requires Equatable<T>
 {
-	for(NullableRef<Node> curr = m_first; curr != nullptr; curr = curr->GetNext(), i++)
+	for(NullableRef<Node> curr = m_first; curr != nullptr; curr = curr->GetNext())
 	{
 		if(curr->GetValue() == item)
 		{
