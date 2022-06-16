@@ -81,6 +81,8 @@ public:
 	friend Boolean operator==(const SharedRef<T>& left, const SharedRef<T>& right) { return left.m_address == right.m_address; }
 	friend Boolean operator!=(const SharedRef<T>& left, const SharedRef<T>& right) { return left.m_address != right.m_address; }
 
+	String ToString() const requires Printable<T>;
+
 	template<typename T2>
 	friend class SharedRef;
 
@@ -120,7 +122,7 @@ public:
 	NullableRef(std::nullptr_t) : m_address(nullptr), m_refCount(nullptr) {}
 
 	template<typename T, typename... Args>
-	NullableRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new RefCounter()) {}
+	NullableRef(Args&&... args) requires ConstructibleFrom<T, Args...> : m_address(new T(args...)), m_refCount(new RefCounter(1U, 0U)) {}
 
 	NullableRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
@@ -181,6 +183,8 @@ public:
 
 	friend Boolean operator==(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address == right.m_address; }
 	friend Boolean operator!=(const NullableRef<T>& left, const NullableRef<T>& right) { return left.m_address != right.m_address; }
+
+	String ToString() const requires Printable<T>;
 };
 
 template<typename T>
@@ -202,12 +206,91 @@ public:
 
 	WeakRef(const WeakRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
 
+	WeakRef& operator=(const WeakRef<T>& other)
+	{
+		RemRef();
+		m_address  = other.m_address;
+		m_refCount = other.m_refCount;
+		AddRef();
+	}
+
 	operator NullableRef<T>()
 	{
-		if(!m_refCount->IsValid())
+		if(m_refCount->m_useCount == 0U)
 			return nullptr;
 
-		m_refCount->AddUse();
+		++m_refCount->m_useCount;
 		return SharedRef<T>(m_address, m_refCount);
 	}
+
+	String ToString() const requires Printable<T>;
+};
+
+template<typename T>
+class NullableWeakRef
+{
+private:
+	T*          m_address;
+	RefCounter* m_refCount;
+
+	void AddRef() { ++m_refCount->m_weakCount; }
+
+	void RemRef()
+	{
+		if(--m_refCount->m_weakCount == 0U && m_refCount->m_useCount == 0U)
+			delete m_refCount;
+	}
+public:
+	NullableWeakRef() : m_address(nullptr), m_refCount(nullptr) {}
+
+	NullableWeakRef(std::nullptr_t) : m_address(nullptr), m_refCount(nullptr) {}
+
+	NullableWeakRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
+
+	NullableWeakRef(const NullableRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount)
+	{
+		if(m_refCount)
+			AddRef();
+	}
+
+	NullableWeakRef(const WeakRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount) { AddRef(); }
+
+	NullableWeakRef(const NullableWeakRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount)
+	{
+		if(m_refCount)
+			AddRef();
+	}
+
+	NullableWeakRef& operator=(const WeakRef<T>& other)
+	{
+		if(m_refCount)
+			RemRef();
+
+		m_address  = other.m_address;
+		m_refCount = other.m_refCount;
+		AddRef();
+	}
+
+	NullableWeakRef& operator=(const NullableWeakRef<T>& other)
+	{
+		if(m_refCount)
+			RemRef();
+
+		m_address  = other.m_address;
+		m_refCount = other.m_refCount;
+		
+		if(m_refCount)
+			AddRef();
+	}
+
+	operator NullableRef<T>()
+	{
+		if(m_refCount->m_useCount == 0U)
+			return nullptr;
+
+		++m_refCount->m_useCount;
+		return SharedRef<T>(m_address, m_refCount);
+	}
+
+	String ToString() const requires Printable<T>;
 };

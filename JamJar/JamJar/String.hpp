@@ -179,7 +179,6 @@ public:
 template<typename T>
 String IIterable<T>::ToString() const requires Printable<T>
 {
-
 	MutableString result;
 
 	result += "{";
@@ -200,4 +199,28 @@ String IIterable<T>::ToString() const requires Printable<T>
 	result += "}";
 
 	return result.ToString();
+}
+
+template<typename T>
+String SharedRef<T>::ToString() const requires Printable<T>
+{
+	return "Reference -> { " + m_address->ToString() + " }";
+}
+
+template<typename T>
+String NullableRef<T>::ToString() const requires Printable<T>
+{
+	if(m_address)
+		return "Reference -> { " + m_address->ToString() + " }";
+
+	return "<Null Reference>";
+}
+
+template<typename T>
+String WeakRef<T>::ToString() const requires Printable<T>
+{
+	if(m_refCount->m_useCount == 0U)
+		return "Reference -> Deleted";
+
+	return "Reference -> { " + m_address->ToString() + " }";
 }

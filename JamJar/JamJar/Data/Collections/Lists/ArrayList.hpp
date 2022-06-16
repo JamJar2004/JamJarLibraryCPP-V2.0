@@ -55,8 +55,6 @@ public:
 
 	Boolean Remove(const T& item) requires Equatable<T>;
 
-	virtual SharedRef<IList<T>> SubList(Size index, Size count) const override;
-
 	ArrayRef<T> ToArray() const requires CopyConstructible<T>
 	{
 		T* array = (T*)malloc(sizeof(T) * Count().ToRawValue());
@@ -157,14 +155,4 @@ inline Boolean ArrayList<T>::Remove(const T& item) requires Equatable<T>
 
 	RemoveAt(Size(index));
 	return true;
-}
-
-template<typename T>
-inline SharedRef<IList<T>> ArrayList<T>::SubList(Size index, Size count) const
-{
-	SharedRef<ArrayList<T>> result = New<ArrayList<T>>(count);
-	for(Size i = 0U; i < count; i++)
-		result->Add((*this)[i + index]);
-
-	return result;
 }

@@ -58,6 +58,8 @@ public:
 	~Object() { Console::PrintLine("Destroyed!"); }
 
 	Object& operator=(const Object& other) { Console::PrintLine("Assigned!"); return *this; }
+
+	String ToString() { return Size((size_t)this).ToString(); }
 };
 
 ExitStatus Start()
@@ -85,7 +87,17 @@ ExitStatus Start()
 
 	Console::PrintLine(map);*/
 
+	WeakRef<Object> ref1 = New<Object>();
+	Console::PrintLine(ref1);
 
+	{
+		SharedRef<Object> ref2 = New<Object>();
+		Console::PrintLine(ref2);
+
+		ref1 = ref2;
+	}
+
+	Console::PrintLine(ref1);
 
 	return ExitStatus::OK;
 }

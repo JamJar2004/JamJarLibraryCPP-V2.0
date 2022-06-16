@@ -62,12 +62,6 @@
     <ClInclude Include="JamJar\Rendering\Color.hpp">
       <Filter>Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="JamJar\IO\File.hpp">
-      <Filter>IO</Filter>
-    </ClInclude>
-    <ClInclude Include="JamJar\IO\Directory.hpp">
-      <Filter>IO</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JamJar\String.cpp" />
@@ -82,9 +76,6 @@
     <ClCompile Include="JamJar\HashCode.cpp" />
     <ClCompile Include="JamJar\Rendering\Color.cpp">
       <Filter>Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="JamJar\IO\Directory.cpp">
-      <Filter>IO</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

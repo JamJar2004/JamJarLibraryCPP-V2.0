@@ -225,7 +225,7 @@ private:
 	}
 public:
 	template<typename T>
-	DynamicRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_refCount), m_type(Reflect::GetType<T>()) { AddRef(); }
+	DynamicRef(const SharedRef<T>& other) : m_address(other.m_address), m_refCount(other.m_useCount), m_type(Reflect::GetType<T>()) { AddRef(); }
 
 	DynamicRef(const DynamicRef& other) : m_address(other.m_address), m_refCount(other.m_refCount), m_type(other.m_type) { AddRef(); }
 
