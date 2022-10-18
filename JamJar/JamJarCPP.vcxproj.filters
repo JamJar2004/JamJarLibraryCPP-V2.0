@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="JamJar\Core.hpp" />
+    <ClInclude Include="JamJar\Numerics.hpp" />
+    <ClInclude Include="JamJar\String.hpp" />
+    <ClInclude Include="JamJar\Boolean.hpp" />
+    <ClInclude Include="JamJar\Concepts.hpp" />
+    <ClInclude Include="JamJar\Console.hpp" />
+    <ClInclude Include="JamJar\Data\Memory\Refs.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Exception.hpp" />
+    <ClInclude Include="JamJar\Math\Vector.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Delegate.hpp" />
+    <ClInclude Include="JamJar\Data\Reflection.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Dynamic.hpp" />
+    <ClInclude Include="JamJar\Data\Memory\Stack.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Memory\Buffer.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Memory\Array.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Memory\Queue.hpp">
+      <Filter>Data\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\HashCode.hpp" />
+    <ClInclude Include="JamJar\Math\Matrix.hpp">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Rendering\Color.hpp">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Rendering\Image.hpp">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Rendering\DrawingContext.hpp">
+      <Filter>Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Timing\Clock.hpp">
+      <Filter>Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Timing\Timer.hpp">
+      <Filter>Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\ArrayList.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Data\Collections\Stack.hpp">
+      <Filter>Data\Collections</Filter>
+    </ClInclude>
+    <ClInclude Include="JamJar\Nullable.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="JamJar\String.cpp" />
+    <ClCompile Include="JamJar\Exception.cpp" />
+    <ClCompile Include="JamJar\Core.cpp" />
+    <ClCompile Include="JamJar\Dynamic.cpp" />
+    <ClCompile Include="JamJar\Numerics.cpp" />
+    <ClCompile Include="JamJar\Console.cpp" />
+    <ClCompile Include="JamJar\Data\Reflection.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="JamJar\HashCode.cpp" />
+    <ClCompile Include="JamJar\Rendering\Color.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Data">
+      <UniqueIdentifier>{e35ed94a-a8d5-4455-a13e-da30ae96ae71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Collections">
+      <UniqueIdentifier>{ce8de960-d5b3-48eb-838b-d7fed13c7212}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{793e5674-6348-4a2e-8b69-3bdf25edbb8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Memory">
+      <UniqueIdentifier>{d14d6f93-dd5a-4c62-ab21-f3a5f481d213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{6629250e-8b92-4c9a-b381-e974f517ae8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timing">
+      <UniqueIdentifier>{507239a1-3f66-4c98-bd1d-04194680d036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IO">
+      <UniqueIdentifier>{691d3da7-1bcd-46ce-928d-4a1f37dbb064}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
