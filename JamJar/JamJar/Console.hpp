@@ -58,7 +58,7 @@ template<Iterable T>
 void Console::Print(const T& iterable)
 {
 	MutableString message = "{ ";
-	for(T::Iterator it = iterable.begin(); it != iterable.end(); ++it)
+	for(auto it = iterable.begin(); it != iterable.end(); ++it)
 		message.Append(*it).Append(", ");
 
 	message.Append("}");
@@ -82,9 +82,10 @@ template<Iterable T>
 void Console::PrintLine(const T& iterable)
 {
 	MutableString message = "{ ";
-	for(T::Iterator it = iterable.begin(); it != iterable.end(); ++it)
-		message.Append(*it).Append(", ");
+	for(auto it = iterable.begin(); it != iterable.end(); ++it)
+		message.Append(it->ToString()).Append(", ");
 
+	
 	message.Append("}");
 
 	Console::PrintLine(message);

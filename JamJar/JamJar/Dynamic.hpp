@@ -41,7 +41,7 @@ public:
 
 	const TypeInfo& GetType() const { return m_type; }
 
-	template<typename T>
+	template<CopyAssignable T>
 	Boolean TryCast(T& result)
 	{
 		if(m_type != Reflect::GetType<T>())
@@ -255,15 +255,47 @@ class DynamicRef
 private:
 	void* m_address;
 	
-	const TypeInfo* m_type;
+	const TypeInfo& m_type;
 public:
+	DynamicRef(void* address, const TypeInfo& type) : m_address(address), m_type(type) {}
+
 	template<typename T>
 	DynamicRef(T& value) : m_address(&value), m_type(&Reflect::GetType<T>()) {}
 
-	DynamicRef& operator=(const DynamicRef& other)
+	//DynamicRef& operator=()
+
+	template<CopyAssignable T>
+	DynamicRef& operator=(const T& value)
 	{
-		m_address = other.m_address;
-		m_type    = other.m_type;
+		const TypeInfo& valueType = Reflect::GetType<T>();
+		if(m_type == valueType)
+		{
+			T& dest = *(T*)m_address;
+			dest = value;
+		}
+		else
+			InvalidCastException(valueType, m_type).Throw();
+
+		return *this;
+	}
+
+	template<CopyAssignable T>
+	Boolean TryCast(T& result)
+	{
+		if(m_type != Reflect::GetType<T>())
+			return false;
+		
+		result = *(T*)m_address;
+		return true;
+	}
+
+	template<typename T>
+	T Cast() const
+	{
+		if(m_type != Reflect::GetType<T>()) 
+			InvalidCastException(m_type, Reflect::GetType<T>()).Throw();
+		
+		return *(T*)m_address;
 	}
 };
 
@@ -297,6 +329,11 @@ private:
 			delete m_refCount;
 		}
 	}
+
+	void* GetAddress(Size index) const
+	{
+		return (UInt8*)m_address + (m_elementType.GetSize() * index.ToRawValue()).ToRawValue();
+	}
 public:
 	DynamicArray(Size count, const TypeInfo& elementType) :
 		m_address(malloc((elementType.GetSize() * count).ToRawValue())), m_refCount(new Size(1U)), m_count(count), m_elementType(elementType)
@@ -307,6 +344,19 @@ public:
 		{
 			UInt8* current = ((UInt8*)m_address) + (i * typeSize).ToRawValue();
 			elementType.GetDefaultConstructor()(current);
+		}
+	}
+
+	template<typename T>
+	DynamicArray(const HeapArray<T>& other) : 
+		m_address(malloc((sizeof(T) * other.Count()).ToRawValue())), m_refCount(new Size(1U)), m_count(other.Count()), m_elementType(Reflect::GetType<T>())
+	{
+		for(Size i = 0U; i < m_count; i++)
+		{
+			const T& source = other[i];
+			UInt8* dest = ((UInt8*)m_address) + (i * sizeof(T)).ToRawValue();
+
+			m_elementType.GetCopyConstructor()(&source, dest);
 		}
 	}
 
@@ -333,6 +383,9 @@ public:
 	~DynamicArray() { RemRef(); }
 
 	Size Count() const { return m_count; }
+
+	      DynamicRef operator[](Size index)       { return DynamicRef(GetAddress(index), m_elementType); }
+	const DynamicRef operator[](Size index) const { return DynamicRef(GetAddress(index), m_elementType); }
 };
 
 template<typename T>

@@ -24,6 +24,7 @@ private:
 	T m_elements[C];
 public:
 	using Iterator = T*;
+	using ConstIterator = T const*;
 
 	StackArray() requires DefaultConstructible<T> {}
 
@@ -74,8 +75,11 @@ public:
 		return result;
 	}
 
-	T* begin() { return m_elements;     }
-	T* end()   { return m_elements + C; }
+	Iterator begin() { return m_elements;     }
+	Iterator end()   { return m_elements + C; }
+
+	ConstIterator begin() const { return m_elements;     }
+	ConstIterator end()   const { return m_elements + C; }
 
 	friend class ArrayRef<T>;
 };

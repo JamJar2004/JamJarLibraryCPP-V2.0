@@ -235,10 +235,11 @@ concept Hashable = requires(T obj)
 };
 
 template<typename T>
+concept Iterator = Incrementable<T> && Decrementable<T> && Equatable<T>;
+
+template<typename T>
 concept Iterable = requires(T obj)
 {
-	{ T::Iterator };
-
-	{ obj.begin() };
-	{ obj.end() };
+	{ obj.begin() } -> Iterator;
+	{ obj.end()   } -> Iterator;
 };
